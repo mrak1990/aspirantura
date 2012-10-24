@@ -1,0 +1,86 @@
+body {
+    padding-top: 60px;
+}
+
+/*.controls input {
+    display: block;
+    margin-bottom: 9px;
+}*/
+
+span.key_button {
+    background: none repeat scroll 0 0 #DDDDDD;
+    border: 2px outset #DDDDDD;
+    border-radius: 2px;
+    color: #333333;
+    padding: 0 3px;
+}
+
+th.btn-group4 {
+    width: 109px;
+    /*    n*26+n+1*/
+}
+
+div.lcolumn {
+    text-align: right;
+}
+
+hr {
+    margin-top: 5px;
+}
+
+h2 span.h-buttons {
+    float: right;
+    font-weight: normal;
+}
+
+.navbar-inner > .brand {
+    padding: 10px 30px;
+}
+
+.dl-horizontal dt {
+    width: 200px;
+}
+
+.dl-horizontal dd {
+    margin-left: 210px;
+}
+
+.form-note {
+    font-size: 12px;
+    margin: 5px 0 10px;
+}
+
+form span.required {
+    color: #FF0000;
+}
+
+span.collapsed {
+    display: none;
+}
+
+a.expander:hover, a.collapser:hover {
+    text-decoration: none;
+}
+
+
+/* bootstrap */
+span.label {
+    vertical-align: middle;
+}
+
+.nav-tabs {
+    padding-left: 10px;
+}
+
+/* grid */
+table.table tfoot td.action-footer {
+    background-image: url("../img/selectallarrow.png");
+    background-repeat: no-repeat;
+    background-position: 2px top;
+    padding-left: 40px;
+}
+
+/* search form */
+form.non-required-labels label.required span.required {
+    display: none;
+}
