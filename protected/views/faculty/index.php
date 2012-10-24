@@ -1,6 +1,6 @@
 <?php
 /**
- * @var CActiveDataProvider $provider
+ * @var Faculty $model
  * @var SearchForm $searchModel
  * @var CDbCriteria $criteria
  * @var CSort $sort
@@ -85,7 +85,9 @@ $this->widget('MyBootGridView', array(
             'class' => 'CDataColumn',
             'type' => 'raw',
             'value' => $valueFunction,
-            'htmlOptions' => array('style' => 'width: 20px'),
+            'htmlOptions' => array(
+                'style' => 'width: 20px'
+            ),
         ),
     ),
     'footer' => array(

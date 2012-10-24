@@ -1,6 +1,6 @@
 <?php
 /**
- * @var CActiveDataProvider $provider
+ * @var Department $model
  * @var SearchForm $searchModel
  * @var CDbCriteria $criteria
  * @var CSort $sort
@@ -50,7 +50,7 @@ $valueFunction = function ($data) {
 };
 
 $this->widget('MyBootGridView', array(
-    'id' => 'faculty-grid',
+    'id' => 'department-grid',
     'type' => 'striped bordered condensed',
     'dataProvider' => new CActiveDataProvider($model, array(
         'criteria' => $criteria,
@@ -92,7 +92,9 @@ $this->widget('MyBootGridView', array(
             'class' => 'CDataColumn',
             'type' => 'raw',
             'value' => $valueFunction,
-            'htmlOptions' => array('style' => 'width: 20px'),
+            'htmlOptions' => array(
+                'style' => 'width: 20px'
+            ),
         ),
     ),
     'footer' => array(

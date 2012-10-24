@@ -150,13 +150,12 @@ class Staff extends ActiveRecord
 
     public function resolveSortAttributes()
     {
-        return array(//            'staff_id' => 'head',
+        return array( //            'staff_id' => 'head',
         );
     }
 
     public function afterFind()
     {
-//        if (Yii::app()->controller->action->id !== 'search')
         if ($this->department !== null)
             $this->facultyId = $this->department->faculty_id;
 
@@ -179,6 +178,7 @@ class Staff extends ActiveRecord
             $degreesOldIds = array_map(function ($value) {
                 return $value->scientific_degree_id;
             }, $this->scientificDegrees);
+
             $degreesNewIds = array_map(function ($value) {
                 return $value['scientific_degree_id'];
             }, $degrees);

@@ -3,7 +3,7 @@
 class StaffController extends Controller
 {
 
-    public $pageTitle = 'Факультеты';
+    public $pageTitle = 'Сотрудники';
     public $breadcrumbs = array('Сотрудники' => array('index'));
 
     /**
@@ -217,10 +217,8 @@ class StaffController extends Controller
         $criteria = new CDbCriteria(array(
                 'with' => array(
                     'department' => array(
-//                            'select' => 'title',
                         'with' => array(
-                            'faculty' => array(//                                    'select' => 'title',
-                            )
+                            'faculty'
                         ),
                     )
                 )
@@ -239,17 +237,15 @@ class StaffController extends Controller
             ),
             '*',
         );
+        $sort->defaultOrder = 't.fio';
 
         $this->render('index', array(
-            'provider' => new CActiveDataProvider($model->getRestoredRecords()->search(), array(
+                'model' => $model->getRestoredRecords()->search(),
                 'criteria' => $criteria,
                 'sort' => $sort,
-                'pagination' => array(
-                    'pageSize' => 5,
-                ),
-            )),
-            'searchModel' => $search,
-        ));
+                'searchModel' => $search,
+            )
+        );
     }
 
     /**
@@ -271,11 +267,8 @@ class StaffController extends Controller
         $criteria = new CDbCriteria(array(
                 'with' => array(
                     'department' => array(
-                        'select' => 'title',
                         'with' => array(
-                            'faculty' => array(
-                                'select' => 'title',
-                            )
+                            'faculty'
                         ),
                     )
                 )
@@ -294,32 +287,15 @@ class StaffController extends Controller
             ),
             '*',
         );
+        $sort->defaultOrder = 't.fio';
 
         $this->render('index', array(
-            'provider' => new CActiveDataProvider($model->getDeletedRecords()->search(), array(
+                'model' => $model->getDeletedRecords()->search(),
                 'criteria' => $criteria,
                 'sort' => $sort,
-                'pagination' => array(
-                    'pageSize' => 5,
-                ),
-            )),
-            'searchModel' => $search,
-        ));
-    }
-
-    /**
-     * Manages all models.
-     */
-    public function actionAdmin()
-    {
-        $model = new Staff('search');
-        $model->unsetAttributes(); // clear any default values
-        if (isset($_GET['Staff']))
-            $model->attributes = $_GET['Staff'];
-
-        $this->render('admin', array(
-            'model' => $model,
-        ));
+                'searchModel' => $search,
+            )
+        );
     }
 
     /**

@@ -1,57 +1,50 @@
 <?php
+/**
+ * @var Staff $model
+ * @var SearchForm $searchModel
+ * @var CDbCriteria $criteria
+ * @var CSort $sort
+ * @var Controller $this
+ */
 
 $this->breadcrumbs = array_keys($this->breadcrumbs);
-$this->menu = array(
-    array(
-        'label' => 'Поиск',
-        'url' => array('index'),
-        'icon' => 'search',
-        'itemOptions' => array(
-            'title' => 'Поиск и фильтрация записей',
-        )
-    ),
-    array(
-        'label' => 'Добавить',
-        'url' => array('create'),
-        'icon' => 'plus',
-        'itemOptions' => array(
-            'title' => 'Добавление новой записи',
-        )
-    ),
-    array(
-        'label' => 'Корзина',
-        'url' => array('trash'),
-        'icon' => 'trash',
-        'itemOptions' => array(
-            'title' => 'Просмотр записей в корзине',
-        )
-    ),
-    array(
-        'label' => 'Параметры',
-        'icon' => 'cog',
-        'itemOptions' => array(
-            'class' => 'pull-right',
-            'title' => 'Параметры вывода',
-        ),
-        'items' => array(),
-    )
-);
-?>
-
-<?php
+$this->menu = HelperHTML::getMenu(basename(__FILE__, '.php'));
 
 $this->renderPartial('_search', array(
-    'model' => $provider->model,
+    'model' => $model,
     'searchModel' => $searchModel,
 ));
-?>
 
-<?php
+$valueFunction = function ($data) {
+    return Yii::app()->controller->widget("ext.bootstrap.widgets.BootButtonGroup", array(
+        "size" => "mini",
+        "buttons" => array(
+            array(
+                "items" => array(
+                    array(
+                        "label" => "аспиранты",
+                        "url" => "#"
+                    ),
+                    "---",
+                    array(
+                        "label" => "что-то ещё",
+                        "url" => "#"
+                    ),
+                )
+            ),
+        ),
+    ), true);
+};
 
 $this->widget('MyBootGridView', array(
     'id' => 'staff-grid',
     'type' => 'striped bordered condensed',
-    'dataProvider' => $provider,
+    'dataProvider' => new CActiveDataProvider($model, array(
+        'criteria' => $criteria,
+        'sort' => $sort,
+        'pagination' => array( //            'pageSize' => 5,
+        ),
+    )),
     'enableSorting' => false,
     'columns' => array(
         'checbox' => array(
@@ -78,44 +71,21 @@ $this->widget('MyBootGridView', array(
             'value' => 'CHtml::link($data->department->faculty->fullTitle, array("faculty/view", "id"=>$data->department->faculty->id))',
             'type' => 'html',
         ),
+        array(
+            'class' => 'ext.bootstrap.widgets.BootButtonColumn',
+            'htmlOptions' => array('style' => 'width: 50px'),
+        ),
+        array(
+            'class' => 'CDataColumn',
+            'type' => 'raw',
+            'value' => $valueFunction,
+            'htmlOptions' => array('style' => 'width: 20px'),
+        ),
     ),
     'footer' => array(
         'prepend' => 'С отмеченными: ',
         'class' => 'action-footer',
-        'items' => array(
-            array(
-                'value' => CHtml::ajaxLink('В корзину', array('toTrash', 'id' => 'many'), array(
-                        'type' => 'POST',
-                        'data' => 'js:{ids : $.fn.yiiGridView.getChecked("staff-grid", "checkboxes")}',
-                        'success' => '$.fn.yiiGridView.update("staff-grid")',
-                        'error' => 'function(jqXHR, textStatus, errorThrown) {alert("Error: " + textStatus)}',
-                    )
-                ),
-                'visible' => $this->action->id === 'index',
-            ),
-            array(
-                'value' => CHtml::ajaxLink('Восстановить', array('restore', 'id' => 'many'), array(
-                        'type' => 'POST',
-                        'data' => 'js:{ids : $.fn.yiiGridView.getChecked("staff-grid", "checkboxes")}',
-                        'success' => '$.fn.yiiGridView.update("staff-grid")',
-                        'error' => 'function(jqXHR, textStatus, errorThrown) {alert("Error: " + textStatus)}',
-                    )
-                ),
-                'visible' => $this->action->id === 'trash',
-            ),
-            array(
-                'value' => CHtml::ajaxLink('Удалить', array('delete', 'id' => 'many'), array(
-                        'type' => 'POST',
-                        'data' => 'js:{ids : $.fn.yiiGridView.getChecked("staff-grid", "checkboxes")}',
-                        'success' => '$.fn.yiiGridView.update("staff-grid")',
-                        'error' => 'function(jqXHR, textStatus, errorThrown) {alert("Error: " + textStatus)}',
-                    ), array(
-                        'confirm' => 'Вы действительно хотите везвозвратно удалить отмеченные записи?',
-                    )
-                ),
-                'visible' => $this->action->id === 'trash',
-            ),
-        ),
+        'items' => $model->getFooterItems(),
     ),
 ));
 ?>
