@@ -62,7 +62,8 @@ abstract class BootInput extends CInputWidget
         if (!isset($this->type))
             throw new CException(__CLASS__ . ': Failed to initialize widget! Input type is not set.');
 
-        if ($this->type === self::TYPE_UNEDITABLE) {
+        if ($this->type === self::TYPE_UNEDITABLE)
+        {
             $classes = 'uneditable-input';
             if (isset($this->htmlOptions['class']))
                 $this->htmlOptions['class'] .= ' ' . $classes;
@@ -77,7 +78,8 @@ abstract class BootInput extends CInputWidget
      */
     public function run()
     {
-        switch ($this->type) {
+        switch ($this->type)
+        {
             case self::TYPE_CHECKBOX:
                 $this->checkBox();
                 break;
@@ -161,7 +163,8 @@ abstract class BootInput extends CInputWidget
      */
     protected function getPrepend($htmlOptions = array())
     {
-        if ($this->hasAddOn()) {
+        if ($this->hasAddOn())
+        {
             $classes = 'add-on';
             if (isset($htmlOptions['class']))
                 $htmlOptions['class'] .= ' ' . $classes;
@@ -174,7 +177,8 @@ abstract class BootInput extends CInputWidget
             if (isset($this->htmlOptions['prepend']))
                 echo CHtml::tag('span', $htmlOptions, $this->htmlOptions['prepend']);
             return ob_get_clean();
-        } else
+        }
+        else
             return '';
     }
 
@@ -187,7 +191,8 @@ abstract class BootInput extends CInputWidget
      */
     protected function getAppend($htmlOptions = array())
     {
-        if ($this->hasAddOn()) {
+        if ($this->hasAddOn())
+        {
             $classes = 'add-on';
             if (isset($htmlOptions['class']))
                 $htmlOptions['class'] .= ' ' . $classes;
@@ -199,7 +204,8 @@ abstract class BootInput extends CInputWidget
                 echo CHtml::tag('span', $htmlOptions, $this->htmlOptions['append']);
             echo '</div>';
             return ob_get_clean();
-        } else
+        }
+        else
             return '';
     }
 
@@ -245,11 +251,13 @@ abstract class BootInput extends CInputWidget
      */
     protected function getHint()
     {
-        if (isset($this->htmlOptions['hint'])) {
+        if (isset($this->htmlOptions['hint']))
+        {
             $hint = $this->htmlOptions['hint'];
             unset($this->htmlOptions['hint']);
             return '<p class="help-block">' . $hint . '</p>';
-        } else
+        }
+        else
             return '';
     }
 

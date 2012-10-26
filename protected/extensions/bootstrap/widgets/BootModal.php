@@ -70,25 +70,29 @@ class BootModal extends CWidget
         $cs->registerScript(__CLASS__ . '#' . $id, "jQuery('#{$id}').modal({$options});");
 
         // Register the "show" event-handler.
-        if (isset($this->events['show'])) {
+        if (isset($this->events['show']))
+        {
             $fn = CJavaScript::encode($this->events['show']);
             $cs->registerScript(__CLASS__ . '#' . $id . '.show', "jQuery('#{$id}').on('show', {$fn});");
         }
 
         // Register the "shown" event-handler.
-        if (isset($this->events['shown'])) {
+        if (isset($this->events['shown']))
+        {
             $fn = CJavaScript::encode($this->events['shown']);
             $cs->registerScript(__CLASS__ . '#' . $id . '.shown', "jQuery('#{$id}').on('shown', {$fn});");
         }
 
         // Register the "hide" event-handler.
-        if (isset($this->events['hide'])) {
+        if (isset($this->events['hide']))
+        {
             $fn = CJavaScript::encode($this->events['hide']);
             $cs->registerScript(__CLASS__ . '#' . $id . '.hide', "jQuery('#{$id}').on('hide', {$fn});");
         }
 
         // Register the "hidden" event-handler.
-        if (isset($this->events['hidden'])) {
+        if (isset($this->events['hidden']))
+        {
             $fn = CJavaScript::encode($this->events['hidden']);
             $cs->registerScript(__CLASS__ . '#' . $id . '.hidden', "jQuery('#{$id}').on('hidden', {$fn});");
         }

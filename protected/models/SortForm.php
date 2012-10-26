@@ -1,17 +1,17 @@
 <?php
-
 /**
- * SearchForm class.
- * SearchForm is the data structure for keeping search parameters.
+ * SortForm class.
+ * SortForm is the data structure for keeping sort parameters.
  */
-class SearchForm extends CFormModel
+
+class SortForm extends CFormModel
 {
     /**
-     * @var string
+     * @var string sot parameters in GET
      */
     public $sort = '';
     /**
-     * @var string
+     * @var string direction of sort
      */
     public $direction = 'asc';
 
@@ -32,9 +32,13 @@ class SearchForm extends CFormModel
         );
     }
 
+    /**
+     * Formate GET[sort] for using in CSort
+     */
     public function resolveGETSort()
     {
-        if ($this->sort !== null) {
+        if ($this->sort !== null)
+        {
             if (isset($this->direction) && $this->direction === 'desc')
                 $_GET['sort'] = "{$this->sort}.{$this->direction}";
             else

@@ -317,7 +317,8 @@ class Bootstrap extends CApplicationComponent
      */
     protected function registerPlugin($name, $selector = null, $options = array(), $defaultSelector = null)
     {
-        if (!isset($selector) && empty($options)) {
+        if (!isset($selector) && empty($options))
+        {
             // Initialization from extension configuration.
             $config = isset($this->plugins[$name]) ? $this->plugins[$name] : array();
 
@@ -331,7 +332,8 @@ class Bootstrap extends CApplicationComponent
                 $selector = $defaultSelector;
         }
 
-        if (isset($selector)) {
+        if (isset($selector))
+        {
             $key = __CLASS__ . '.' . md5($name . $selector . serialize($options) . $defaultSelector);
             $options = !empty($options) ? CJavaScript::encode($options) : '';
             Yii::app()->clientScript->registerScript($key, "jQuery('{$selector}').{$name}({$options});");
@@ -346,7 +348,8 @@ class Bootstrap extends CApplicationComponent
     {
         if ($this->_assetsUrl !== null)
             return $this->_assetsUrl;
-        else {
+        else
+        {
             $assetsPath = Yii::getPathOfAlias('bootstrap.assets');
 
             if ($this->debug)

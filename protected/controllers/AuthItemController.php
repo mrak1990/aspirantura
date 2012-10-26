@@ -15,7 +15,7 @@ class AuthItemController extends Controller
      */
     public function filters()
     {
-        return array(//            'accessControl', // perform access control for CRUD operations
+        return array( //            'accessControl', // perform access control for CRUD operations
         );
     }
 
@@ -68,14 +68,17 @@ class AuthItemController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['AuthItem'])) {
+        if (isset($_POST['AuthItem']))
+        {
             $model->attributes = array_merge_recursive($model->emptyPostData, $_POST['AuthItem']);
 
-            if ($model->validate()) {
+            if ($model->validate())
+            {
                 $auth = Yii::app()->authManager;
                 $model->authItem = $auth->createAuthItem($model->name, $model->type, $model->description);
 
-                if ($model->authItem !== null) {
+                if ($model->authItem !== null)
+                {
 //                    foreach ($model->mergeChild() as $item)
 //                        $model->authItem->addChild($item);
 //
@@ -114,13 +117,16 @@ class AuthItemController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['AuthItem'])) {
+        if (isset($_POST['AuthItem']))
+        {
             $model->attributes = array_merge_recursive($model->emptyPostData, $_POST['AuthItem']);
 
-            if ($model->validate()) {
+            if ($model->validate())
+            {
                 $model->authItem = Yii::app()->authManager->getAuthItem($name);
 
-                if ($model->authItem !== null) {
+                if ($model->authItem !== null)
+                {
                     $model->authItem->setName($model->name);
                     $model->authItem->setDescription($model->description);
 
@@ -129,7 +135,8 @@ class AuthItemController extends Controller
 
                     $this->redirect(array('view', 'name' => $model->name));
                 }
-            } else
+            }
+            else
                 $this->render('update', array(
                     'model' => $model,
                     'breadcrumbsInit' => $this->breadcrumbs,
@@ -150,7 +157,8 @@ class AuthItemController extends Controller
      */
     public function actionDelete($name)
     {
-        if (Yii::app()->request->isPostRequest) {
+        if (Yii::app()->request->isPostRequest)
+        {
             // we only allow deletion via POST request
             $auth = Yii::app()->authManager;
             $auth->removeAuthItem($name);
@@ -158,7 +166,8 @@ class AuthItemController extends Controller
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-        } else
+        }
+        else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
     }
 
@@ -211,7 +220,8 @@ class AuthItemController extends Controller
      */
     protected function performAjaxValidation($model)
     {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'auth-item-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'auth-item-form')
+        {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

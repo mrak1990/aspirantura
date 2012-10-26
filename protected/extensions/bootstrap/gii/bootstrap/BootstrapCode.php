@@ -22,7 +22,8 @@ class BootstrapCode extendS CrudCode
                             'class'=>'span7',
                             'hint'=>'ЗАПОЛНИТЬ',
                         ))";
-        else {
+        else
+        {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name))
                 $inputField = 'passwordFieldRow';
             else

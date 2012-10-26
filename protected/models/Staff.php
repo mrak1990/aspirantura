@@ -148,10 +148,9 @@ class Staff extends ActiveRecord
         );
     }
 
-    public function resolveSortAttributes()
+    public function getResolvedSortOptions()
     {
-        return array( //            'staff_id' => 'head',
-        );
+        return array();
     }
 
     public function afterFind()
@@ -159,42 +158,57 @@ class Staff extends ActiveRecord
         if ($this->department !== null)
             $this->facultyId = $this->department->faculty_id;
 
-        foreach ($this->scientificDegrees as $degree)
-            $degree->doctor = $degree->doctor ? 1 : 0;
+        if (Yii::app()->controller->action->id === 'view')
+            foreach ($this->scientificDegrees as $degree)
+                $degree->doctor = $degree->doctor ? 1 : 0;
 
         parent::afterFind();
     }
 
     public function updateScientificDegrees(array $degrees)
     {
-        if ($this->isNewRecord || count($this->scientificDegrees) === 0) {
-            foreach ($degrees as $degreeData) {
+        if ($this->isNewRecord || count($this->scientificDegrees) === 0)
+        {
+            foreach ($degrees as $degreeData)
+            {
                 $degree = new StaffScientificDegree;
                 $degree->attributes = $degreeData;
                 $degree->staff_id = $this->id;
                 $degree->save();
             }
-        } else {
-            $degreesOldIds = array_map(function ($value) {
+        }
+        else
+        {
+            $degreesOldIds = array_map(function ($value)
+            {
                 return $value->scientific_degree_id;
             }, $this->scientificDegrees);
 
-            $degreesNewIds = array_map(function ($value) {
+            $degreesNewIds = array_map(function ($value)
+            {
                 return $value['scientific_degree_id'];
             }, $degrees);
 
-            foreach ($this->scientificDegrees as $curDegree) {
-                if (($id = array_search($curDegree->scientific_degree_id, $degreesNewIds)) !== false) {
-                    if ($curDegree->doctor !== $degrees[$id]['doctor']) {
+            // update existed degrees
+            foreach ($this->scientificDegrees as $curDegree)
+            {
+                if (($id = array_search($curDegree->scientific_degree_id, $degreesNewIds)) !== false)
+                {
+                    if ($curDegree->doctor !== $degrees[$id]['doctor'])
+                    {
                         $curDegree->doctor = $degrees[$id]['doctor'];
                         $curDegree->update();
                     }
-                } else
+                }
+                else
                     $curDegree->delete();
             }
 
-            foreach ($degrees as $curDegree) {
-                if (!in_array($curDegree['scientific_degree_id'], $degreesOldIds)) {
+            // add new degress
+            foreach ($degrees as $curDegree)
+            {
+                if (!in_array($curDegree['scientific_degree_id'], $degreesOldIds))
+                {
                     $degree = new StaffScientificDegree;
                     $degree->attributes = $curDegree;
                     $degree->staff_id = $this->id;

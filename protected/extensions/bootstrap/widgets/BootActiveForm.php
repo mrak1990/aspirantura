@@ -300,7 +300,8 @@ class BootActiveForm extends CActiveForm
         CHtml::resolveNameID($model, $attribute, $htmlOptions);
         $select = CHtml::resolveValue($model, $attribute);
 
-        if ($model->hasErrors($attribute)) {
+        if ($model->hasErrors($attribute))
+        {
             if (isset($htmlOptions['class']))
                 $htmlOptions['class'] .= ' ' . CHtml::$errorCss;
             else
@@ -310,10 +311,12 @@ class BootActiveForm extends CActiveForm
         $name = $htmlOptions['name'];
         unset($htmlOptions['name']);
 
-        if (array_key_exists('uncheckValue', $htmlOptions)) {
+        if (array_key_exists('uncheckValue', $htmlOptions))
+        {
             $uncheck = $htmlOptions['uncheckValue'];
             unset($htmlOptions['uncheckValue']);
-        } else
+        }
+        else
             $uncheck = '';
 
         $hiddenOptions = isset($htmlOptions['id']) ? array('id' => CHtml::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
@@ -340,12 +343,14 @@ class BootActiveForm extends CActiveForm
         $method = $checkbox ? 'checkBox' : 'radioButton';
         $labelCssClass = $checkbox ? 'checkbox' : 'radio';
 
-        if (isset($htmlOptions['inline'])) {
+        if (isset($htmlOptions['inline']))
+        {
             $labelCssClass .= ' inline';
             unset($htmlOptions['inline']);
         }
 
-        foreach ($data as $value => $label) {
+        foreach ($data as $value => $label)
+        {
             $checked = !is_array($select) && !strcmp($value, $select) || is_array($select) && in_array($value, $select);
             $htmlOptions['value'] = $value;
             $htmlOptions['id'] = $baseID . '_' . $id++;
@@ -437,8 +442,10 @@ class BootActiveForm extends CActiveForm
             'afterValidateAttribute',
         );
 
-        foreach ($optionNames as $name) {
-            if (isset($htmlOptions[$name])) {
+        foreach ($optionNames as $name)
+        {
+            if (isset($htmlOptions[$name]))
+            {
                 $option[$name] = $htmlOptions[$name];
                 unset($htmlOptions[$name]);
             }
@@ -447,10 +454,13 @@ class BootActiveForm extends CActiveForm
         if ($model instanceof CActiveRecord && !$model->isNewRecord)
             $option['status'] = 1;
 
-        if ($enableClientValidation) {
+        if ($enableClientValidation)
+        {
             $validators = isset($htmlOptions['clientValidation']) ? array($htmlOptions['clientValidation']) : array();
-            foreach ($model->getValidators($attribute) as $validator) {
-                if ($enableClientValidation && $validator->enableClientValidation) {
+            foreach ($model->getValidators($attribute) as $validator)
+            {
+                if ($enableClientValidation && $validator->enableClientValidation)
+                {
                     if (($js = $validator->clientValidateAttribute($model, $attribute)) != '')
                         $validators[] = $js;
                 }
@@ -462,7 +472,8 @@ class BootActiveForm extends CActiveForm
 
         $html = $this->getErrorHtml($model, $attribute, $htmlOptions);
 
-        if ($html === '') {
+        if ($html === '')
+        {
             if (isset($htmlOptions['style']))
                 $htmlOptions['style'] = rtrim($htmlOptions['style'], ';') . ';display: none';
             else
@@ -530,7 +541,8 @@ class BootActiveForm extends CActiveForm
     protected function getInputClassName()
     {
         // Determine the input widget class name.
-        switch ($this->type) {
+        switch ($this->type)
+        {
             case self::TYPE_HORIZONTAL:
                 return self::INPUT_HORIZONTAL;
                 break;

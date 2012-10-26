@@ -48,8 +48,10 @@ abstract class BootBaseMenu extends CWidget
         if (!isset($item['linkOptions']))
             $item['linkOptions'] = array();
 
-        if (isset($item['icon'])) {
-            if (strpos($item['icon'], 'icon') === false) {
+        if (isset($item['icon']))
+        {
+            if (strpos($item['icon'], 'icon') === false)
+            {
                 $pieces = explode(' ', $item['icon']);
                 $item['icon'] = 'icon-' . implode(' icon-', $pieces);
             }
@@ -76,7 +78,8 @@ abstract class BootBaseMenu extends CWidget
      */
     protected function isItemActive($item, $route)
     {
-        if (isset($item['url']) && is_array($item['url']) && !strcasecmp(trim($item['url'][0], '/'), $route)) {
+        if (isset($item['url']) && is_array($item['url']) && !strcasecmp(trim($item['url'][0], '/'), $route))
+        {
             if (count($item['url']) > 1)
                 foreach (array_splice($item['url'], 1) as $name => $value)
                     if (!isset($_GET[$name]) || $_GET[$name] != $value)

@@ -37,15 +37,18 @@ class BootDropdown extends BootBaseMenu
      */
     public function renderItems($items)
     {
-        foreach ($items as $item) {
+        foreach ($items as $item)
+        {
             if (!is_array($item))
                 echo '<li class="divider"></li>';
-            else {
+            else
+            {
                 if (!isset($item['itemOptions']))
                     $item['itemOptions'] = array();
 
                 $classes = array();
-                if (!isset($item['url'])) {
+                if (!isset($item['url']))
+                {
                     $item['header'] = true;
                     $classes[] = 'nav-header';
                 }
@@ -62,10 +65,12 @@ class BootDropdown extends BootBaseMenu
                 echo CHtml::openTag('li', $item['itemOptions']);
                 $menu = $this->renderItem($item);
 
-                if (isset($this->itemTemplate) || isset($item['template'])) {
+                if (isset($this->itemTemplate) || isset($item['template']))
+                {
                     $template = isset($item['template']) ? $item['template'] : $this->itemTemplate;
                     echo strtr($template, array('{menu}' => $menu));
-                } else
+                }
+                else
                     echo $menu;
 
                 echo '</li>';
@@ -83,16 +88,19 @@ class BootDropdown extends BootBaseMenu
      */
     protected function normalizeItems($items, $route)
     {
-        foreach ($items as $i => $item) {
+        foreach ($items as $i => $item)
+        {
             if (!is_array($item))
                 continue;
 
-            if (isset($item['visible']) && !$item['visible']) {
+            if (isset($item['visible']) && !$item['visible'])
+            {
                 unset($items[$i]);
                 continue;
             }
 
-            if (!is_array($item)) {
+            if (!is_array($item))
+            {
                 continue;
             }
 

@@ -93,7 +93,8 @@ class SFirePHPProfileLogRoute extends CProfileLogRoute
         $this->renderSQLStats();
 
         $table = array(array('Procedure', 'Count', 'Total (s)', 'Avg. (s)', 'Min. (s)', 'Max. (s)'));
-        foreach ($data as $entry) {
+        foreach ($data as $entry)
+        {
             $table[] = array(
                 $entry[0], // procedure
                 $entry[1], // count
@@ -121,7 +122,8 @@ class SFirePHPProfileLogRoute extends CProfileLogRoute
         $this->renderSQLStats();
 
         $table = array(array('Procedure', 'Time (s)'));
-        foreach ($data as $entry) {
+        foreach ($data as $entry)
+        {
             $spaces = str_repeat('> ', $entry[2]);
             $table[] = array(
                 $spaces . '' . $entry[0], // procedure

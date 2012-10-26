@@ -64,7 +64,8 @@ class BootMenu extends BootBaseMenu
         else
             $this->htmlOptions['class'] = $classes;
 
-        if (isset($this->scrollspy) && is_array($this->scrollspy) && isset($this->scrollspy['spy'])) {
+        if (isset($this->scrollspy) && is_array($this->scrollspy) && isset($this->scrollspy['spy']))
+        {
             if (!isset($this->scrollspy['subject']))
                 $this->scrollspy['subject'] = 'body';
 
@@ -82,10 +83,12 @@ class BootMenu extends BootBaseMenu
      */
     public function renderItems($items)
     {
-        foreach ($items as $item) {
+        foreach ($items as $item)
+        {
             if (!is_array($item))
                 echo '<li class="divider-vertical"></li>';
-            else {
+            else
+            {
                 if (!isset($item['itemOptions']))
                     $item['itemOptions'] = array();
 
@@ -94,7 +97,8 @@ class BootMenu extends BootBaseMenu
                 if ($item['active'] || (isset($item['items']) && $this->isChildActive($item['items'])))
                     $classes[] = 'active';
 
-                if ($this->type === self::TYPE_LIST && !isset($item['url'])) {
+                if ($this->type === self::TYPE_LIST && !isset($item['url']))
+                {
                     $item['header'] = true;
                     $classes[] = 'nav-header';
                 }
@@ -111,13 +115,16 @@ class BootMenu extends BootBaseMenu
                 echo CHtml::openTag('li', $item['itemOptions']);
                 $menu = $this->renderItem($item);
 
-                if (isset($this->itemTemplate) || isset($item['template'])) {
+                if (isset($this->itemTemplate) || isset($item['template']))
+                {
                     $template = isset($item['template']) ? $item['template'] : $this->itemTemplate;
                     echo strtr($template, array('{menu}' => $menu));
-                } else
+                }
+                else
                     echo $menu;
 
-                if (isset($item['items']) && !empty($item['items'])) {
+                if (isset($item['items']) && !empty($item['items']))
+                {
                     $this->controller->widget('bootstrap.widgets.BootDropdown', array(
                         'encodeLabel' => $this->encodeLabel,
                         'items' => $item['items'],
@@ -142,7 +149,8 @@ class BootMenu extends BootBaseMenu
         if (!isset($item['linkOptions']))
             $item['linkOptions'] = array();
 
-        if (isset($item['items']) && !empty($item['items'])) {
+        if (isset($item['items']) && !empty($item['items']))
+        {
             if (isset($item['linkOptions']['class']))
                 $item['linkOptions']['class'] .= ' dropdown-toggle';
             else
@@ -165,16 +173,19 @@ class BootMenu extends BootBaseMenu
      */
     protected function normalizeItems($items, $route)
     {
-        foreach ($items as $i => $item) {
+        foreach ($items as $i => $item)
+        {
             if (!is_array($item))
                 continue;
 
-            if (isset($item['visible']) && !$item['visible']) {
+            if (isset($item['visible']) && !$item['visible'])
+            {
                 unset($items[$i]);
                 continue;
             }
 
-            if (!is_array($item)) {
+            if (!is_array($item))
+            {
                 continue;
             }
 
@@ -189,7 +200,8 @@ class BootMenu extends BootBaseMenu
             )
                 $items[$i]['label'] = CHtml::encode($item['label']);
 
-            if (!empty($item['items']) && is_array($item['items'])) {
+            if (!empty($item['items']) && is_array($item['items']))
+            {
                 $items[$i]['items'] = $this->normalizeItems($item['items'], $route);
 
                 if (empty($items[$i]['items']))

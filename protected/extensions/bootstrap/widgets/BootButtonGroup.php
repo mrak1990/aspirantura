@@ -75,7 +75,8 @@ class BootButtonGroup extends CWidget
     {
         echo CHtml::openTag('div', $this->htmlOptions);
 
-        foreach ($this->buttons as $button) {
+        foreach ($this->buttons as $button)
+        {
             $this->controller->widget('bootstrap.widgets.BootButton', array(
                 'buttonType' => isset($button['buttonType']) ? $button['buttonType'] : $this->buttonType,
                 'type' => isset($button['type']) ? $button['type'] : $this->type,

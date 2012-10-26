@@ -53,8 +53,10 @@ class BootAlert extends CWidget
 
         echo CHtml::openTag('div', $this->htmlOptions);
 
-        foreach ($this->keys as $key) {
-            if (Yii::app()->user->hasFlash($key)) {
+        foreach ($this->keys as $key)
+        {
+            if (Yii::app()->user->hasFlash($key))
+            {
                 echo strtr($this->template, array(
                     '{class}' => ' fade in',
                     '{key}' => $key,
@@ -71,13 +73,15 @@ class BootAlert extends CWidget
         $cs->registerScript(__CLASS__ . '#' . $id, "jQuery('{$selector}').alert();");
 
         // Register the "close" event-handler.
-        if (isset($this->events['close'])) {
+        if (isset($this->events['close']))
+        {
             $fn = CJavaScript::encode($this->events['close']);
             $cs->registerScript(__CLASS__ . '#' . $id . '.close', "jQuery('{$selector}').bind('close', {$fn});");
         }
 
         // Register the "closed" event-handler.
-        if (isset($this->events['closed'])) {
+        if (isset($this->events['closed']))
+        {
             $fn = CJavaScript::encode($this->events['closed']);
             $cs->registerScript(__CLASS__ . '#' . $id . '.closed', "jQuery('{$selector}').bind('closed', {$fn});");
         }

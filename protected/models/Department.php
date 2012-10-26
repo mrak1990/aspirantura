@@ -108,7 +108,8 @@ class Department extends ActiveRecord
         $criteria->compare('id', $this->id);
         $criteria->compare('title', $this->title, true);
         $criteria->compare('number', $this->number);
-        if (is_array($this->faculty_id)) {
+        if (is_array($this->faculty_id))
+        {
             if (($pos = array_search('', $this->faculty_id)) !== false)
                 $this->faculty_id = array_diff($this->faculty_id, array(''));
             if (!empty($this->faculty_id))
@@ -131,7 +132,27 @@ class Department extends ActiveRecord
         );
     }
 
-    public function resolveSortAttributes()
+    /**
+     * Get array for CSort->attributes
+     *
+     * @return array
+     */
+    public function getSortAttributes()
+    {
+        return array(
+            'head' => array(
+                'asc' => 'head.fio',
+                'desc' => 'head.fio DESC',
+            ),
+            'faculty' => array(
+                'asc' => 'faculty.title',
+                'desc' => 'faculty.title DESC',
+            ),
+            '*',
+        );
+    }
+
+    public function getResolvedSortOptions()
     {
         return array(
             'staff_id' => 'head',

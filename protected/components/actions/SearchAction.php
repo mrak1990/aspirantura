@@ -38,9 +38,11 @@ class SearchAction extends CAction
         $data = CHtml::listData($models, $this->idField, $this->labelField);
 
         $result = array();
-        if (count($data) === 0) {
+        if (count($data) === 0)
+        {
         } //            $result[] = array('id' => null, 'label' => $this->emptyText);
-        else {
+        else
+        {
             foreach ($data as $key => $value)
                 $result[] = array('id' => $key, 'text' => $value);
         }

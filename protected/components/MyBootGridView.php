@@ -14,10 +14,13 @@ class MyBootGridView extends BootGridView
     public function renderTableFooter()
     {
         $items = $this->footer['items'];
-        if ($items !== null) {
-            if (is_array($items) && count($items) !== 0) {
+        if ($items !== null)
+        {
+            if (is_array($items) && count($items) !== 0)
+            {
                 $itemsToShow = array();
-                foreach ($items as $item) {
+                foreach ($items as $item)
+                {
                     if (!isset($item['visible']) || isset($item['visible']) && $item['visible'] === true)
                         $itemsToShow[] = $item['value'];
                 }
@@ -35,7 +38,8 @@ class MyBootGridView extends BootGridView
                 echo '</td></tr>';
                 echo '</tfoot>';
             }
-        } else
+        }
+        else
             parent::renderTableFooter();
     }
 }

@@ -44,19 +44,23 @@ class BootBreadcrumbs extends CBreadcrumbs
         if ($this->homeLink === null)
             $this->homeLink = array('label' => Yii::t('bootstrap', 'Home'), 'url' => Yii::app()->homeUrl);
 
-        if ($this->homeLink !== false) {
+        if ($this->homeLink !== false)
+        {
             if (is_array($this->homeLink))
                 $this->homeLink = CHtml::link($this->homeLink['label'], $this->homeLink['url']);
 
             $links[] = $this->renderItem($this->homeLink);
         }
 
-        foreach ($this->links as $label => $url) {
-            if (is_string($label) || is_array($url)) {
+        foreach ($this->links as $label => $url)
+        {
+            if (is_string($label) || is_array($url))
+            {
                 $label = $this->encodeLabel ? CHtml::encode($label) : $label;
                 $content = CHtml::link($label, $url);
                 $links[] = $this->renderItem($content);
-            } else
+            }
+            else
                 $links[] = $this->renderItem($this->encodeLabel ? CHtml::encode($url) : $url, true);
         }
 

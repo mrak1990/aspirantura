@@ -23,7 +23,8 @@ class UserIdentity extends CUserIdentity
             $this->errorCode = self::ERROR_USERNAME_INVALID;
         else if (crypt($this->password, $record->password_hash) !== $record->password_hash)
             $this->errorCode = self::ERROR_PASSWORD_INVALID;
-        else {
+        else
+        {
             $this->errorCode = self::ERROR_NONE;
         }
 

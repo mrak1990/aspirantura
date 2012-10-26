@@ -37,10 +37,13 @@ class ScientificDegreeController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['ScientificDegree'])) {
+        if (isset($_POST['ScientificDegree']))
+        {
             $model->attributes = $_POST['ScientificDegree'];
-            if ($model->save()) {
-                if (Yii::app()->request->isAjaxRequest) {
+            if ($model->save())
+            {
+                if (Yii::app()->request->isAjaxRequest)
+                {
                     echo CJSON::encode(array(
                         'status' => 'success',
                         'div' => "Учёная степень успешно добавлена",
@@ -50,19 +53,22 @@ class ScientificDegreeController extends Controller
                         )
                     ));
                     exit;
-                } else
+                }
+                else
                     $this->redirect(array('view', 'id' => $model->id));
             }
         }
 
-        if (Yii::app()->request->isAjaxRequest) {
+        if (Yii::app()->request->isAjaxRequest)
+        {
             if (isset($_POST['title']))
                 $model->full_title = $_POST['title'];
             echo CJSON::encode(array(
                 'status' => 'failure',
                 'div' => $this->renderPartial('_form', array('model' => $model), true)));
             exit;
-        } else
+        }
+        else
             $this->render('create', array(
                 'model' => $model,
             ));
@@ -81,7 +87,8 @@ class ScientificDegreeController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['ScientificDegree'])) {
+        if (isset($_POST['ScientificDegree']))
+        {
             $model->attributes = $_POST['ScientificDegree'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
@@ -100,19 +107,24 @@ class ScientificDegreeController extends Controller
      */
     public function actionToTrash($id)
     {
-        if (Yii::app()->request->isPostRequest) {
-            if ($id === 'many') {
-                if (isset($_POST['ids']) && is_array($_POST['ids'])) {
+        if (Yii::app()->request->isPostRequest)
+        {
+            if ($id === 'many')
+            {
+                if (isset($_POST['ids']) && is_array($_POST['ids']))
+                {
                     foreach ($_POST['ids'] as $id)
                         $this->loadModel($id)->setDeleted()->save();
                 }
                 Yii::app()->end();
-            } else
+            }
+            else
                 $this->loadModel($id)->setDeleted()->save();
 
             if (!isset($_GET['ajax']))
                 $this->redirect(array('view', 'id' => $id));
-        } else
+        }
+        else
             throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
     }
 
@@ -124,19 +136,24 @@ class ScientificDegreeController extends Controller
      */
     public function actionRestore($id)
     {
-        if (Yii::app()->request->isPostRequest) {
-            if ($id === 'many') {
-                if (isset($_POST['ids']) && is_array($_POST['ids'])) {
+        if (Yii::app()->request->isPostRequest)
+        {
+            if ($id === 'many')
+            {
+                if (isset($_POST['ids']) && is_array($_POST['ids']))
+                {
                     foreach ($_POST['ids'] as $id)
                         $this->loadModel($id)->setRestored()->save();
                 }
                 Yii::app()->end();
-            } else
+            }
+            else
                 $this->loadModel($id)->setRestored()->save();
 
             if (!isset($_GET['ajax']))
                 $this->redirect(array('view', 'id' => $id));
-        } else
+        }
+        else
             throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
     }
 
@@ -148,12 +165,14 @@ class ScientificDegreeController extends Controller
      */
     public function actionDelete($id)
     {
-        if (Yii::app()->request->isPostRequest) {
+        if (Yii::app()->request->isPostRequest)
+        {
             $this->loadModel($id)->delete();
 
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-        } else
+        }
+        else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
     }
 
@@ -217,7 +236,8 @@ class ScientificDegreeController extends Controller
      */
     protected function performAjaxValidation($model)
     {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'scientific-degree-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'scientific-degree-form')
+        {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

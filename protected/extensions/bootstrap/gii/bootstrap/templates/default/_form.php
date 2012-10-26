@@ -37,7 +37,8 @@ eraserActivate($('#dean_autocomplete'), {item:{'id': '$dean->id' , 'label': '$de
 <?php echo "<?php echo \$form->errorSummary(\$model); ?>\n"; ?>
 
 <?php
-foreach ($this->tableSchema->columns as $column) {
+foreach ($this->tableSchema->columns as $column)
+{
     if ($column->autoIncrement)
         continue;
     ?>

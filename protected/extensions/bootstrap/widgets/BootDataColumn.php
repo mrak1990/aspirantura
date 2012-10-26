@@ -20,7 +20,8 @@ class BootDataColumn extends CDataColumn
      */
     protected function renderHeaderCellContent()
     {
-        if ($this->grid->enableSorting && $this->sortable && $this->name !== null) {
+        if ($this->grid->enableSorting && $this->sortable && $this->name !== null)
+        {
             $sort = $this->grid->dataProvider->getSort();
             $label = isset($this->header) ? $this->header : $sort->resolveLabel($this->name);
 
@@ -28,13 +29,17 @@ class BootDataColumn extends CDataColumn
                 $label .= '<span class="caret"></span>';
 
             echo $sort->link($this->name, $label);
-        } else {
-            if ($this->name !== null && $this->header === null) {
+        }
+        else
+        {
+            if ($this->name !== null && $this->header === null)
+            {
                 if ($this->grid->dataProvider instanceof CActiveDataProvider)
                     echo CHtml::encode($this->grid->dataProvider->model->getAttributeLabel($this->name));
                 else
                     echo CHtml::encode($this->name);
-            } else
+            }
+            else
                 parent::renderHeaderCellContent();
         }
     }

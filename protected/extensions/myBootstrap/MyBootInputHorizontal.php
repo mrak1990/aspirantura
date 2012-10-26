@@ -51,7 +51,8 @@ class MyBootInputHorizontal extends BootInputHorizontal
     {
         echo CHtml::openTag('div', array('class' => 'control-group ' . $this->getContainerCssClass()));
 
-        switch ($this->type) {
+        switch ($this->type)
+        {
             case self::TYPE_CHECKBOX:
                 $this->checkBox();
                 break;
@@ -121,11 +122,13 @@ class MyBootInputHorizontal extends BootInputHorizontal
      */
     protected function getHint()
     {
-        if (isset($this->htmlOptions['hint'])) {
+        if (isset($this->htmlOptions['hint']))
+        {
             $hint = $this->htmlOptions['hint'];
             unset($this->htmlOptions['hint']);
             return '<p class="help-block">' . $hint . '</p>';
-        } else
+        }
+        else
             return '';
     }
 }

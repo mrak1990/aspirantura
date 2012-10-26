@@ -15,7 +15,8 @@ $this->menu = array(
 );
 
 Yii::import('application.components.HelperHTML');
-$helperRun = function ($data) {
+$helperRun = function ($data)
+{
     return HelperHTML::spoiler($data, Yii::app()->params['auth']['spoilerMax'], 'authItem/view', 'name');
 };
 

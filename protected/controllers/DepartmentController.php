@@ -58,10 +58,13 @@ class DepartmentController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Department'])) {
+        if (isset($_POST['Department']))
+        {
             $model->attributes = $_POST['Department'];
-            if ($model->save()) {
-                if (Yii::app()->request->isAjaxRequest) {
+            if ($model->save())
+            {
+                if (Yii::app()->request->isAjaxRequest)
+                {
                     echo CJSON::encode(array(
                             'status' => 'success',
                             'div' => "Факультет успешно добавлен",
@@ -72,7 +75,8 @@ class DepartmentController extends Controller
                         )
                     );
                     exit;
-                } else
+                }
+                else
                     $this->redirect(array(
                             'view',
                             'id' => $model->id
@@ -81,7 +85,8 @@ class DepartmentController extends Controller
             }
         }
 
-        if (Yii::app()->request->isAjaxRequest) {
+        if (Yii::app()->request->isAjaxRequest)
+        {
             if (isset($_POST['title']))
                 $model->title = $_POST['title'];
             echo CJSON::encode(array(
@@ -92,7 +97,8 @@ class DepartmentController extends Controller
                 )
             );
             exit;
-        } else
+        }
+        else
             $this->render('create', array(
                     'model' => $model,
                 )
@@ -112,7 +118,8 @@ class DepartmentController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Department'])) {
+        if (isset($_POST['Department']))
+        {
             $model->attributes = $_POST['Department'];
             if ($model->save())
                 $this->redirect(array(
@@ -136,14 +143,18 @@ class DepartmentController extends Controller
      */
     public function actionToTrash($id)
     {
-        if (Yii::app()->request->isPostRequest) {
-            if ($id === 'many') {
-                if (isset($_POST['ids']) && is_array($_POST['ids'])) {
+        if (Yii::app()->request->isPostRequest)
+        {
+            if ($id === 'many')
+            {
+                if (isset($_POST['ids']) && is_array($_POST['ids']))
+                {
                     foreach ($_POST['ids'] as $id)
                         $this->loadModel($id)->setDeleted()->save();
                 }
                 Yii::app()->end();
-            } else
+            }
+            else
                 $this->loadModel($id)->setDeleted()->save();
 
             if (!isset($_GET['ajax']))
@@ -152,7 +163,8 @@ class DepartmentController extends Controller
                         'id' => $id
                     )
                 );
-        } else
+        }
+        else
             throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
     }
 
@@ -164,14 +176,18 @@ class DepartmentController extends Controller
      */
     public function actionRestore($id)
     {
-        if (Yii::app()->request->isPostRequest) {
-            if ($id === 'many') {
-                if (isset($_POST['ids']) && is_array($_POST['ids'])) {
+        if (Yii::app()->request->isPostRequest)
+        {
+            if ($id === 'many')
+            {
+                if (isset($_POST['ids']) && is_array($_POST['ids']))
+                {
                     foreach ($_POST['ids'] as $id)
                         $this->loadModel($id)->setRestored()->save();
                 }
                 Yii::app()->end();
-            } else
+            }
+            else
                 $this->loadModel($id)->setRestored()->save();
 
             if (!isset($_GET['ajax']))
@@ -180,7 +196,8 @@ class DepartmentController extends Controller
                         'id' => $id
                     )
                 );
-        } else
+        }
+        else
             throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
     }
 
@@ -192,12 +209,14 @@ class DepartmentController extends Controller
      */
     public function actionDelete($id)
     {
-        if (Yii::app()->request->isPostRequest) {
+        if (Yii::app()->request->isPostRequest)
+        {
             $this->loadModel($id)->delete();
 
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-        } else
+        }
+        else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
     }
 
@@ -207,13 +226,13 @@ class DepartmentController extends Controller
     public function actionIndex()
     {
         $model = new Department('search');
-        $search = new SearchForm;
+        $search = new SortForm;
 
         if (isset($_GET['Department']))
             $model->attributes = $_GET['Department'];
 
-        if (isset($_GET['SearchForm']))
-            $search->attributes = $_GET['SearchForm'];
+        if (isset($_GET['SortForm']))
+            $search->attributes = $_GET['SortForm'];
 
         $search->resolveGETSort();
 
@@ -254,13 +273,13 @@ class DepartmentController extends Controller
     public function actionTrash()
     {
         $model = new Department('search');
-        $search = new SearchForm;
+        $search = new SortForm;
 
         if (isset($_GET['Department']))
             $model->attributes = $_GET['Department'];
 
-        if (isset($_GET['SearchForm']))
-            $search->attributes = $_GET['SearchForm'];
+        if (isset($_GET['SortForm']))
+            $search->attributes = $_GET['SortForm'];
 
         $search->resolveGETSort();
 
@@ -304,8 +323,8 @@ class DepartmentController extends Controller
             $model->attributes = $_GET['Department'];
 
         $this->render('admin', array(
-            'model' => $model,
-        )
+                'model' => $model,
+            )
         );
     }
 
@@ -330,7 +349,8 @@ class DepartmentController extends Controller
      */
     protected function performAjaxValidation($model)
     {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'department-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'department-form')
+        {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

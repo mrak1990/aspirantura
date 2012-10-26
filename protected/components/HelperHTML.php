@@ -15,25 +15,30 @@ class HelperHTML
      * @param string $name
      *
      * @return string
-     */public static function spoiler($data, $count, $route, $name = 'id')
+     */
+    public static function spoiler($data, $count, $route, $name = 'id')
     {
-        $list_tmp = array_map(function ($item) use ($name, $route) {
+        $list_tmp = array_map(function ($item) use ($name, $route)
+        {
             return CHtml::link($item, array($route, $name => $item));
         }, $data);
-        if (count($list_tmp) > $count) {
+        if (count($list_tmp) > $count)
+        {
             $activeList = array_slice($list_tmp, 0, $count);
             $hiddenList = array_slice($list_tmp, $count);
             return implode(', ', $activeList)
                 . ', <a class="expander" href="#">(+' . count($list_tmp) - $count . ')</a>'
                 . '<span class="spoiler collapsed">' . implode(', ', $hiddenList) . ' <a class="collapser" href="#">(свернуть)</a></span>';
-        } else
+        }
+        else
             return implode(', ', $list_tmp);
     }
 
     public static function getMenu($view = 'index', $model = null)
     {
 //        Yii::log('!!!' . $view, 10, true);
-        if ($view === 'index') {
+        if ($view === 'index')
+        {
             return array(
                 array(
                     'label' => 'Поиск',
@@ -69,7 +74,9 @@ class HelperHTML
                     'items' => array(),
                 )
             );
-        } elseif ($view === 'create') {
+        }
+        elseif ($view === 'create')
+        {
             return array(
                 array(
                     'label' => 'Поиск',
@@ -94,7 +101,9 @@ class HelperHTML
                     )
                 ),
             );
-        } elseif ($view === 'update') {
+        }
+        elseif ($view === 'update')
+        {
             return array(
                 array('label' => 'Поиск',
                     'url' => array('index'),
@@ -202,7 +211,9 @@ class HelperHTML
                     )
                 ),
             );
-        } elseif ($view === 'view') {
+        }
+        elseif ($view === 'view')
+        {
             return array(
                 array(
                     'label' => 'Поиск',
@@ -312,7 +323,8 @@ class HelperHTML
                     )
                 ),
             );
-        } else
+        }
+        else
             return array();
     }
 }

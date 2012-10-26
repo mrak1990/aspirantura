@@ -13,22 +13,29 @@
 class SortingBehavior extends CActiveRecordBehavior
 {
 
-    public function getSortAttributes(array $include = array(), array $exclude = array())
+    /**
+     * @param array $include options to be added to sort options
+     * @param array $exclude options to be excluded from sort options
+     *
+     * @return array
+     */
+    public function getSortOptions(array $include = array(), array $exclude = array())
     {
         $owner = $this->getOwner();
         $attributes = array_merge($owner->model()->attributeNames(), $include);
         $attributes = array_diff($attributes, $exclude);
-        $resolvedAttributes = $owner->resolveSortAttributes();
+        $resolvedAttributes = $owner->getResolvedSortOptions();
 
-        $list = array();
-        foreach ($attributes as $attribute) {
+        $options = array();
+        foreach ($attributes as $attribute)
+        {
             if (isset($resolvedAttributes[$attribute]))
-                $list[$resolvedAttributes[$attribute]] = $owner->model()->getAttributeLabel($attribute);
+                $options[$resolvedAttributes[$attribute]] = $owner->model()->getAttributeLabel($attribute);
             else
-                $list[$attribute] = $owner->model()->getAttributeLabel($attribute);
+                $options[$attribute] = $owner->model()->getAttributeLabel($attribute);
         }
 
-        return $list;
+        return $options;
     }
 }
 

@@ -127,7 +127,8 @@ class BootButton extends CWidget
         if ($this->encodeLabel)
             $this->label = CHtml::encode($this->label);
 
-        if ($this->hasDropdown()) {
+        if ($this->hasDropdown())
+        {
             if (!isset($this->url))
                 $this->url = '#';
 
@@ -143,7 +144,8 @@ class BootButton extends CWidget
         else
             $this->htmlOptions['class'] = $classes;
 
-        if (isset($this->icon)) {
+        if (isset($this->icon))
+        {
             if (strpos($this->icon, 'icon') === false)
                 $this->icon = 'icon-' . implode(' icon-', explode(' ', $this->icon));
 
@@ -158,7 +160,8 @@ class BootButton extends CWidget
      */
     protected function initHTML5Data()
     {
-        if (isset($this->toggle) || isset($this->loadingText) || isset($this->completeText)) {
+        if (isset($this->toggle) || isset($this->loadingText) || isset($this->completeText))
+        {
             if (isset($this->toggle))
                 $this->htmlOptions['data-toggle'] = 'button';
 
@@ -177,7 +180,8 @@ class BootButton extends CWidget
     {
         echo $this->createButton();
 
-        if ($this->hasDropdown()) {
+        if ($this->hasDropdown())
+        {
             $this->controller->widget('bootstrap.widgets.BootDropdown', array(
                 'encodeLabel' => $this->encodeLabel,
                 'items' => $this->items,
@@ -192,7 +196,8 @@ class BootButton extends CWidget
      */
     protected function createButton()
     {
-        switch ($this->buttonType) {
+        switch ($this->buttonType)
+        {
             case self::BUTTON_BUTTON:
                 return CHtml::htmlButton($this->label, $this->htmlOptions);
 

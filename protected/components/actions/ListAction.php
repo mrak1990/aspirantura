@@ -37,7 +37,8 @@ class ListAction extends CAction
         $result = '';
         if (count($data) === 0)
             $result = "<option value=\"\">{$this->emptyText}</option>";
-        else {
+        else
+        {
             if (isset($_GET['show_option_all']) && $_GET['show_option_all'] === 'true')
                 $result .= "<option>Все</option>";
             foreach ($data as $key => $value)

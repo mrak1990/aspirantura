@@ -79,7 +79,8 @@ class Randomness
 
         // On unixy sustems the numerical values in ps, uptime and iostat ought to be fairly
         // unpredictable. Gather the non-zero digits from those
-        foreach (array('ps', 'uptime', 'iostat') as $cmd) {
+        foreach (array('ps', 'uptime', 'iostat') as $cmd)
+        {
             @exec($cmd, $s, $ret);
             if (is_array($s) && $s && $ret === 0)
                 foreach ($s as $v)
@@ -141,7 +142,8 @@ class Randomness
         $s = '';
 
         // If cryptoStrong bytes are required, try various entropy sources known to be good
-        if ($cryptoStrong) {
+        if ($cryptoStrong)
+        {
 
             // openssl_random_pseudo_bytes() can return non-crypto-strong result but warns
             // when it does. Since crypto-strong is required discard result if it warns.

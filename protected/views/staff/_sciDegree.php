@@ -22,7 +22,8 @@ $emptyDegree = new StaffScientificDegree;
     <?php echo CHtml::activeLabel($emptyDegree, 'scientific_degree_id', array('class' => 'control-label')); ?>
     <?php
     $i = 0;
-    foreach ($degrees as $degree) {
+    foreach ($degrees as $degree)
+    {
         echo '<div class="controls">';
         echo $form->radioButtonList($degree, "[$i]doctor", array(
             '0' => 'кандидат',

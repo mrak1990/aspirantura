@@ -66,7 +66,8 @@ class EChosen extends CWidget
             $ext = '.js';
 
         // Use jQuery plugin version
-        if ($this->useJQuery) {
+        if ($this->useJQuery)
+        {
             // Register jQuery scripts
             $options = CJavaScript::encode($this->options);
             $cs->registerScriptFile($assets . '/chosen.jquery' . $ext,
@@ -74,7 +75,8 @@ class EChosen extends CWidget
             $cs->registerScript("chosen_{$count}",
                 "$( '{$this->target}' ).chosen({$options});", CClientScript::POS_READY);
         } // Use Prototype plugin version
-        else {
+        else
+        {
             // Register Prototype scripts
             $cs->registerScriptFile($assets . '/chosen.proto' . $ext,
                 $this->scriptPosition);

@@ -59,7 +59,8 @@ class BootTabbable extends CWidget
 
         $validPlacements = array(self::PLACEMENT_ABOVE, self::PLACEMENT_BELOW, self::PLACEMENT_LEFT, self::PLACEMENT_RIGHT);
 
-        if (isset($this->placement) && in_array($this->placement, $validPlacements)) {
+        if (isset($this->placement) && in_array($this->placement, $validPlacements))
+        {
             $classes = 'tabs-' . $this->placement;
             if (isset($this->htmlOptions['class']))
                 $this->htmlOptions['class'] .= ' ' . $classes;
@@ -100,13 +101,15 @@ class BootTabbable extends CWidget
         $cs->registerScript(__CLASS__ . '#' . $id, "jQuery('#{$id}').tab('show');");
 
         // Register the "show" event-handler.
-        if (isset($this->events['show'])) {
+        if (isset($this->events['show']))
+        {
             $fn = CJavaScript::encode($this->events['show']);
             $cs->registerScript(__CLASS__ . '#' . $id . '.show', "jQuery('#{$id} a[data-toggle=\"tab\"]').on('show', {$fn});");
         }
 
         // Register the "shown" event-handler.
-        if (isset($this->events['shown'])) {
+        if (isset($this->events['shown']))
+        {
             $fn = CJavaScript::encode($this->events['shown']);
             $cs->registerScript(__CLASS__ . '#' . $id . '.shown', "jQuery('#{$id} a[data-toggle=\"tab\"]').on('shown', {$fn});");
         }
@@ -126,7 +129,8 @@ class BootTabbable extends CWidget
         $id = $this->getId();
         $items = array();
 
-        foreach ($tabs as $tab) {
+        foreach ($tabs as $tab)
+        {
             $item = $tab;
 
             if (isset($item['visible']) && !$item['visible'])
@@ -139,7 +143,8 @@ class BootTabbable extends CWidget
 
             if (isset($tab['items']))
                 $item['items'] = $this->normalizeTabs($item['items'], $panes, $i);
-            else {
+            else
+            {
                 if (!isset($item['id']))
                     $item['id'] = $id . '_tab_' . ($i + 1);
 

@@ -28,7 +28,8 @@ class MyDbAuthManager extends CDbAuthManager
             ->queryAll();
 
         $assignments = array();
-        foreach ($rows as $row) {
+        foreach ($rows as $row)
+        {
             if (($data = @unserialize($row['data'])) === false)
                 $data = null;
 
@@ -41,7 +42,8 @@ class MyDbAuthManager extends CDbAuthManager
     {
         if (is_string($names))
             $condition = 'child=' . $this->db->quoteValue($names);
-        else if (is_array($names) && $names !== array()) {
+        else if (is_array($names) && $names !== array())
+        {
             foreach ($names as &$name)
                 $name = $this->db->quoteValue($name);
             $condition = 'child IN (' . implode(', ', $names) . ')';
@@ -57,7 +59,8 @@ class MyDbAuthManager extends CDbAuthManager
             ->queryAll();
 
         $parents = array();
-        foreach ($rows as $row) {
+        foreach ($rows as $row)
+        {
             if (($data = @unserialize($row['data'])) === false)
                 $data = null;
             $parents[$row['name']] = new CAuthItem($this, $row['name'], $row['type'], $row['description'], $row['bizrule'], $data);

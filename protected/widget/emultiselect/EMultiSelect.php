@@ -73,21 +73,30 @@ class EMultiSelect extends CJuiWidget
         $this->registerScriptFile('ui.multiselect.js');
 
         $params = array();
-        if ($this->sortable) {
+        if ($this->sortable)
+        {
             $params[] = "sortable:true";
-        } else {
+        }
+        else
+        {
             $params[] = "sortable:false";
         }
 
-        if ($this->searchable) {
+        if ($this->searchable)
+        {
             $params[] = "searchable:true";
-        } else {
+        }
+        else
+        {
             $params[] = "searchable:false";
         }
 
-        if ($this->doubleClickable) {
+        if ($this->doubleClickable)
+        {
             $params[] = "doubleClickable:true";
-        } else {
+        }
+        else
+        {
             $params[] = "doubleClickable:false";
         }
 

@@ -162,11 +162,13 @@ class AuthItem extends CActiveRecord
 
         foreach ($this->children['operations'] as $item)
             $children[] = $item;
-        if ($this->type >= 1) {
+        if ($this->type >= 1)
+        {
             foreach ($this->children['tasks'] as $item)
                 $children[] = $item;
         }
-        if ($this->type === 2) {
+        if ($this->type === 2)
+        {
             foreach ($this->children['roles'] as $item)
                 $children[] = $item;
         }
@@ -180,11 +182,13 @@ class AuthItem extends CActiveRecord
 
         foreach ($this->parents['roles'] as $item)
             $parents[] = $item;
-        if ($this->type <= 1) {
+        if ($this->type <= 1)
+        {
             foreach ($this->parents['tasks'] as $item)
                 $parents[] = $item;
         }
-        if ($this->type === 0) {
+        if ($this->type === 0)
+        {
             foreach ($this->parents['operations'] as $item)
                 $parents[] = $item;
         }
@@ -194,23 +198,28 @@ class AuthItem extends CActiveRecord
 
     protected function afterFind()
     {
-        foreach (Yii::app()->authManager->getItemChildren($this->name) as $item) {
+        foreach (Yii::app()->authManager->getItemChildren($this->name) as $item)
+        {
             if ($item->type === 0)
                 $this->children['operations'][] = $item->name;
             elseif ($item->type === 1)
-                $this->children['tasks'][] = $item->name; elseif ($item->type === 2)
+                $this->children['tasks'][] = $item->name;
+            elseif ($item->type === 2)
                 $this->children['roles'][] = $item->name;
         }
 
-        foreach (Yii::app()->authManager->getItemParents($this->name) as $item) {
+        foreach (Yii::app()->authManager->getItemParents($this->name) as $item)
+        {
             if ($item->type === 0)
                 $this->parents['operations'][] = $item->name;
             elseif ($item->type === 1)
-                $this->parents['tasks'][] = $item->name; elseif ($item->type === 2)
+                $this->parents['tasks'][] = $item->name;
+            elseif ($item->type === 2)
                 $this->parents['roles'][] = $item->name;
         }
 
-        $this->users = array_map(function ($value) {
+        $this->users = array_map(function ($value)
+        {
             return $value->userid;
         }, Yii::app()->authManager->getAuthAssignmentsByItemName($this->name));
 
@@ -227,11 +236,13 @@ class AuthItem extends CActiveRecord
             $query = $query->where('name!=:name1', array('name1' => $authItem));
 
         $authItems = array('operations' => array(), 'tasks' => array(), 'roles' => array());
-        foreach ($query->queryAll() as $item) {
+        foreach ($query->queryAll() as $item)
+        {
             if ($item['type'] === 2)
                 $authItems['roles'][$item['name']] = $item['name'];
             elseif ($item['type'] === 1)
-                $authItems['tasks'][$item['name']] = $item['name']; elseif ($item['type'] === 0)
+                $authItems['tasks'][$item['name']] = $item['name'];
+            elseif ($item['type'] === 0)
                 $authItems['operations'][$item['name']] = $item['name'];
         }
 
@@ -240,10 +251,12 @@ class AuthItem extends CActiveRecord
 
     public function updateChildrenAndParents()
     {
-        $childrenOld = array_map(function ($item) {
+        $childrenOld = array_map(function ($item)
+        {
             return $item->name;
         }, Yii::app()->authManager->getItemChildren($this->name));
-        $parentsOld = array_map(function ($item) {
+        $parentsOld = array_map(function ($item)
+        {
             return $item->name;
         }, Yii::app()->authManager->getItemParents($this->name));
 
@@ -263,7 +276,8 @@ class AuthItem extends CActiveRecord
 
     public function updateUsers()
     {
-        $usersOld = array_map(function ($value) {
+        $usersOld = array_map(function ($value)
+        {
             return $value->userid;
         }, Yii::app()->authManager->getAuthAssignmentsByItemName($this->name));
 

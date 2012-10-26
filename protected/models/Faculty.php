@@ -126,7 +126,28 @@ class Faculty extends ActiveRecord
         );
     }
 
-    public function resolveSortAttributes()
+    /**
+     * Get array for CSort->attributes
+     *
+     * @return array
+     */
+    public function getSortAttributes()
+    {
+        return array(
+            'dean' => array(
+                'asc' => 'dean.fio',
+                'desc' => 'dean.fio DESC',
+            ),
+            '*',
+        );
+    }
+
+    /**
+     * Get resolve info for sort attributes
+     *
+     * @return array
+     */
+    public function getResolvedSortOptions()
     {
         return array(
             'staff_id' => 'dean',
@@ -136,13 +157,5 @@ class Faculty extends ActiveRecord
     public function getFullTitle()
     {
         return "$this->title ({$this->short_title})";
-    }
-
-    public function beforeSave()
-    {
-//        CVarDumper::dump($this, 3, true);
-//        Yii::app()->end();
-//        $this->deleted = $this->deleted
-        return parent::beforeSave();
     }
 }

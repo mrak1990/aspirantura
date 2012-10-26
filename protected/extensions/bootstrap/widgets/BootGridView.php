@@ -69,7 +69,8 @@ class BootGridView extends CGridView
      */
     protected function initColumns()
     {
-        foreach ($this->columns as $i => $column) {
+        foreach ($this->columns as $i => $column)
+        {
             if (is_array($column) && !isset($column['class']))
                 $this->columns[$i]['class'] = 'bootstrap.widgets.BootDataColumn';
         }

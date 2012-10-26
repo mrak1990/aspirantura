@@ -67,12 +67,14 @@ class BootButtonColumn extends CButtonColumn
         if (!isset($options['rel']))
             $options['rel'] = 'tooltip';
 
-        if (isset($button['icon'])) {
+        if (isset($button['icon']))
+        {
             if (strpos($button['icon'], 'icon') === false)
                 $button['icon'] = 'icon-' . implode(' icon-', explode(' ', $button['icon']));
 
             echo CHtml::link('<i class="' . $button['icon'] . '"></i>', $url, $options);
-        } else if (isset($button['imageUrl']) && is_string($button['imageUrl']))
+        }
+        else if (isset($button['imageUrl']) && is_string($button['imageUrl']))
             echo CHtml::link(CHtml::image($button['imageUrl'], $label), $url, $options);
         else
             echo CHtml::link($label, $url, $options);

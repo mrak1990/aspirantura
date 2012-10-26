@@ -55,9 +55,11 @@ class StaffController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Staff'])) {
+        if (isset($_POST['Staff']))
+        {
             $model->attributes = $_POST['Staff'];
-            if ($model->save()) {
+            if ($model->save())
+            {
 //                $degrees = array();
 
                 if (isset($_POST['StaffScientificDegree']) && is_array($_POST['StaffScientificDegree']))
@@ -71,7 +73,8 @@ class StaffController extends Controller
 //                CVarDumper::dump($model, 10, true);
 //                Yii::app()->end();
 //                $model->scientificDegrees2 = $degrees;
-                if (Yii::app()->request->isAjaxRequest) {
+                if (Yii::app()->request->isAjaxRequest)
+                {
                     echo CJSON::encode(array(
                         'status' => 'success',
                         'div' => "Сотрудник успешно добавлен",
@@ -81,19 +84,22 @@ class StaffController extends Controller
                         )
                     ));
                     exit;
-                } else
+                }
+                else
                     $this->redirect(array('view', 'id' => $model->id));
             }
         }
 
-        if (Yii::app()->request->isAjaxRequest) {
+        if (Yii::app()->request->isAjaxRequest)
+        {
             if (isset($_POST['title']))
                 $model->fio = $_POST['title'];
             echo CJSON::encode(array(
                 'status' => 'failure',
                 'div' => $this->renderPartial('_form', array('model' => $model), true)));
             exit;
-        } else
+        }
+        else
             $this->render('create', array(
                 'model' => $model,
             ));
@@ -112,9 +118,11 @@ class StaffController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Staff'])) {
+        if (isset($_POST['Staff']))
+        {
             $model->attributes = $_POST['Staff'];
-            if ($model->save()) {
+            if ($model->save())
+            {
                 if (isset($_POST['StaffScientificDegree']) && is_array($_POST['StaffScientificDegree']))
                     $model->updateScientificDegrees($_POST['StaffScientificDegree']);
                 $this->redirect(array('view', 'id' => $model->id));
@@ -134,19 +142,24 @@ class StaffController extends Controller
      */
     public function actionToTrash($id)
     {
-        if (Yii::app()->request->isPostRequest) {
-            if ($id === 'many') {
-                if (isset($_POST['ids']) && is_array($_POST['ids'])) {
+        if (Yii::app()->request->isPostRequest)
+        {
+            if ($id === 'many')
+            {
+                if (isset($_POST['ids']) && is_array($_POST['ids']))
+                {
                     foreach ($_POST['ids'] as $id)
                         $this->loadModel($id)->setDeleted()->save();
                 }
                 Yii::app()->end();
-            } else
+            }
+            else
                 $this->loadModel($id)->setDeleted()->save();
 
             if (!isset($_GET['ajax']))
                 $this->redirect(array('view', 'id' => $id));
-        } else
+        }
+        else
             throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
     }
 
@@ -158,19 +171,24 @@ class StaffController extends Controller
      */
     public function actionRestore($id)
     {
-        if (Yii::app()->request->isPostRequest) {
-            if ($id === 'many') {
-                if (isset($_POST['ids']) && is_array($_POST['ids'])) {
+        if (Yii::app()->request->isPostRequest)
+        {
+            if ($id === 'many')
+            {
+                if (isset($_POST['ids']) && is_array($_POST['ids']))
+                {
                     foreach ($_POST['ids'] as $id)
                         $this->loadModel($id)->setRestored()->save();
                 }
                 Yii::app()->end();
-            } else
+            }
+            else
                 $this->loadModel($id)->setRestored()->save();
 
             if (!isset($_GET['ajax']))
                 $this->redirect(array('view', 'id' => $id));
-        } else
+        }
+        else
             throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
     }
 
@@ -182,7 +200,8 @@ class StaffController extends Controller
      */
     public function actionDelete($id)
     {
-        if (Yii::app()->request->isPostRequest) {
+        if (Yii::app()->request->isPostRequest)
+        {
             $model = $this->loadModel($id);
 
             $model->deleteScientificDegrees();
@@ -190,7 +209,8 @@ class StaffController extends Controller
 
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('trash'));
-        } else
+        }
+        else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
     }
 
@@ -204,13 +224,13 @@ class StaffController extends Controller
     public function actionIndex()
     {
         $model = new Staff('search');
-        $search = new SearchForm;
+        $search = new SortForm;
 
         if (isset($_GET['Staff']))
             $model->attributes = $_GET['Staff'];
 
-        if (isset($_GET['SearchForm']))
-            $search->attributes = $_GET['SearchForm'];
+        if (isset($_GET['SortForm']))
+            $search->attributes = $_GET['SortForm'];
 
         $search->resolveGETSort();
 
@@ -254,13 +274,13 @@ class StaffController extends Controller
     public function actionTrash()
     {
         $model = new Staff('search');
-        $search = new SearchForm;
+        $search = new SortForm;
 
         if (isset($_GET['Staff']))
             $model->attributes = $_GET['Staff'];
 
-        if (isset($_GET['SearchForm']))
-            $search->attributes = $_GET['SearchForm'];
+        if (isset($_GET['SortForm']))
+            $search->attributes = $_GET['SortForm'];
 
         $search->resolveGETSort();
 
@@ -319,7 +339,8 @@ class StaffController extends Controller
      */
     protected function performAjaxValidation($model)
     {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'staff-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'staff-form')
+        {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

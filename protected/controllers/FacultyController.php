@@ -46,10 +46,13 @@ class FacultyController extends Controller
     {
         $model = new Faculty;
 
-        if (isset($_POST['Faculty'])) {
+        if (isset($_POST['Faculty']))
+        {
             $model->attributes = $_POST['Faculty'];
-            if ($model->save()) {
-                if (Yii::app()->request->isAjaxRequest) {
+            if ($model->save())
+            {
+                if (Yii::app()->request->isAjaxRequest)
+                {
                     echo CJSON::encode(array(
                             'status' => 'success',
                             'div' => "Факультет успешно добавлен",
@@ -60,7 +63,8 @@ class FacultyController extends Controller
                         )
                     );
                     Yii::app()->end();
-                } else
+                }
+                else
                     $this->redirect(array(
                             'view',
                             'id' => $model->id
@@ -69,7 +73,8 @@ class FacultyController extends Controller
             }
         }
 
-        if (Yii::app()->request->isAjaxRequest) {
+        if (Yii::app()->request->isAjaxRequest)
+        {
             if (isset($_POST['title']))
                 $model->title = $_POST['title'];
             echo CJSON::encode(array(
@@ -80,7 +85,8 @@ class FacultyController extends Controller
                 )
             );
             Yii::app()->end();
-        } else
+        }
+        else
             $this->render('create', array(
                     'model' => $model,
                 )
@@ -97,7 +103,8 @@ class FacultyController extends Controller
     {
         $model = $this->loadModel($id);
 
-        if (isset($_POST['Faculty'])) {
+        if (isset($_POST['Faculty']))
+        {
             $model->attributes = $_POST['Faculty'];
             if ($model->save())
                 $this->redirect(array(
@@ -121,21 +128,26 @@ class FacultyController extends Controller
      */
     public function actionToTrash($id)
     {
-        if (Yii::app()->request->isPostRequest) {
-            if ($id === 'many') {
-                if (isset($_POST['ids']) && is_array($_POST['ids'])) {
+        if (Yii::app()->request->isPostRequest)
+        {
+            if ($id === 'many')
+            {
+                if (isset($_POST['ids']) && is_array($_POST['ids']))
+                {
                     foreach ($_POST['ids'] as $id)
                         $this->loadModel($id)->setDeleted()->save();
                 }
                 Yii::app()->end();
-            } else
+            }
+            else
                 $this->loadModel($id)->setDeleted()->save();
 
             if (!isset($_GET['ajax']))
                 $this->redirect(Yii::app()->request->getUrlReferrer());
             else
                 Yii::app()->end();
-        } else
+        }
+        else
             throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
     }
 
@@ -147,21 +159,26 @@ class FacultyController extends Controller
      */
     public function actionRestore($id)
     {
-        if (Yii::app()->request->isPostRequest) {
-            if ($id === 'many') {
-                if (isset($_POST['ids']) && is_array($_POST['ids'])) {
+        if (Yii::app()->request->isPostRequest)
+        {
+            if ($id === 'many')
+            {
+                if (isset($_POST['ids']) && is_array($_POST['ids']))
+                {
                     foreach ($_POST['ids'] as $id)
                         $this->loadModel($id)->setRestored()->save();
                 }
                 Yii::app()->end();
-            } else
+            }
+            else
                 $this->loadModel($id)->setRestored()->save();
 
             if (!isset($_GET['ajax']))
                 $this->redirect(Yii::app()->request->getUrlReferrer());
             else
                 Yii::app()->end();
-        } else
+        }
+        else
             throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
     }
 
@@ -173,19 +190,24 @@ class FacultyController extends Controller
      */
     public function actionDelete($id)
     {
-        if (Yii::app()->request->isPostRequest) {
-            if ($id === 'many') {
-                if (isset($_POST['ids']) && is_array($_POST['ids'])) {
+        if (Yii::app()->request->isPostRequest)
+        {
+            if ($id === 'many')
+            {
+                if (isset($_POST['ids']) && is_array($_POST['ids']))
+                {
                     foreach ($_POST['ids'] as $id)
                         $this->loadModel($id)->delete();
                 }
                 Yii::app()->end();
-            } else
+            }
+            else
                 $this->loadModel($id)->delete();
 
             if (!isset($_GET['ajax']))
                 $this->redirect(array('trash'));
-        } else
+        }
+        else
             throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
     }
 
@@ -195,13 +217,13 @@ class FacultyController extends Controller
     public function actionIndex()
     {
         $model = new Faculty('search');
-        $search = new SearchForm;
+        $search = new SortForm;
 
         if (isset($_GET['Faculty']))
             $model->attributes = $_GET['Faculty'];
 
-        if (isset($_GET['SearchForm']))
-            $search->attributes = $_GET['SearchForm'];
+        if (isset($_GET['SortForm']))
+            $search->attributes = $_GET['SortForm'];
 
         $search->resolveGETSort();
 
@@ -211,13 +233,7 @@ class FacultyController extends Controller
         );
 
         $sort = new CSort('Faculty');
-        $sort->attributes = array(
-            'dean' => array(
-                'asc' => 'dean.fio',
-                'desc' => 'dean.fio DESC',
-            ),
-            '*',
-        );
+        $sort->attributes = $model->getSortAttributes();
         $sort->defaultOrder = 't.title';
 
         $this->render('index', array(
@@ -235,13 +251,13 @@ class FacultyController extends Controller
     public function actionTrash()
     {
         $model = new Faculty('search');
-        $search = new SearchForm;
+        $search = new SortForm;
 
         if (isset($_GET['Faculty']))
             $model->attributes = $_GET['Faculty'];
 
-        if (isset($_GET['SearchForm']))
-            $search->attributes = $_GET['SearchForm'];
+        if (isset($_GET['SortForm']))
+            $search->attributes = $_GET['SortForm'];
 
         $search->resolveGETSort();
 
@@ -251,13 +267,7 @@ class FacultyController extends Controller
         );
 
         $sort = new CSort('Faculty');
-        $sort->attributes = array(
-            'dean' => array(
-                'asc' => 'dean.fio',
-                'desc' => 'dean.fio DESC',
-            ),
-            '*',
-        );
+        $sort->attributes = $model->getSortAttributes();
         $sort->defaultOrder = 't.title';
 
         $this->render('index', array(
@@ -265,22 +275,6 @@ class FacultyController extends Controller
                 'criteria' => $criteria,
                 'sort' => $sort,
                 'searchModel' => $search,
-            )
-        );
-    }
-
-    /**
-     * Manages all models.
-     */
-    public function actionAdmin()
-    {
-        $model = new Faculty('search');
-        $model->unsetAttributes(); // clear any default values
-        if (isset($_GET['Faculty']))
-            $model->attributes = $_GET['Faculty'];
-
-        $this->render('admin', array(
-                'model' => $model,
             )
         );
     }
@@ -306,7 +300,8 @@ class FacultyController extends Controller
      */
     protected function performAjaxValidation($model)
     {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'faculty-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'faculty-form')
+        {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

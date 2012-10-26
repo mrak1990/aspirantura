@@ -46,7 +46,8 @@ class LoginForm extends CFormModel
      */
     public function authenticate($attribute, $params)
     {
-        if (!$this->hasErrors()) {
+        if (!$this->hasErrors())
+        {
             $this->_identity = new UserIdentity($this->username, $this->password);
             if (!$this->_identity->authenticate())
                 $this->addError('password', $this->_identity->errorCode);
@@ -61,16 +62,19 @@ class LoginForm extends CFormModel
      */
     public function login()
     {
-        if ($this->_identity === null) {
+        if ($this->_identity === null)
+        {
             $this->_identity = new UserIdentity($this->username, $this->password);
             $this->_identity->authenticate();
         }
         CVarDumper::dump($this->_identity, 10, true);
-        if ($this->_identity->errorCode === UserIdentity::ERROR_NONE) {
+        if ($this->_identity->errorCode === UserIdentity::ERROR_NONE)
+        {
             $duration = $this->rememberMe ? 3600 * 24 * 30 : 0; // 30 days
             Yii::app()->user->login($this->_identity, $duration);
             return true;
-        } else
+        }
+        else
             return false;
     }
 }

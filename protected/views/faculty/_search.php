@@ -2,7 +2,7 @@
 /**
  * @var Faculty $model
  * @var MyBootActiveForm $form
- * @var SearchForm $searchModel
+ * @var SortForm $searchModel
  * @var CController $this
  */
 
@@ -57,7 +57,7 @@ $form = $this->beginWidget('ext.bootstrap.widgets.BootActiveForm', array(
     <div class="span6 last">
         <div class="page-header"><h3>Параметры сортировки</h3></div>
         <?php
-        echo $form->dropDownListRow($searchModel, 'sort', $model->getSortAttributes(array(), array(
+        echo $form->dropDownListRow($searchModel, 'sort', $model->getSortOptions(array(), array(
                 'institute_id',
                 'secretariat',
                 'deleted',

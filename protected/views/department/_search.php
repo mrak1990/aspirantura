@@ -2,7 +2,7 @@
 /**
  * @var Department $model
  * @var MyBootActiveForm $form
- * @var SearchForm $searchModel
+ * @var SortForm $searchModel
  * @var CController $this
  */
 

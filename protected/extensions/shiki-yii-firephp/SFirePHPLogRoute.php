@@ -102,9 +102,11 @@ class SFirePHPLogRoute extends CLogRoute
 
         SFirePHPUtil::loadFirePHP($this->libPath, $this->options);
 
-        foreach ($logs as $log) {
+        foreach ($logs as $log)
+        {
             $method = 'info';
-            switch ($log[1]) {
+            switch ($log[1])
+            {
                 case CLogger::LEVEL_INFO:
                     $method = 'info';
                     break;
@@ -116,13 +118,16 @@ class SFirePHPLogRoute extends CLogRoute
                     break;
             }
 
-            if ($method == 'trace') {
+            if ($method == 'trace')
+            {
                 // FirePHP's trace method do not include labels
                 $trace = str_replace(array('#{category}', '#{timestamp}', '#{message}'),
                     array($log[2], date(DateTime::W3C, $log[3]), $log[0]),
                     $this->traceFormat);
                 FB::$method($trace);
-            } else {
+            }
+            else
+            {
                 $category = str_replace(array('#{category}', '#{timestamp}'),
                     array($log[2], date(DateTime::W3C, $log[3])),
                     $this->labelFormat);

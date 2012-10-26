@@ -74,13 +74,15 @@ class BootCarousel extends CWidget
         $cs->registerScript(__CLASS__ . '#' . $id, "jQuery('{$id}').carousel({$options});");
 
         // Register the "slide" event-handler.
-        if (isset($this->events['slide'])) {
+        if (isset($this->events['slide']))
+        {
             $fn = CJavaScript::encode($this->events['slide']);
             $cs->registerScript(__CLASS__ . '#' . $id . '.slide', "jQuery('#{$id}').on('slide', {$fn});");
         }
 
         // Register the "slid" event-handler.
-        if (isset($this->events['slid'])) {
+        if (isset($this->events['slid']))
+        {
             $fn = CJavaScript::encode($this->events['slid']);
             $cs->registerScript(__CLASS__ . '#' . $id . '.slid', "jQuery('#{$id}').on('slid', {$fn});");
         }
@@ -93,7 +95,8 @@ class BootCarousel extends CWidget
      */
     protected function renderItems($items)
     {
-        foreach ($items as $i => $item) {
+        foreach ($items as $i => $item)
+        {
             if (!is_array($item))
                 continue;
 
@@ -113,7 +116,8 @@ class BootCarousel extends CWidget
 
             echo CHtml::openTag('div', $item['itemOptions']);
 
-            if (isset($item['image'])) {
+            if (isset($item['image']))
+            {
                 if (!isset($item['alt']))
                     $item['alt'] = '';
 
@@ -123,7 +127,8 @@ class BootCarousel extends CWidget
                 echo CHtml::image($item['image'], $item['alt'], $item['imageOptions']);
             }
 
-            if (isset($item['label']) || isset($item['caption'])) {
+            if (isset($item['label']) || isset($item['caption']))
+            {
                 if (!isset($item['captionOptions']))
                     $item['captionOptions'] = array();
 

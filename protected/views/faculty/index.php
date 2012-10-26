@@ -1,7 +1,7 @@
 <?php
 /**
  * @var Faculty $model
- * @var SearchForm $searchModel
+ * @var SortForm $searchModel
  * @var CDbCriteria $criteria
  * @var CSort $sort
  * @var Controller $this
@@ -15,7 +15,8 @@ $this->renderPartial('_search', array(
     'searchModel' => $searchModel,
 ));
 
-$valueFunction = function ($data) {
+$valueFunction = function ($data)
+{
     return Yii::app()->controller->widget("ext.bootstrap.widgets.BootButtonGroup", array(
         "size" => "mini",
         "buttons" => array(

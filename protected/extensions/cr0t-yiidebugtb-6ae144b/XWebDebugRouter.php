@@ -92,7 +92,8 @@ class arrayDumper
 
         self::dumpInternal($var, 0);
 
-        if ($highlight) {
+        if ($highlight)
+        {
             $result = highlight_string("<?php\n" . self::$_output, true);
             self::$_output = preg_replace('/&lt;\\?php<br \\/>/', '', $result, 1);
         }
@@ -102,7 +103,8 @@ class arrayDumper
 
     private static function dumpInternal($var, $level)
     {
-        switch (gettype($var)) {
+        switch (gettype($var))
+        {
             case 'boolean':
                 self::$_output .= $var ? 'true' : 'false';
                 break;
@@ -125,16 +127,22 @@ class arrayDumper
                 self::$_output .= '{unknown}';
                 break;
             case 'array':
-                if (self::$_depth <= $level) {
+                if (self::$_depth <= $level)
+                {
                     self::$_output .= 'array(...)';
-                } else if (empty($var)) {
+                }
+                else if (empty($var))
+                {
                     self::$_output .= '{ }';
-                } else {
+                }
+                else
+                {
                     $keys = array_keys($var);
                     $spaces = str_repeat(' ', $level * 2);
                     self::$_output .= $spaces . '';
 
-                    foreach ($keys as $key) {
+                    foreach ($keys as $key)
+                    {
                         self::$_output .= ($level == 0 ? '' : "\n") . $spaces . "  $key: ";
                         self::$_output .= self::dumpInternal($var[$key], $level + 1);
                         self::$_output .= ($level == 0 ? "\n" : '');
@@ -144,11 +152,16 @@ class arrayDumper
                 }
                 break;
             case 'object':
-                if (($id = array_search($var, self::$_objects, true)) !== false) {
+                if (($id = array_search($var, self::$_objects, true)) !== false)
+                {
                     self::$_output .= get_class($var) . '#' . ($id + 1) . '(...)';
-                } else if (self::$_depth <= $level) {
+                }
+                else if (self::$_depth <= $level)
+                {
                     self::$_output .= get_class($var) . '(...)';
-                } else {
+                }
+                else
+                {
                     $id = array_push(self::$_objects, $var);
                     $className = get_class($var);
                     $members = (array)$var;
@@ -157,7 +170,8 @@ class arrayDumper
 
                     self::$_output .= "$className ID:#$id"; //\n".$spaces.'(';
 
-                    foreach ($keys as $key) {
+                    foreach ($keys as $key)
+                    {
                         $keyDisplay = strtr(trim($key), array("\0" => '->'));
                         self::$_output .= "\n" . $spaces . "  $keyDisplay: ";
                         self::$_output .= self::dumpInternal($members[$key], $level + 1);
@@ -211,7 +225,8 @@ class yiiDebugClass
         $result = '';
         $odd = true;
 
-        foreach ($items as $item) {
+        foreach ($items as $item)
+        {
             list($message, $level, $category, $timestamp) = $item;
             $message = CHtml::encode($message);
             // put each source file on its own line
@@ -222,7 +237,8 @@ class yiiDebugClass
             $result .= '<tr' . ($odd ? ' class="odd"' : '') . '><td>' . $time . '</td><td>' . $level . '</td><td>' . $category . '</td><td>' . $message . '</td></tr>';
         }
 
-        if ($result !== '') {
+        if ($result !== '')
+        {
             $result = '<tbody>' . $result . '</tbody>';
         }
 
@@ -233,7 +249,8 @@ class yiiDebugClass
 
     public static function getInfo($data, $config = null)
     {
-        if (!is_null($config)) {
+        if (!is_null($config))
+        {
             self::$_config = $config;
         }
     }
@@ -252,29 +269,36 @@ class yiiDebugDB extends yiiDebugClass
         $cached = 0;
         $items = array();
 
-        foreach ($data as $row) {
-            if (substr($row[2], 0, 9) == 'system.db') {
+        foreach ($data as $row)
+        {
+            if (substr($row[2], 0, 9) == 'system.db')
+            {
                 $items[] = $row;
 
-                if ($row[2] == 'system.db.CDbCommand') {
-                    if (strpos($row[0], 'Querying SQL') !== false) {
+                if ($row[2] == 'system.db.CDbCommand')
+                {
+                    if (strpos($row[0], 'Querying SQL') !== false)
+                    {
                         $count++;
                     }
 
-                    if (strpos($row[0], 'Query result found in cache') !== false) {
+                    if (strpos($row[0], 'Query result found in cache') !== false)
+                    {
                         $cached++;
                     }
                 }
             }
         }
 
-        if (count($items) > 0) {
+        if (count($items) > 0)
+        {
             $result['content'] = yiiDebugTrace::render($items);
         }
 
         $result['title'] = 'DB Query: ' . $count;
 
-        if ($cached > 0) {
+        if ($cached > 0)
+        {
             $result['title'] .= " ($cached found in cache)";
         }
 
@@ -293,12 +317,14 @@ class yiiDebugTrace extends yiiDebugClass
         $result['panelTitle'] = 'Application Log';
         $items = array();
 
-        foreach ($data as $row) {
+        foreach ($data as $row)
+        {
             if (substr($row[2], 0, 9) != 'system.db')
                 $items[] = $row;
         }
 
-        if (count($items) > 0) {
+        if (count($items) > 0)
+        {
             $result['content'] = yiiDebugTrace::render($items);
         }
 
@@ -351,7 +377,8 @@ class yiiDebugConfig extends yiiDebugClass
         );
 
         $result = '<ul class="yiiDebugInfoInline">';
-        foreach ($config as $key => $value) {
+        foreach ($config as $key => $value)
+        {
             $result .= '<li class="is' . $value . '">' . $key . '</li>';
         }
         $result .= '</ul>';
@@ -361,12 +388,15 @@ class yiiDebugConfig extends yiiDebugClass
 
     public static function sessionAsArray()
     {
-        if (isset($_SESSION)) {
+        if (isset($_SESSION))
+        {
             $phpSession = array();
             $sessKeyLen = null;
 
-            foreach ($_SESSION as $key => $value) {
-                if (is_null($sessKeyLen)) {
+            foreach ($_SESSION as $key => $value)
+            {
+                if (is_null($sessKeyLen))
+                {
                     $values['PHP']['Key'] = substr($key, 1, strpos($key, '_') - 1);
                     $sessKeyLen = strlen($values['PHP']['Key']) + 1;
                 }
@@ -377,7 +407,8 @@ class yiiDebugConfig extends yiiDebugClass
             $values['PHP']['Data'] = $phpSession;
         }
 
-        if (isset($_COOKIE)) {
+        if (isset($_COOKIE))
+        {
             $values['Cookie'] = $_COOKIE;
         }
 
@@ -390,14 +421,17 @@ class yiiDebugConfig extends yiiDebugClass
     {
         $values = array();
 
-        foreach (array('server', 'files', 'env') as $name) {
-            if (!isset($GLOBALS['_' . strtoupper($name)])) {
+        foreach (array('server', 'files', 'env') as $name)
+        {
+            if (!isset($GLOBALS['_' . strtoupper($name)]))
+            {
                 continue;
             }
 
             $values[$name] = array();
 
-            foreach ($GLOBALS['_' . strtoupper($name)] as $key => $value) {
+            foreach ($GLOBALS['_' . strtoupper($name)] as $key => $value)
+            {
                 $values[$name][$key] = $value;
             }
 
@@ -418,8 +452,10 @@ class yiiDebugConfig extends yiiDebugClass
         );
 
         // assign extension version
-        if ($values['extensions']) {
-            foreach ($values['extensions'] as $key => $extension) {
+        if ($values['extensions'])
+        {
+            foreach ($values['extensions'] as $key => $extension)
+            {
                 $values['extensions'][$key] = phpversion($extension) ? sprintf('%s (%s)', $extension, phpversion($extension)) : $extension;
             }
         }
@@ -431,11 +467,13 @@ class yiiDebugConfig extends yiiDebugClass
     {
         $values = array();
 
-        if (isset($_GET)) {
+        if (isset($_GET))
+        {
             $values['Get'] = $_GET;
         }
 
-        if (isset($_POST)) {
+        if (isset($_POST))
+        {
             $values['Post'] = $_POST;
         }
 
@@ -495,7 +533,8 @@ class XWebDebugRouter extends CLogRoute
     {
         $logs = $logger->getLogs($this->levels, $this->categories);
 
-        if (empty($logs)) {
+        if (empty($logs))
+        {
             $logs = array();
         }
 
@@ -510,35 +549,44 @@ class XWebDebugRouter extends CLogRoute
         $ip = $app->request->getUserHostAddress();
         $allowed = false;
 
-        foreach ($this->allowedIPs as $pattern) {
+        foreach ($this->allowedIPs as $pattern)
+        {
             // if found any char other than [0-9] and dot, treat pattern as a regexp
-            if (preg_match('/[^0-9:\.]/', $pattern)) {
-                if (preg_match('/' . $pattern . '/', $ip)) {
+            if (preg_match('/[^0-9:\.]/', $pattern))
+            {
+                if (preg_match('/' . $pattern . '/', $ip))
+                {
                     $allowed = true;
                     break;
                 }
-            } else if ($pattern === $ip) {
+            }
+            else if ($pattern === $ip)
+            {
                 $allowed = true;
                 break;
             }
         }
 
-        if (!$allowed) {
+        if (!$allowed)
+        {
             return;
         }
 
-        foreach (explode(',', $this->config) as $value) {
+        foreach (explode(',', $this->config) as $value)
+        {
             $value = trim($value);
             $config[$value] = true;
         }
 
         //Checking for an AJAX Requests
-        if (!($app instanceof CWebApplication) || $app->getRequest()->getIsAjaxRequest()) {
+        if (!($app instanceof CWebApplication) || $app->getRequest()->getIsAjaxRequest())
+        {
             return;
         }
 
         //Checking for an DEBUG mode of running app
-        if (isset($config['runInDebug']) && (!DEFINED('YII_DEBUG') || YII_DEBUG == false)) {
+        if (isset($config['runInDebug']) && (!DEFINED('YII_DEBUG') || YII_DEBUG == false))
+        {
             return;
         }
 

@@ -62,7 +62,8 @@ class BootNavbar extends CWidget
      */
     public function init()
     {
-        if ($this->brand !== false) {
+        if ($this->brand !== false)
+        {
             if (!isset($this->brand))
                 $this->brand = CHtml::encode(Yii::app()->name);
 
@@ -78,7 +79,8 @@ class BootNavbar extends CWidget
     {
         $classes = array('navbar');
 
-        if ($this->fixed !== false) {
+        if ($this->fixed !== false)
+        {
             $validFixes = array(self::FIXED_TOP, self::FIXED_BOTTOM);
             if (in_array($this->fixed, $validFixes))
                 $classes[] = 'navbar-fixed-' . $this->fixed;
@@ -103,7 +105,8 @@ class BootNavbar extends CWidget
         echo CHtml::openTag('div', $this->htmlOptions);
         echo '<div class="navbar-inner"><div class="' . $containerCssClass . '">';
 
-        if ($this->collapse) {
+        if ($this->collapse)
+        {
             echo '<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">';
             echo '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
             echo '</a>';
@@ -115,11 +118,14 @@ class BootNavbar extends CWidget
         if ($this->collapse)
             echo '<div class="nav-collapse">';
 
-        foreach ($this->items as $item) {
+        foreach ($this->items as $item)
+        {
             if (is_string($item))
                 echo $item;
-            else {
-                if (isset($item['class'])) {
+            else
+            {
+                if (isset($item['class']))
+                {
                     $className = $item['class'];
                     unset($item['class']);
 

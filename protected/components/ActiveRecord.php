@@ -36,7 +36,8 @@ class ActiveRecord extends CActiveRecord
     public function getFooterItems()
     {
         $id = mb_strtolower(get_class($this), 'UTF-8') . '-grid';
-        if (static::DELETABLE) {
+        if (static::DELETABLE)
+        {
             $actionId = Yii::app()->getController()->action->id;
             return array(
                 array(
@@ -72,7 +73,9 @@ class ActiveRecord extends CActiveRecord
                     'visible' => $actionId === 'trash',
                 ),
             );
-        } else {
+        }
+        else
+        {
             return array(
                 array(
                     'value' => CHtml::ajaxLink('Удалить', array('delete', 'id' => 'many'), array(

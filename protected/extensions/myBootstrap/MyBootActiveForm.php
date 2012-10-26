@@ -29,7 +29,8 @@ class MyBootActiveForm extends BootActiveForm
     protected function getInputClassName()
     {
         // Determine the input widget class name.
-        switch ($this->type) {
+        switch ($this->type)
+        {
             case self::TYPE_HORIZONTAL:
                 return self::INPUT_HORIZONTAL;
                 break;

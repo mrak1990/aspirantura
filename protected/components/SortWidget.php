@@ -20,10 +20,12 @@ class SortWidget extends CWidget
 
     public function init()
     {
-        if (!($this->model instanceof CActiveRecord)) {
+        if (!($this->model instanceof CActiveRecord))
+        {
             throw new CException('Attribute model must be instance of CActiveRecord');
         }
-        if (!($this->sortForm instanceof CModel)) {
+        if (!($this->sortForm instanceof CModel))
+        {
             throw new CException('Attribute sortForm must be instance of CModel');
         }
     }
@@ -33,7 +35,8 @@ class SortWidget extends CWidget
         $attributes = $this->model->attributeNames();
 
         $attributesWithLabels = array();
-        foreach ($attributes as $attribute) {
+        foreach ($attributes as $attribute)
+        {
             if (!in_array($attribute, $this->exclude))
                 $attributesWithLabels[$attribute] = $this->model->getAttributeLabel($attribute);
         }

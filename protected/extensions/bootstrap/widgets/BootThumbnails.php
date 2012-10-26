@@ -23,11 +23,13 @@ class BootThumbnails extends BootListView
     {
         $data = $this->dataProvider->getData();
 
-        if (!empty($data)) {
+        if (!empty($data))
+        {
             echo CHtml::openTag('ul', array('class' => 'thumbnails'));
             $owner = $this->getOwner();
             $render = $owner instanceof CController ? 'renderPartial' : 'render';
-            foreach ($data as $i => $item) {
+            foreach ($data as $i => $item)
+            {
                 $data = $this->viewData;
                 $data['index'] = $i;
                 $data['data'] = $item;
@@ -36,7 +38,8 @@ class BootThumbnails extends BootListView
             }
 
             echo '</ul>';
-        } else
+        }
+        else
             $this->renderEmptyText();
     }
 }
