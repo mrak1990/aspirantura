@@ -39,6 +39,7 @@ class ActiveRecord extends CActiveRecord
         if (static::DELETABLE)
         {
             $actionId = Yii::app()->getController()->action->id;
+
             return array(
                 array(
                     'value' => CHtml::ajaxLink('В корзину', array('toTrash', 'id' => 'many'), array(
@@ -90,6 +91,16 @@ class ActiveRecord extends CActiveRecord
                 ),
             );
         }
+    }
+
+    /**
+     * Get array for CSort->attributes
+     *
+     * @return array
+     */
+    public function getSortAttributes()
+    {
+        return array('*');
     }
 }
 

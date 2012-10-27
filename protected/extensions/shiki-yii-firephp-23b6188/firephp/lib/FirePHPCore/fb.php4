@@ -62,6 +62,7 @@ function fb()
     $instance =& FirePHP::getInstance(true);
 
     $args = func_get_args();
+
     return call_user_func_array(array(&$instance, 'fb'), $args);
 }
 
@@ -91,6 +92,7 @@ class FB
     function getEnabled()
     {
         $instance =& FirePHP::getInstance(true);
+
         return $instance->getEnabled();
     }
 
@@ -136,6 +138,7 @@ class FB
     function getOptions()
     {
         $instance =& FirePHP::getInstance(true);
+
         return $instance->getOptions();
     }
 
@@ -152,6 +155,7 @@ class FB
     {
         $instance =& FirePHP::getInstance(true);
         $args = func_get_args();
+
         return call_user_func_array(array(&$instance, 'fb'), $args);
     }
 
@@ -170,6 +174,7 @@ class FB
     function group($Name, $Options = null)
     {
         $instance =& FirePHP::getInstance(true);
+
         return $instance->group($Name, $Options);
     }
 

@@ -56,12 +56,16 @@ class BootBreadcrumbs extends CBreadcrumbs
         {
             if (is_string($label) || is_array($url))
             {
-                $label = $this->encodeLabel ? CHtml::encode($label) : $label;
+                $label = $this->encodeLabel
+                    ? CHtml::encode($label)
+                    : $label;
                 $content = CHtml::link($label, $url);
                 $links[] = $this->renderItem($content);
             }
             else
-                $links[] = $this->renderItem($this->encodeLabel ? CHtml::encode($url) : $url, true);
+                $links[] = $this->renderItem($this->encodeLabel
+                    ? CHtml::encode($url)
+                    : $url, true);
         }
 
         echo CHtml::openTag('ul', $this->htmlOptions);
@@ -79,12 +83,17 @@ class BootBreadcrumbs extends CBreadcrumbs
      */
     protected function renderItem($content, $active = false)
     {
-        $separator = !$active ? '<span class="divider">' . $this->separator . '</span>' : '';
+        $separator = !$active
+            ? '<span class="divider">' . $this->separator . '</span>'
+            : '';
 
         ob_start();
-        echo CHtml::openTag('li', $active ? array('class' => 'active') : array());
+        echo CHtml::openTag('li', $active
+            ? array('class' => 'active')
+            : array());
         echo $content . $separator;
         echo '</li>';
+
         return ob_get_clean();
     }
 }

@@ -39,6 +39,7 @@ class Randomness
     {
         if (func_num_args() < 3)
             $length = self::strlen($string);
+
         return function_exists('mb_substr')
             ? mb_substr($string, $start, $length, 'ISO-8859-1')
             : substr($string, $start, $length);

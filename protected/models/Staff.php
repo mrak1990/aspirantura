@@ -148,6 +148,29 @@ class Staff extends ActiveRecord
         );
     }
 
+    /**
+     * @return array for CSort->attributes
+     */
+    public function getSortAttributes()
+    {
+        return array(
+            'departmentTitle' => array(
+                'asc' => 'department.title',
+                'desc' => 'department.title DESC',
+            ),
+            'facultyTitle' => array(
+                'asc' => 'faculty.title',
+                'desc' => 'faculty.title DESC',
+            ),
+            '*',
+        );
+    }
+
+    /**
+     * Get resolve array for sorted attributes
+     *
+     * @return array resolved attributes (model_attribute=>attribute_in_CSort)
+     */
     public function getResolvedSortOptions()
     {
         return array();
@@ -158,9 +181,11 @@ class Staff extends ActiveRecord
         if ($this->department !== null)
             $this->facultyId = $this->department->faculty_id;
 
-        if (Yii::app()->controller->action->id === 'view')
+        if (Yii::app()->controller->action->id === 'update')
             foreach ($this->scientificDegrees as $degree)
-                $degree->doctor = $degree->doctor ? 1 : 0;
+                $degree->doctor = $degree->doctor
+                    ? 1
+                    : 0;
 
         parent::afterFind();
     }

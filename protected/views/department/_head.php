@@ -27,7 +27,9 @@ $this->widget('application.widget.inlineDropdownCreate.chosenInlineCreate', arra
 ));
 
 //CVarDumper::dump($model, 3, true);
-$data = isset($model->head) ? CHtml::listData(array($model->head), 'id', 'fio') : array();
+$data = isset($model->head)
+    ? CHtml::listData(array($model->head), 'id', 'fio')
+    : array();
 //$data= array();
 echo $form->dropDownListRow($model, 'staff_id', $data, array(
     'class' => 'span5',

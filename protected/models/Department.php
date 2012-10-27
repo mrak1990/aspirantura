@@ -48,8 +48,6 @@ class Department extends ActiveRecord
      */
     public function rules()
     {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('staff_id', 'default', 'value' => null),
             array('faculty_id', 'required', 'message' => 'Необходимо выбрать факультет из списка.'),
@@ -57,8 +55,6 @@ class Department extends ActiveRecord
             array('faculty_id, number, staff_id', 'numerical', 'integerOnly' => true),
             array('title', 'length', 'max' => 100),
             array('deleted', 'safe'),
-            // The following rule is used by search().
-            // Please remove those attributes that should not be searched.
             array('id, facultyTitle, number, title, headFio, deleted', 'safe', 'on' => 'search'),
         );
     }
@@ -68,8 +64,6 @@ class Department extends ActiveRecord
      */
     public function relations()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
         return array(
             'candidates' => array(self::HAS_MANY, 'Candidate', 'department_id'),
             'staffs' => array(self::HAS_MANY, 'Staff', 'department_id'),
@@ -100,9 +94,6 @@ class Department extends ActiveRecord
      */
     public function search()
     {
-        // Warning: Please modify the following code to remove attributes that
-        // should not be searched.
-
         $criteria = $this->getDbCriteria();
 
         $criteria->compare('id', $this->id);
@@ -133,9 +124,7 @@ class Department extends ActiveRecord
     }
 
     /**
-     * Get array for CSort->attributes
-     *
-     * @return array
+     * @return array for CSort->attributes
      */
     public function getSortAttributes()
     {
@@ -152,6 +141,11 @@ class Department extends ActiveRecord
         );
     }
 
+    /**
+     * Get resolve array for sorted attributes
+     *
+     * @return array resolved attributes (model_attribute=>attribute_in_CSort)
+     */
     public function getResolvedSortOptions()
     {
         return array(
@@ -159,24 +153,15 @@ class Department extends ActiveRecord
         );
     }
 
+    /**
+     * Get title with number in braces
+     *
+     * @return string
+     */
     public function getFullTitle()
     {
-        return isset($this->number) ? "$this->title ($this->number)" : $this->title;
+        return isset($this->number)
+            ? "$this->title ($this->number)"
+            : $this->title;
     }
-//    static function getAutocompleteData($faculty_id = null)
-//    {
-//        $criteria = new CDbCriteria();
-//
-//        if ($faculty_id !== null)
-//            $criteria->addCondition("t.faculty_id = $faculty_id");
-//
-//        $data = Department::model()->findAll($criteria);
-//        if (count($data) === 0)
-//            $data[] = array(
-//                'id' => '',
-//                'title' => 'Нет результатов'
-//            );
-//
-//        return CHtml::listData($data, 'id', 'title');
-//    }
 }

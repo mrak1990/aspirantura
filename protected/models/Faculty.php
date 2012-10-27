@@ -22,6 +22,9 @@ class Faculty extends ActiveRecord
 
     const DELETABLE = true;
 
+    /**
+     * @var FIO of dean for using at search form
+     */
     public $deanFio;
 
     /**
@@ -49,8 +52,6 @@ class Faculty extends ActiveRecord
      */
     public function rules()
     {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('secretariat, staff_id, deleted', 'default', 'value' => null),
             array('title, short_title', 'required'),
@@ -58,8 +59,6 @@ class Faculty extends ActiveRecord
             array('title', 'length', 'max' => 100),
             array('short_title', 'length', 'max' => 20),
             array('secretariat', 'length', 'max' => 10),
-            // The following rule is used by search().
-            // Please remove those attributes that should not be searched.
             array('id, title, short_title, deanFio, secretariat', 'safe', 'on' => 'search'),
         );
     }
@@ -69,8 +68,6 @@ class Faculty extends ActiveRecord
      */
     public function relations()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
         return array(
             'departments' => array(self::HAS_MANY, 'Department', 'faculty_id'),
             'staffs' => array(self::MANY_MANY, 'Staff', 'vice_dean(faculty_id, staff_id)'),
@@ -100,9 +97,6 @@ class Faculty extends ActiveRecord
      */
     public function search()
     {
-        // Warning: Please modify the following code to remove attributes that
-        // should not be searched.
-
         $criteria = $this->getDbCriteria();
 
         $criteria->compare('id', $this->id);
@@ -127,9 +121,7 @@ class Faculty extends ActiveRecord
     }
 
     /**
-     * Get array for CSort->attributes
-     *
-     * @return array
+     * @return array for CSort->attributes
      */
     public function getSortAttributes()
     {
@@ -143,9 +135,9 @@ class Faculty extends ActiveRecord
     }
 
     /**
-     * Get resolve info for sort attributes
+     * Get resolve array for sorted attributes
      *
-     * @return array
+     * @return array resolved attributes (model_attribute=>attribute_in_CSort)
      */
     public function getResolvedSortOptions()
     {
@@ -154,6 +146,11 @@ class Faculty extends ActiveRecord
         );
     }
 
+    /**
+     * Get title with short title in braces
+     *
+     * @return string
+     */
     public function getFullTitle()
     {
         return "$this->title ({$this->short_title})";

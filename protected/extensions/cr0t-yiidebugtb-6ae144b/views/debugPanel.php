@@ -203,7 +203,9 @@
     <ul id="yiiWebDebugToolbarItems">
         <?php $index = 0; foreach ($items as $item): ?>
         <li>[&nbsp;
-            <?php echo (isset($item['content']) && !is_null($item['content'])) ? '<a href="#" class="yiiLinkItem" onclick="return yiiWebDebugToggle(\'__yiiWDP' . $index . '\');">' . $item['title'] . '</a>' : $item['title'] ?>
+            <?php echo (isset($item['content']) && !is_null($item['content']))
+                ? '<a href="#" class="yiiLinkItem" onclick="return yiiWebDebugToggle(\'__yiiWDP' . $index . '\');">' . $item['title'] . '</a>'
+                : $item['title'] ?>
             &nbsp;]
         </li>
         <?php if (isset($item['content']) && !is_null($item['content'])) $index++; endforeach ?>
@@ -223,7 +225,9 @@
 
         <div id="__yiiWDP<?php echo $index ?>" style="display: none">
             <div class="panelHeadInfo">
-                <?php if ($alignLeft) echo "<br/>" ?> <?php echo (isset($item['headinfo']) && !is_null($item['headinfo'])) ? $item['headinfo'] : '<br/><br/>' ?>
+                <?php if ($alignLeft) echo "<br/>" ?> <?php echo (isset($item['headinfo']) && !is_null($item['headinfo']))
+                ? $item['headinfo']
+                : '<br/><br/>' ?>
             </div>
 
             <center>

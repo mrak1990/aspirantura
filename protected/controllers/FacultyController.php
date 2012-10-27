@@ -2,8 +2,11 @@
 
 class FacultyController extends Controller
 {
-
+    /**
+     * @var string title of current page
+     */
     public $pageTitle = 'Факультеты';
+
     public $breadcrumbs = array(
         'Факультеты' => array('index')
     );
@@ -76,7 +79,7 @@ class FacultyController extends Controller
         if (Yii::app()->request->isAjaxRequest)
         {
             if (isset($_POST['title']))
-                $model->title = $_POST['title'];
+                $model->title = mb_convert_case($_POST['title'], MB_CASE_TITLE, 'UTF-8');
             echo CJSON::encode(array(
                     'status' => 'failure',
                     'div' => $this->renderPartial('_form', array(
@@ -205,7 +208,7 @@ class FacultyController extends Controller
                 $this->loadModel($id)->delete();
 
             if (!isset($_GET['ajax']))
-                $this->redirect(array('trash'));
+                $this->redirect($this->createUrl('trash'));
         }
         else
             throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
@@ -289,7 +292,8 @@ class FacultyController extends Controller
     {
         $model = Faculty::model()->findByPk($id);
         if ($model === null)
-            throw new CHttpException(404, 'The requested page does not exist.');
+            throw new CHttpException(404, 'Страница не существует.');
+
         return $model;
     }
 

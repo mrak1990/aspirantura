@@ -126,6 +126,7 @@ class MyBootInputHorizontal extends BootInputHorizontal
         {
             $hint = $this->htmlOptions['hint'];
             unset($this->htmlOptions['hint']);
+
             return '<p class="help-block">' . $hint . '</p>';
         }
         else

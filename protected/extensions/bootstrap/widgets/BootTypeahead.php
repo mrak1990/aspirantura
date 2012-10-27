@@ -43,7 +43,9 @@ class BootTypeahead extends CWidget
 
         echo CHtml::tag('input', $this->htmlOptions);
 
-        $options = !empty($this->options) ? CJavaScript::encode($this->options) : '';
+        $options = !empty($this->options)
+            ? CJavaScript::encode($this->options)
+            : '';
         Yii::app()->clientScript->registerScript(__CLASS__ . '#' . $id, "jQuery('#{$id}').typeahead({$options});");
     }
 }

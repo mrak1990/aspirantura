@@ -320,7 +320,9 @@ class Bootstrap extends CApplicationComponent
         if (!isset($selector) && empty($options))
         {
             // Initialization from extension configuration.
-            $config = isset($this->plugins[$name]) ? $this->plugins[$name] : array();
+            $config = isset($this->plugins[$name])
+                ? $this->plugins[$name]
+                : array();
 
             if (isset($config['selector']))
                 $selector = $config['selector'];
@@ -335,7 +337,9 @@ class Bootstrap extends CApplicationComponent
         if (isset($selector))
         {
             $key = __CLASS__ . '.' . md5($name . $selector . serialize($options) . $defaultSelector);
-            $options = !empty($options) ? CJavaScript::encode($options) : '';
+            $options = !empty($options)
+                ? CJavaScript::encode($options)
+                : '';
             Yii::app()->clientScript->registerScript($key, "jQuery('{$selector}').{$name}({$options});");
         }
     }

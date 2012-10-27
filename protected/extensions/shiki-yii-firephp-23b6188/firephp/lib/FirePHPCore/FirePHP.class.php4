@@ -396,7 +396,9 @@ class FirePHP
             }
             if (array_key_exists('Collapsed', $Options))
             {
-                $Options['Collapsed'] = ($Options['Collapsed']) ? 'true' : 'false';
+                $Options['Collapsed'] = ($Options['Collapsed'])
+                    ? 'true'
+                    : 'false';
             }
         }
 
@@ -547,6 +549,7 @@ class FirePHP
             {
                 return true;
             }
+
         return false;
     }
 
@@ -660,18 +663,34 @@ class FirePHP
                             || $trace[$i]['function'] == 'send'
                         )
                         {
-                            $Object = array('Class' => isset($trace[$i]['class']) ? $trace[$i]['class'] : '',
-                                'Type' => isset($trace[$i]['type']) ? $trace[$i]['type'] : '',
-                                'Function' => isset($trace[$i]['function']) ? $trace[$i]['function'] : '',
+                            $Object = array('Class' => isset($trace[$i]['class'])
+                                ? $trace[$i]['class']
+                                : '',
+                                'Type' => isset($trace[$i]['type'])
+                                    ? $trace[$i]['type']
+                                    : '',
+                                'Function' => isset($trace[$i]['function'])
+                                    ? $trace[$i]['function']
+                                    : '',
                                 'Message' => $trace[$i]['args'][0],
-                                'File' => isset($trace[$i]['file']) ? $this->_escapeTraceFile($trace[$i]['file']) : '',
-                                'Line' => isset($trace[$i]['line']) ? $trace[$i]['line'] : '',
-                                'Args' => isset($trace[$i]['args']) ? $this->encodeObject($trace[$i]['args']) : '',
+                                'File' => isset($trace[$i]['file'])
+                                    ? $this->_escapeTraceFile($trace[$i]['file'])
+                                    : '',
+                                'Line' => isset($trace[$i]['line'])
+                                    ? $trace[$i]['line']
+                                    : '',
+                                'Args' => isset($trace[$i]['args'])
+                                    ? $this->encodeObject($trace[$i]['args'])
+                                    : '',
                                 'Trace' => $this->_escapeTrace(array_splice($trace, $i + 1)));
 
                             $skipFinalObjectEncode = true;
-                            $meta['file'] = isset($trace[$i]['file']) ? $this->_escapeTraceFile($trace[$i]['file']) : '';
-                            $meta['line'] = isset($trace[$i]['line']) ? $trace[$i]['line'] : '';
+                            $meta['file'] = isset($trace[$i]['file'])
+                                ? $this->_escapeTraceFile($trace[$i]['file'])
+                                : '';
+                            $meta['line'] = isset($trace[$i]['line'])
+                                ? $trace[$i]['line']
+                                : '';
                             break;
                         }
             }
@@ -745,8 +764,12 @@ class FirePHP
                             }
                             else
                             {
-                                $meta['file'] = isset($trace[$i]['file']) ? $this->_escapeTraceFile($trace[$i]['file']) : '';
-                                $meta['line'] = isset($trace[$i]['line']) ? $trace[$i]['line'] : '';
+                                $meta['file'] = isset($trace[$i]['file'])
+                                    ? $this->_escapeTraceFile($trace[$i]['file'])
+                                    : '';
+                                $meta['line'] = isset($trace[$i]['line'])
+                                    ? $trace[$i]['line']
+                                    : '';
                                 break;
                             }
                 }
@@ -808,9 +831,13 @@ class FirePHP
                 {
                     // Message needs to be split into multiple parts
                     $this->setHeader('X-Wf-1-' . $structure_index . '-' . '1-' . $this->messageIndex,
-                        (($i == 0) ? strlen($msg) : '')
+                        (($i == 0)
+                            ? strlen($msg)
+                            : '')
                             . '|' . $part . '|'
-                            . (($i < count($parts) - 2) ? '\\' : ''));
+                            . (($i < count($parts) - 2)
+                            ? '\\'
+                            : ''));
                 }
                 else
                 {
@@ -865,6 +892,7 @@ class FirePHP
                 $Trace[$i]['args'] = $this->encodeObject($Trace[$i]['args']);
             }
         }
+
         return $Trace;
     }
 
@@ -886,6 +914,7 @@ class FirePHP
 
             return $file;
         }
+
         return $File;
     }
 
@@ -908,6 +937,7 @@ class FirePHP
     function getUserAgent()
     {
         if (!isset($_SERVER['HTTP_USER_AGENT'])) return false;
+
         return $_SERVER['HTTP_USER_AGENT'];
     }
 
@@ -936,6 +966,7 @@ class FirePHP
                 }
             }
         }
+
         return $headers;
     }
 
@@ -951,6 +982,7 @@ class FirePHP
         {
             return $headers[strtolower($Name)];
         }
+
         return false;
     }
 
@@ -1126,6 +1158,7 @@ class FirePHP
                     return utf8_encode($Object);
                 }
             }
+
         return $return;
     }
 
@@ -1164,6 +1197,7 @@ class FirePHP
                 }
             }
         }
+
         return true;
     }
 
@@ -1300,7 +1334,9 @@ class FirePHP
         switch (gettype($var))
         {
             case 'boolean':
-                return $var ? 'true' : 'false';
+                return $var
+                    ? 'true'
+                    : 'false';
 
             case 'NULL':
                 return 'null';

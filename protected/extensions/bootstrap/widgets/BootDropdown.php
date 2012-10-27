@@ -67,7 +67,9 @@ class BootDropdown extends BootBaseMenu
 
                 if (isset($this->itemTemplate) || isset($item['template']))
                 {
-                    $template = isset($item['template']) ? $item['template'] : $this->itemTemplate;
+                    $template = isset($item['template'])
+                        ? $item['template']
+                        : $this->itemTemplate;
                     echo strtr($template, array('{menu}' => $menu));
                 }
                 else

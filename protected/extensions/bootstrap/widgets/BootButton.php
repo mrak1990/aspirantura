@@ -203,10 +203,12 @@ class BootButton extends CWidget
 
             case self::BUTTON_SUBMIT:
                 $this->htmlOptions['type'] = 'submit';
+
                 return CHtml::htmlButton($this->label, $this->htmlOptions);
 
             case self::BUTTON_RESET:
                 $this->htmlOptions['type'] = 'reset';
+
                 return CHtml::htmlButton($this->label, $this->htmlOptions);
 
             case self::BUTTON_SUBMITLINK:
@@ -218,6 +220,7 @@ class BootButton extends CWidget
             case self::BUTTON_AJAXBUTTON:
                 $this->ajaxOptions['url'] = $this->url;
                 $this->htmlOptions['ajax'] = $this->ajaxOptions;
+
                 return CHtml::htmlButton($this->label, $this->htmlOptions);
 
             case self::BUTTON_AJAXSUBMIT:
@@ -225,6 +228,7 @@ class BootButton extends CWidget
                 $this->ajaxOptions['url'] = $this->url;
                 $this->htmlOptions['type'] = 'submit';
                 $this->htmlOptions['ajax'] = $this->ajaxOptions;
+
                 return CHtml::htmlButton($this->label, $this->htmlOptions);
 
             default:

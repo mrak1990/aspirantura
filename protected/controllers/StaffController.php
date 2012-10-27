@@ -2,9 +2,14 @@
 
 class StaffController extends Controller
 {
-
+    /**
+     * @var string title of current page
+     */
     public $pageTitle = 'Сотрудники';
-    public $breadcrumbs = array('Сотрудники' => array('index'));
+
+    public $breadcrumbs = array(
+        'Сотрудники' => array('index')
+    );
 
     /**
      * @return array action filters
@@ -40,8 +45,9 @@ class StaffController extends Controller
     public function actionView($id)
     {
         $this->render('view', array(
-            'model' => $this->loadModel($id),
-        ));
+                'model' => $this->loadModel($id),
+            )
+        );
     }
 
     /**
@@ -52,57 +58,54 @@ class StaffController extends Controller
     {
         $model = new Staff;
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
         if (isset($_POST['Staff']))
         {
             $model->attributes = $_POST['Staff'];
             if ($model->save())
             {
-//                $degrees = array();
-
                 if (isset($_POST['StaffScientificDegree']) && is_array($_POST['StaffScientificDegree']))
                     $model->updateScientificDegrees($_POST['StaffScientificDegree']);
-//                    foreach ($_POST['StaffScientificDegree'] as $postDegree)
-//                    {
-//                        $degree = new StaffScientificDegree;
-//                        $degree->attributes = $postDegree;
-//                        $degrees[] = $degree;
-//                    }
-//                CVarDumper::dump($model, 10, true);
-//                Yii::app()->end();
-//                $model->scientificDegrees2 = $degrees;
+
                 if (Yii::app()->request->isAjaxRequest)
                 {
                     echo CJSON::encode(array(
-                        'status' => 'success',
-                        'div' => "Сотрудник успешно добавлен",
-                        'data' => array(
-                            'value' => $model->id,
-                            'title' => $model->fio,
+                            'status' => 'success',
+                            'div' => "Сотрудник успешно добавлен",
+                            'data' => array(
+                                'value' => $model->id,
+                                'title' => $model->fio,
+                            )
                         )
-                    ));
-                    exit;
+                    );
+                    Yii::app()->end();
                 }
                 else
-                    $this->redirect(array('view', 'id' => $model->id));
+                    $this->redirect(array(
+                            'view',
+                            'id' => $model->id
+                        )
+                    );
             }
         }
 
         if (Yii::app()->request->isAjaxRequest)
         {
             if (isset($_POST['title']))
-                $model->fio = $_POST['title'];
+                $model->fio = mb_convert_case($_POST['title'], MB_CASE_TITLE, 'UTF-8');
             echo CJSON::encode(array(
-                'status' => 'failure',
-                'div' => $this->renderPartial('_form', array('model' => $model), true)));
-            exit;
+                    'status' => 'failure',
+                    'div' => $this->renderPartial('_form', array(
+                        'model' => $model
+                    ), true)
+                )
+            );
+            Yii::app()->end();
         }
         else
             $this->render('create', array(
-                'model' => $model,
-            ));
+                    'model' => $model,
+                )
+            );
     }
 
     /**
@@ -125,13 +128,18 @@ class StaffController extends Controller
             {
                 if (isset($_POST['StaffScientificDegree']) && is_array($_POST['StaffScientificDegree']))
                     $model->updateScientificDegrees($_POST['StaffScientificDegree']);
-                $this->redirect(array('view', 'id' => $model->id));
+                $this->redirect(array(
+                        'view',
+                        'id' => $model->id
+                    )
+                );
             }
         }
 
         $this->render('update', array(
-            'model' => $model,
-        ));
+                'model' => $model,
+            )
+        );
     }
 
     /**
@@ -157,7 +165,9 @@ class StaffController extends Controller
                 $this->loadModel($id)->setDeleted()->save();
 
             if (!isset($_GET['ajax']))
-                $this->redirect(array('view', 'id' => $id));
+                $this->redirect(Yii::app()->request->getUrlReferrer());
+            else
+                Yii::app()->end();
         }
         else
             throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
@@ -186,7 +196,9 @@ class StaffController extends Controller
                 $this->loadModel($id)->setRestored()->save();
 
             if (!isset($_GET['ajax']))
-                $this->redirect(array('view', 'id' => $id));
+                $this->redirect(Yii::app()->request->getUrlReferrer());
+            else
+                Yii::app()->end();
         }
         else
             throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
@@ -208,15 +220,11 @@ class StaffController extends Controller
             $model->delete();
 
             if (!isset($_GET['ajax']))
-                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('trash'));
+                $this->redirect($this->createUrl('trash'));
         }
         else
-            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+            throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
     }
-
-    /**
-     * Lists all undeleted models.
-     */
 
     /**
      * Lists all undeleted models.
@@ -246,17 +254,7 @@ class StaffController extends Controller
         );
 
         $sort = new CSort('Staff');
-        $sort->attributes = array(
-            'departmentTitle' => array(
-                'asc' => 'department.title',
-                'desc' => 'department.title DESC',
-            ),
-            'facultyTitle' => array(
-                'asc' => 'faculty.title',
-                'desc' => 'faculty.title DESC',
-            ),
-            '*',
-        );
+        $sort->attributes = $model->getSortAttributes();
         $sort->defaultOrder = 't.fio';
 
         $this->render('index', array(
@@ -296,17 +294,7 @@ class StaffController extends Controller
         );
 
         $sort = new CSort('Staff');
-        $sort->attributes = array(
-            'departmentTitle' => array(
-                'asc' => 'department.title',
-                'desc' => 'department.title DESC',
-            ),
-            'facultyTitle' => array(
-                'asc' => 'faculty.title',
-                'desc' => 'faculty.title DESC',
-            ),
-            '*',
-        );
+        $sort->attributes = $model->getSortAttributes();
         $sort->defaultOrder = 't.fio';
 
         $this->render('index', array(
@@ -328,7 +316,8 @@ class StaffController extends Controller
     {
         $model = Staff::model()->findByPk($id);
         if ($model === null)
-            throw new CHttpException(404, 'The requested page does not exist.');
+            throw new CHttpException(404, 'Страница не существует.');
+
         return $model;
     }
 

@@ -70,7 +70,9 @@ class BootCarousel extends CWidget
 
         /** @var CClientScript $cs */
         $cs = Yii::app()->getClientScript();
-        $options = !empty($this->options) ? CJavaScript::encode($this->options) : '';
+        $options = !empty($this->options)
+            ? CJavaScript::encode($this->options)
+            : '';
         $cs->registerScript(__CLASS__ . '#' . $id, "jQuery('{$id}').carousel({$options});");
 
         // Register the "slide" event-handler.

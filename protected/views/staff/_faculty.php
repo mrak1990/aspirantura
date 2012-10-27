@@ -1,4 +1,9 @@
 <?php
+/**
+ * @var Staff $model
+ * @var Controller $this
+ * @var string $hint
+ */
 
 $jsPrefix = 'faculty';
 $selector = '#' . CHtml::activeId($model, 'facultyId');
@@ -26,7 +31,6 @@ echo $form->dropDownListRow($model, 'facultyId', CHtml::listData(Faculty::model(
         'url' => $this->createUrl('department/optionList'),
         'data' => array(
             'parent_id' => new CJavaScriptExpression('this.value'),
-            'show_option_all' => false
         ),
         'success' => new CJavaScriptExpression("function(data) {
             $('#{$idToUpdate}').html(data).trigger('liszt:updated');

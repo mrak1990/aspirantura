@@ -106,7 +106,9 @@ class BootPager extends CLinkPager
     protected function createPageButton($label, $page, $class, $hidden, $selected)
     {
         if ($hidden || $selected)
-            $class .= ' ' . ($hidden ? 'disabled' : 'active');
+            $class .= ' ' . ($hidden
+                ? 'disabled'
+                : 'active');
 
         return CHtml::tag('li', array('class' => $class), CHtml::link($label, $this->createPageUrl($page)));
     }

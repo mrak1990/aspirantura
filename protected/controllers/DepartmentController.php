@@ -2,8 +2,11 @@
 
 class DepartmentController extends Controller
 {
-
+    /**
+     * @var string title of current page
+     */
     public $pageTitle = 'Кафедры';
+
     public $breadcrumbs = array(
         'Кафедры' => array('index')
     );
@@ -55,9 +58,6 @@ class DepartmentController extends Controller
     {
         $model = new Department;
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
         if (isset($_POST['Department']))
         {
             $model->attributes = $_POST['Department'];
@@ -67,14 +67,14 @@ class DepartmentController extends Controller
                 {
                     echo CJSON::encode(array(
                             'status' => 'success',
-                            'div' => "Факультет успешно добавлен",
+                            'div' => "Кафедра успешно добавлена",
                             'data' => array(
                                 'value' => $model->id,
                                 'title' => $model->title,
                             )
                         )
                     );
-                    exit;
+                    Yii::app()->end();
                 }
                 else
                     $this->redirect(array(
@@ -88,7 +88,7 @@ class DepartmentController extends Controller
         if (Yii::app()->request->isAjaxRequest)
         {
             if (isset($_POST['title']))
-                $model->title = $_POST['title'];
+                $model->title = mb_convert_case($_POST['title'], MB_CASE_TITLE, 'UTF-8');
             echo CJSON::encode(array(
                     'status' => 'failure',
                     'div' => $this->renderPartial('_form', array(
@@ -96,7 +96,7 @@ class DepartmentController extends Controller
                     ), true)
                 )
             );
-            exit;
+            Yii::app()->end();
         }
         else
             $this->render('create', array(
@@ -114,9 +114,6 @@ class DepartmentController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->loadModel($id);
-
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
 
         if (isset($_POST['Department']))
         {
@@ -158,11 +155,9 @@ class DepartmentController extends Controller
                 $this->loadModel($id)->setDeleted()->save();
 
             if (!isset($_GET['ajax']))
-                $this->redirect(array(
-                        'view',
-                        'id' => $id
-                    )
-                );
+                $this->redirect(Yii::app()->request->getUrlReferrer());
+            else
+                Yii::app()->end();
         }
         else
             throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
@@ -191,11 +186,9 @@ class DepartmentController extends Controller
                 $this->loadModel($id)->setRestored()->save();
 
             if (!isset($_GET['ajax']))
-                $this->redirect(array(
-                        'view',
-                        'id' => $id
-                    )
-                );
+                $this->redirect(Yii::app()->request->getUrlReferrer());
+            else
+                Yii::app()->end();
         }
         else
             throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
@@ -214,10 +207,10 @@ class DepartmentController extends Controller
             $this->loadModel($id)->delete();
 
             if (!isset($_GET['ajax']))
-                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+                $this->redirect($this->createUrl('trash'));
         }
         else
-            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+            throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
     }
 
     /**
@@ -313,22 +306,6 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Manages all models.
-     */
-    public function actionAdmin()
-    {
-        $model = new Department('search');
-        $model->unsetAttributes(); // clear any default values
-        if (isset($_GET['Department']))
-            $model->attributes = $_GET['Department'];
-
-        $this->render('admin', array(
-                'model' => $model,
-            )
-        );
-    }
-
-    /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      *
@@ -338,7 +315,8 @@ class DepartmentController extends Controller
     {
         $model = Department::model()->findByPk($id);
         if ($model === null)
-            throw new CHttpException(404, 'The requested page does not exist.');
+            throw new CHttpException(404, 'Страница не существует.');
+
         return $model;
     }
 

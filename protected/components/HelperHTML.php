@@ -26,6 +26,7 @@ class HelperHTML
         {
             $activeList = array_slice($list_tmp, 0, $count);
             $hiddenList = array_slice($list_tmp, $count);
+
             return implode(', ', $activeList)
                 . ', <a class="expander" href="#">(+' . count($list_tmp) - $count . ')</a>'
                 . '<span class="spoiler collapsed">' . implode(', ', $hiddenList) . ' <a class="collapser" href="#">(свернуть)</a></span>';

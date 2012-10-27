@@ -271,6 +271,7 @@ class FirePHP
         {
             self::init();
         }
+
         return self::$instance;
     }
 
@@ -417,6 +418,7 @@ class FirePHP
         {
             throw $this->newException('Unknown option: ' . $Name);
         }
+
         return $this->options[$Name];
     }
 
@@ -592,7 +594,9 @@ class FirePHP
             }
             if (array_key_exists('Collapsed', $Options))
             {
-                $Options['Collapsed'] = ($Options['Collapsed']) ? 'true' : 'false';
+                $Options['Collapsed'] = ($Options['Collapsed'])
+                    ? 'true'
+                    : 'false';
             }
         }
 
@@ -699,6 +703,7 @@ class FirePHP
         {
             throw $this->newException('Key passed to dump() contains invalid characters [a-zA-Z0-9-_\.:]');
         }
+
         return $this->fb($Variable, $Key, FirePHP::DUMP, $Options);
     }
 
@@ -746,6 +751,7 @@ class FirePHP
             throw new Exception("FirePHP::to() implementation not loaded");
         }
         $args = func_get_args();
+
         return call_user_func_array(array($instance, '_to'), $args);
     }
 
@@ -762,6 +768,7 @@ class FirePHP
             throw new Exception("FirePHP::plugin() implementation not loaded");
         }
         $args = func_get_args();
+
         return call_user_func_array(array($instance, '_plugin'), $args);
     }
 
@@ -787,6 +794,7 @@ class FirePHP
             {
                 return true;
             }
+
         return false;
     }
 
@@ -909,9 +917,11 @@ class FirePHP
                     {
                         $Object = array($Label, $Object);
                     }
+
                     return $msg->table($Object[0], array_slice($Object[1], 1), $Object[1][0]);
                 case self::GROUP_START:
                     $insightGroupStack[] = $msg->group(md5($Label))->open();
+
                     return $msg->log($Label);
                 case self::GROUP_END:
                     if (count($insightGroupStack) == 0)
@@ -919,6 +929,7 @@ class FirePHP
                         throw new Error('Too many groupEnd() as opposed to group() calls!');
                     }
                     $group = array_pop($insightGroupStack);
+
                     return $group->close();
                 default:
                     return $msg->log($Object);
@@ -1035,18 +1046,34 @@ class FirePHP
                             )
                             {
 
-                                $Object = array('Class' => isset($trace[$i]['class']) ? $trace[$i]['class'] : '',
-                                    'Type' => isset($trace[$i]['type']) ? $trace[$i]['type'] : '',
-                                    'Function' => isset($trace[$i]['function']) ? $trace[$i]['function'] : '',
+                                $Object = array('Class' => isset($trace[$i]['class'])
+                                    ? $trace[$i]['class']
+                                    : '',
+                                    'Type' => isset($trace[$i]['type'])
+                                        ? $trace[$i]['type']
+                                        : '',
+                                    'Function' => isset($trace[$i]['function'])
+                                        ? $trace[$i]['function']
+                                        : '',
                                     'Message' => $trace[$i]['args'][0],
-                                    'File' => isset($trace[$i]['file']) ? $this->_escapeTraceFile($trace[$i]['file']) : '',
-                                    'Line' => isset($trace[$i]['line']) ? $trace[$i]['line'] : '',
-                                    'Args' => isset($trace[$i]['args']) ? $this->encodeObject($trace[$i]['args']) : '',
+                                    'File' => isset($trace[$i]['file'])
+                                        ? $this->_escapeTraceFile($trace[$i]['file'])
+                                        : '',
+                                    'Line' => isset($trace[$i]['line'])
+                                        ? $trace[$i]['line']
+                                        : '',
+                                    'Args' => isset($trace[$i]['args'])
+                                        ? $this->encodeObject($trace[$i]['args'])
+                                        : '',
                                     'Trace' => $this->_escapeTrace(array_splice($trace, $i + 1)));
 
                                 $skipFinalObjectEncode = true;
-                                $meta['file'] = isset($trace[$i]['file']) ? $this->_escapeTraceFile($trace[$i]['file']) : '';
-                                $meta['line'] = isset($trace[$i]['line']) ? $trace[$i]['line'] : '';
+                                $meta['file'] = isset($trace[$i]['file'])
+                                    ? $this->_escapeTraceFile($trace[$i]['file'])
+                                    : '';
+                                $meta['line'] = isset($trace[$i]['line'])
+                                    ? $trace[$i]['line']
+                                    : '';
                                 break;
                             }
                 }
@@ -1120,8 +1147,12 @@ class FirePHP
                             }
                             else
                             {
-                                $meta['file'] = isset($trace[$i]['file']) ? $this->_escapeTraceFile($trace[$i]['file']) : '';
-                                $meta['line'] = isset($trace[$i]['line']) ? $trace[$i]['line'] : '';
+                                $meta['file'] = isset($trace[$i]['file'])
+                                    ? $this->_escapeTraceFile($trace[$i]['file'])
+                                    : '';
+                                $meta['line'] = isset($trace[$i]['line'])
+                                    ? $trace[$i]['line']
+                                    : '';
                                 break;
                             }
                 }
@@ -1183,9 +1214,13 @@ class FirePHP
                 {
                     // Message needs to be split into multiple parts
                     $this->setHeader('X-Wf-1-' . $structure_index . '-' . '1-' . $this->messageIndex,
-                        (($i == 0) ? strlen($msg) : '')
+                        (($i == 0)
+                            ? strlen($msg)
+                            : '')
                             . '|' . $part . '|'
-                            . (($i < count($parts) - 2) ? '\\' : ''));
+                            . (($i < count($parts) - 2)
+                            ? '\\'
+                            : ''));
                 }
                 else
                 {
@@ -1240,6 +1275,7 @@ class FirePHP
                 $Trace[$i]['args'] = $this->encodeObject($Trace[$i]['args']);
             }
         }
+
         return $Trace;
     }
 
@@ -1261,6 +1297,7 @@ class FirePHP
 
             return $file;
         }
+
         return $File;
     }
 
@@ -1294,6 +1331,7 @@ class FirePHP
     protected function getUserAgent()
     {
         if (!isset($_SERVER['HTTP_USER_AGENT'])) return false;
+
         return $_SERVER['HTTP_USER_AGENT'];
     }
 
@@ -1327,6 +1365,7 @@ class FirePHP
                 }
             }
         }
+
         return $_cached_headers = $headers;
     }
 
@@ -1342,6 +1381,7 @@ class FirePHP
         {
             return $headers[strtolower($Name)];
         }
+
         return false;
     }
 
@@ -1606,6 +1646,7 @@ class FirePHP
                     return utf8_encode($Object);
                 }
             }
+
         return $return;
     }
 
@@ -1648,6 +1689,7 @@ class FirePHP
                 }
             }
         }
+
         return true;
     }
 
@@ -1784,7 +1826,9 @@ class FirePHP
         switch (gettype($var))
         {
             case 'boolean':
-                return $var ? 'true' : 'false';
+                return $var
+                    ? 'true'
+                    : 'false';
 
             case 'NULL':
                 return 'null';

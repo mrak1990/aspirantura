@@ -48,7 +48,6 @@ echo $form->textFieldRow($model, 'secretariat', array(
 ));
 ?>
 
-
 <div class="form-actions">
     <?php echo CHtml::submitButton($model->isNewRecord
     ? 'Создать'

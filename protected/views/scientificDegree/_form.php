@@ -22,7 +22,9 @@ $form = $this->beginWidget('ext.bootstrap.widgets.BootActiveForm', array(
 )); ?>
 
 <div class="form-actions">
-    <?php echo CHtml::submitButton($model->isNewRecord ? 'Создать' : 'Сохранить', array('class' => 'btn primary')); ?>
+    <?php echo CHtml::submitButton($model->isNewRecord
+    ? 'Создать'
+    : 'Сохранить', array('class' => 'btn primary')); ?>
 </div>
 
 <?php $this->endWidget(); ?>

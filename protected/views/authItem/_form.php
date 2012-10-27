@@ -31,7 +31,9 @@ echo $form->textFieldRow($model, 'name', array(
 echo $form->dropDownListRow($model, 'type', AuthItem::$types, array(
     'class' => 'span5',
     'hint' => 'ЗАПОЛНИТЬ',
-    'disabled' => $model->isNewRecord ? false : true,
+    'disabled' => $model->isNewRecord
+        ? false
+        : true,
 ));
 echo $form->textAreaRow($model, 'description', array(
     'rows' => 3,
@@ -96,7 +98,9 @@ echo $form->dropDownListRow($model, 'children[operations]', $allAuthItems['opera
 ?>
 
 <div class="form-actions">
-    <?php echo CHtml::submitButton($model->isNewRecord ? 'Создать' : 'Сохранить', array('class' => 'btn primary')); ?>
+    <?php echo CHtml::submitButton($model->isNewRecord
+    ? 'Создать'
+    : 'Сохранить', array('class' => 'btn primary')); ?>
 </div>
 
 <?php $this->endWidget(); ?>

@@ -56,7 +56,9 @@ class SFirePHPUtil
         if (!class_exists('FB', false))
             require_once($libPath . '/fb.php');
 
-        FB::setOptions(empty($options) ? array() : $options);
+        FB::setOptions(empty($options)
+            ? array()
+            : $options);
     }
 
     /**

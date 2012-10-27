@@ -93,7 +93,9 @@ class BootTabbable extends CWidget
         $content = ob_get_clean();
 
         echo CHtml::openTag('div', $this->htmlOptions);
-        echo $this->placement === self::PLACEMENT_BELOW ? $content . $tabs : $tabs . $content;
+        echo $this->placement === self::PLACEMENT_BELOW
+            ? $content . $tabs
+            : $tabs . $content;
         echo '</div>';
 
         /** @var CClientScript $cs */

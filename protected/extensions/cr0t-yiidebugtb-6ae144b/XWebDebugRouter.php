@@ -70,7 +70,9 @@ class arrayDumper
      */
     public static function dump($var, $depth = 10, $highlight = false, $yamlStyle = false)
     {
-        return $yamlStyle == false ? CVarDumper::dumpAsString($var, $depth, $highlight) : self::dumpAsString($var, $depth, $highlight);
+        return $yamlStyle == false
+            ? CVarDumper::dumpAsString($var, $depth, $highlight)
+            : self::dumpAsString($var, $depth, $highlight);
     }
 
     /**
@@ -106,7 +108,9 @@ class arrayDumper
         switch (gettype($var))
         {
             case 'boolean':
-                self::$_output .= $var ? 'true' : 'false';
+                self::$_output .= $var
+                    ? 'true'
+                    : 'false';
                 break;
             case 'integer':
                 self::$_output .= "$var";
@@ -143,9 +147,13 @@ class arrayDumper
 
                     foreach ($keys as $key)
                     {
-                        self::$_output .= ($level == 0 ? '' : "\n") . $spaces . "  $key: ";
+                        self::$_output .= ($level == 0
+                            ? ''
+                            : "\n") . $spaces . "  $key: ";
                         self::$_output .= self::dumpInternal($var[$key], $level + 1);
-                        self::$_output .= ($level == 0 ? "\n" : '');
+                        self::$_output .= ($level == 0
+                            ? "\n"
+                            : '');
                     }
 
                     self::$_output .= "";
@@ -195,11 +203,19 @@ class yiiDebugPanel
     public function render($items = array(), $config = array())
     {
         $msg = "Run rendering...\n";
-        $alignLeft = isset($config['alignLeft']) ? true : false;
-        $opaque = isset($config['opaque']) ? true : false;
+        $alignLeft = isset($config['alignLeft'])
+            ? true
+            : false;
+        $opaque = isset($config['opaque'])
+            ? true
+            : false;
         ;
-        $fixedPos = isset($config['fixedPos']) ? true : false;
-        $collapsed = isset($config['collapsed']) ? true : false;
+        $fixedPos = isset($config['fixedPos'])
+            ? true
+            : false;
+        $collapsed = isset($config['collapsed'])
+            ? true
+            : false;
         ;
 
         $viewFile = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'debugPanel.php';
@@ -234,7 +250,9 @@ class yiiDebugClass
             $time = yiiDebugTrace::timestampToTime($timestamp);
             $odd = !$odd;
 
-            $result .= '<tr' . ($odd ? ' class="odd"' : '') . '><td>' . $time . '</td><td>' . $level . '</td><td>' . $category . '</td><td>' . $message . '</td></tr>';
+            $result .= '<tr' . ($odd
+                ? ' class="odd"'
+                : '') . '><td>' . $time . '</td><td>' . $level . '</td><td>' . $category . '</td><td>' . $message . '</td></tr>';
         }
 
         if ($result !== '')
@@ -368,12 +386,24 @@ class yiiDebugConfig extends yiiDebugClass
         $result = '';
 
         $config = array(
-            'debug' => (DEFINED('YII_DEBUG') && YII_DEBUG != false) ? 'on' : 'off',
-            'xdebug' => extension_loaded('xdebug') ? 'on' : 'off',
-            'tokenizer' => function_exists('token_get_all') ? 'on' : 'off',
-            'eaccelerator' => extension_loaded('eaccelerator') && ini_get('eaccelerator.enable') ? 'on' : 'off',
-            'apc' => extension_loaded('apc') && ini_get('apc.enabled') ? 'on' : 'off',
-            'xcache' => extension_loaded('xcache') && ini_get('xcache.cacher') ? 'on' : 'off',
+            'debug' => (DEFINED('YII_DEBUG') && YII_DEBUG != false)
+                ? 'on'
+                : 'off',
+            'xdebug' => extension_loaded('xdebug')
+                ? 'on'
+                : 'off',
+            'tokenizer' => function_exists('token_get_all')
+                ? 'on'
+                : 'off',
+            'eaccelerator' => extension_loaded('eaccelerator') && ini_get('eaccelerator.enable')
+                ? 'on'
+                : 'off',
+            'apc' => extension_loaded('apc') && ini_get('apc.enabled')
+                ? 'on'
+                : 'off',
+            'xcache' => extension_loaded('xcache') && ini_get('xcache.cacher')
+                ? 'on'
+                : 'off',
         );
 
         $result = '<ul class="yiiDebugInfoInline">';
@@ -456,7 +486,9 @@ class yiiDebugConfig extends yiiDebugClass
         {
             foreach ($values['extensions'] as $key => $extension)
             {
-                $values['extensions'][$key] = phpversion($extension) ? sprintf('%s (%s)', $extension, phpversion($extension)) : $extension;
+                $values['extensions'][$key] = phpversion($extension)
+                    ? sprintf('%s (%s)', $extension, phpversion($extension))
+                    : $extension;
             }
         }
 
@@ -485,6 +517,7 @@ class yiiDebugConfig extends yiiDebugClass
     public static function yiiAppAsArray()
     {
         $result = Yii::app();
+
         return Yii::app();
     }
 

@@ -27,7 +27,9 @@ class BootThumbnails extends BootListView
         {
             echo CHtml::openTag('ul', array('class' => 'thumbnails'));
             $owner = $this->getOwner();
-            $render = $owner instanceof CController ? 'renderPartial' : 'render';
+            $render = $owner instanceof CController
+                ? 'renderPartial'
+                : 'render';
             foreach ($data as $i => $item)
             {
                 $data = $this->viewData;

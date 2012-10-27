@@ -17,7 +17,7 @@ $('.search-button').click(function(){
 <!-- Search form BEGIN -->
 <?php echo CHtml::link('Параметры поиска', '#', array('class' => 'search-button btn')); ?>
 <?php
-$form = $this->beginWidget('ext.bootstrap.widgets.BootActiveForm', array(
+$form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
     'id' => 'search-form',
     'type' => 'horizontal',
     'action' => $this->createUrl(''),

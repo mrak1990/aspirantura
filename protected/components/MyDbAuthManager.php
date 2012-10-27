@@ -35,6 +35,7 @@ class MyDbAuthManager extends CDbAuthManager
 
             $assignments[$row['userid']] = new CAuthAssignment($this, $row['itemname'], $row['userid'], $row['bizrule'], $data);
         }
+
         return $assignments;
     }
 
@@ -65,6 +66,7 @@ class MyDbAuthManager extends CDbAuthManager
                 $data = null;
             $parents[$row['name']] = new CAuthItem($this, $row['name'], $row['type'], $row['description'], $row['bizrule'], $data);
         }
+
         return $parents;
     }
 }

@@ -24,7 +24,9 @@ echo $form->passwordFieldRow($model, 'password', array(
     'class' => 'span5',
     'maxlength' => 20,
     'hint' => 'ЗАПОЛНИТЬ',
-    'disabled' => ($model->isNewRecord) ? false : true,
+    'disabled' => ($model->isNewRecord)
+        ? false
+        : true,
 ));
 ?>
 
@@ -70,7 +72,9 @@ echo $form->textFieldRow($model, 'middle_name', array(
 ?>
 
 <div class="form-actions">
-    <?php echo CHtml::submitButton($model->isNewRecord ? 'Создать' : 'Сохранить', array('class' => 'btn primary')); ?>
+    <?php echo CHtml::submitButton($model->isNewRecord
+    ? 'Создать'
+    : 'Сохранить', array('class' => 'btn primary')); ?>
 </div>
 
 <?php $this->endWidget(); ?>

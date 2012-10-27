@@ -18,7 +18,6 @@ class SearchAction extends CAction
     public $labelField;
     public $searchField;
     public $limit = 10;
-    public $emptyText = '<a href="#">Нет результатов</a>';
 
     public function run($term)
     {
@@ -30,26 +29,16 @@ class SearchAction extends CAction
         $criteria->compare($this->searchField, $term, true);
 
         $models = $this->model->findAll($criteria);
-//        CVarDumper::dump($models, 3, true);
-//        array_walk($models, function($model) {
-//           $model->setScenario('search'); 
-//        });
-
         $data = CHtml::listData($models, $this->idField, $this->labelField);
 
         $result = array();
-        if (count($data) === 0)
-        {
-        } //            $result[] = array('id' => null, 'label' => $this->emptyText);
-        else
-        {
-            foreach ($data as $key => $value)
-                $result[] = array('id' => $key, 'text' => $value);
-        }
-//        echo CJSON::encode($result);
+        foreach ($data as $key => $value)
+            $result[] = array('id' => $key, 'text' => $value);
+
         echo CJSON::encode(array(
             'q' => $term,
             'results' => $result));
+
         Yii::app()->end();
     }
 }

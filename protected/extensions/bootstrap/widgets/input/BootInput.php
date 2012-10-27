@@ -176,6 +176,7 @@ abstract class BootInput extends CInputWidget
             echo '<div class="' . $classes . '">';
             if (isset($this->htmlOptions['prepend']))
                 echo CHtml::tag('span', $htmlOptions, $this->htmlOptions['prepend']);
+
             return ob_get_clean();
         }
         else
@@ -203,6 +204,7 @@ abstract class BootInput extends CInputWidget
             if (isset($this->htmlOptions['append']))
                 echo CHtml::tag('span', $htmlOptions, $this->htmlOptions['append']);
             echo '</div>';
+
             return ob_get_clean();
         }
         else
@@ -255,6 +257,7 @@ abstract class BootInput extends CInputWidget
         {
             $hint = $this->htmlOptions['hint'];
             unset($this->htmlOptions['hint']);
+
             return '<p class="help-block">' . $hint . '</p>';
         }
         else

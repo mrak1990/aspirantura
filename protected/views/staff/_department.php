@@ -1,4 +1,9 @@
 <?php
+/**
+ * @var Staff $model
+ * @var Controller $this
+ * @var string $hint
+ */
 
 $jsPrefix = 'department';
 $selector = '#' . CHtml::activeId($model, 'department_id');

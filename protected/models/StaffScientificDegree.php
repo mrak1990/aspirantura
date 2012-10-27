@@ -70,8 +70,18 @@ class StaffScientificDegree extends ActiveRecord
         );
     }
 
+    /**
+     * @return array for CSort->attributes
+     */
+    public function getSortAttributes()
+    {
+        return array();
+    }
+
     public function getFullTitle()
     {
-        return $this->doctor ? "доктор {$this->degree->full_title}" : "кандидат {$this->degree->full_title}";
+        return $this->doctor
+            ? "доктор {$this->degree->full_title}"
+            : "кандидат {$this->degree->full_title}";
     }
 }

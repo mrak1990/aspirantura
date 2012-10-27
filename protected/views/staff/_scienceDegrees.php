@@ -1,6 +1,12 @@
 <?php
-$selector = 'degreeInlineCreate';
-$jsPrefix = 'degree';
+/**
+ * @var StaffScientificDegree[] $degrees
+ * @var Controller $this
+ * @var string $hint
+ */
+
+$selector = 'degreesInlineCreate';
+$jsPrefix = 'degrees';
 $chosenOptions = optionsData::getChosenOptions($jsPrefix, $selector);
 
 $this->widget('ext.EChosen.EChosen', array(
@@ -51,7 +57,8 @@ $emptyDegree = new StaffScientificDegree;
         ));
         ?>
     </div>
-    <script type="text/html" id="degreeTemplate" style="display: none;" data-count="<?php echo count($degrees); ?>">
+    <script type="text/html" id="<?php echo $jsPrefix; ?>Template" style="display: none;"
+            data-count="<?php echo count($degrees); ?>">
         <?php
         echo '<div class="controls">';
         echo $form->radioButtonList($emptyDegree, '[{{i}}]doctor', array(

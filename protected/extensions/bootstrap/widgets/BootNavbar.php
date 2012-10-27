@@ -100,7 +100,9 @@ class BootNavbar extends CWidget
         if (isset($this->brandUrl))
             $this->brandOptions['href'] = $this->brandUrl;
 
-        $containerCssClass = $this->fluid ? 'container-fluid' : 'container';
+        $containerCssClass = $this->fluid
+            ? 'container-fluid'
+            : 'container';
 
         echo CHtml::openTag('div', $this->htmlOptions);
         echo '<div class="navbar-inner"><div class="' . $containerCssClass . '">';

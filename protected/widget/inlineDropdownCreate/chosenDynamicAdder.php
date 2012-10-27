@@ -37,6 +37,7 @@ class chosenDynamicAdder extends contentDynamicAdder
     public function getAddButtonScript()
     {
         $options = CJavaScript::encode($this->chosenOptions);
+
         return "var {$this->jsPrefix}Template = $('#{$this->jsPrefix}Template');
                 var {$this->jsPrefix}TemplateHtml = $.trim({$this->jsPrefix}Template.html());
                 var {$this->jsPrefix}ControlDiv = $(this).parent().parent();

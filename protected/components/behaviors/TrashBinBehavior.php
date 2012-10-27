@@ -20,7 +20,11 @@ class TrashBinBehavior extends CActiveRecordBehavior
 
     protected function bool2str($value)
     {
-        return is_bool($value) ? ($value ? 'true' : 'false') : $value;
+        return is_bool($value)
+            ? ($value
+                ? 'true'
+                : 'false')
+            : $value;
     }
 
     public function getDeletedRecords()
@@ -28,6 +32,7 @@ class TrashBinBehavior extends CActiveRecordBehavior
         $this->getOwner()->getDbCriteria()->mergeWith(array(
             'condition' => "\"{$this->getOwner()->getTableAlias()}\".\"{$this->deletedFlagField}\"='{$this->bool2str($this->deletedFlag)}'",
         ));
+
         return $this->getOwner();
     }
 
@@ -36,6 +41,7 @@ class TrashBinBehavior extends CActiveRecordBehavior
         $this->getOwner()->getDbCriteria()->mergeWith(array(
             'condition' => "\"{$this->getOwner()->getTableAlias()}\".\"{$this->deletedFlagField}\"='{$this->bool2str($this->restoredFlag)}'",
         ));
+
         return $this->getOwner();
     }
 
@@ -48,6 +54,7 @@ class TrashBinBehavior extends CActiveRecordBehavior
     {
         $owner = $this->getOwner();
         $owner->{$this->deletedFlagField} = $this->deletedFlag;
+
 //        $owner->save();
         return $owner;
     }
@@ -56,6 +63,7 @@ class TrashBinBehavior extends CActiveRecordBehavior
     {
         $owner = $this->getOwner();
         $owner->{$this->deletedFlagField} = $this->restoredFlag;
+
 //        CVarDumper::dump($owner, 3, true);
 //        $owner->save(); 
         return $owner;

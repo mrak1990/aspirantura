@@ -117,7 +117,9 @@ class BootMenu extends BootBaseMenu
 
                 if (isset($this->itemTemplate) || isset($item['template']))
                 {
-                    $template = isset($item['template']) ? $item['template'] : $this->itemTemplate;
+                    $template = isset($item['template'])
+                        ? $item['template']
+                        : $this->itemTemplate;
                     echo strtr($template, array('{menu}' => $menu));
                 }
                 else
@@ -128,7 +130,9 @@ class BootMenu extends BootBaseMenu
                     $this->controller->widget('bootstrap.widgets.BootDropdown', array(
                         'encodeLabel' => $this->encodeLabel,
                         'items' => $item['items'],
-                        'htmlOptions' => isset($item['dropdownOptions']) ? $item['dropdownOptions'] : $this->dropdownOptions,
+                        'htmlOptions' => isset($item['dropdownOptions'])
+                            ? $item['dropdownOptions']
+                            : $this->dropdownOptions,
                     ));
                 }
 

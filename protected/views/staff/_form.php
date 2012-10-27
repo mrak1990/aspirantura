@@ -1,5 +1,11 @@
 <?php
-$form = $this->beginWidget('ext.bootstrap.widgets.BootActiveForm', array(
+/**
+ * @var $form MyBootActiveForm
+ * @var $model Staff
+ * @var $this CController
+ */
+
+$form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
     'id' => 'staff-form',
     'type' => 'horizontal',
     'enableClientValidation' => true,
@@ -11,26 +17,20 @@ $form = $this->beginWidget('ext.bootstrap.widgets.BootActiveForm', array(
 <?php echo $form->errorSummary($model); ?>
 
 <?php
-
 $this->renderPartial('_faculty', array(
     'model' => $model,
     'form' => $form,
     'hint' => 'Заполнить1',
 ));
+?>
 
+<?php
 $this->renderPartial('_department', array(
     'model' => $model,
     'form' => $form,
     'hint' => 'Заполнить2',
 ));
-
-
-
-
 ?>
-
-
-
 
 <?php
 echo $form->textFieldRow($model, 'fio', array(
@@ -40,68 +40,37 @@ echo $form->textFieldRow($model, 'fio', array(
 ));
 ?>
 
-<div class="control-group ">
-    <?php
-    echo CHtml::activeLabelEx($model, 'birth', array(
-        'class' => 'control-label',
-    ));
-    ?>
-    <div class="controls">
-
-        <?php
-        $this->widget('zii.widgets.jui.CJuiDatePicker', array(
-            'model' => $model,
-            'attribute' => 'birth',
-            // additional javascript options for the date picker plugin
-            'options' => array(
-                'showAnim' => 'fold',
-            ),
-            'htmlOptions' => array(
-                'style' => 'height:20px;'
-            ),
-        ));
-        ?>
-        <span style="display: none" id="Staff_fio_em_" class="help-inline"></span>
-
-        <p class="help-block">ЗАПОЛНИТЬ</p>
-    </div>
-</div>
 <?php
-echo $form->textFieldRow($model, 'academic_position_id', array(
-    'class' => 'span5',
-    'hint' => 'ЗАПОЛНИТЬ',
-));
+echo $form->customRow($model, 'birth',
+    $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+        'model' => $model,
+        'attribute' => 'birth',
+        'options' => array(
+            'showAnim' => 'fold',
+        ),
+        'htmlOptions' => array(
+            'style' => 'height:20px;'
+        ),
+    ), true),
+    array(
+        'class' => 'span5',
+        'maxlength' => 50,
+        'hint' => 'ЗАПОЛНИТЬ',
+    )
+);
 ?>
 
 <?php
-echo $form->textFieldRow($model, 'administrative_position_id', array(
-    'class' => 'span5',
-    'hint' => 'ЗАПОЛНИТЬ',
-));
-?>
-
-<?php
-echo $form->textFieldRow($model, 'scientific_rank_id', array(
-    'class' => 'span5',
-    'hint' => 'ЗАПОЛНИТЬ',
-));
-?>
-
-<?php
-$this->renderPartial('_sciDegree', array(
+$this->renderPartial('_scienceDegrees', array(
     'degrees' => $model->scientificDegrees,
     'form' => $form,
 ));
 ?>
 
 <div class="form-actions">
-    <?php echo CHtml::submitButton($model->isNewRecord ? 'Создать' : 'Сохранить', array('class' => 'btn primary')); ?>
+    <?php echo CHtml::submitButton($model->isNewRecord
+    ? 'Создать'
+    : 'Сохранить', array('class' => 'btn primary')); ?>
 </div>
 
 <?php $this->endWidget(); ?>
-
-<?php
-//Yii::app()->clientScript->registerScript('trigger_autocomplete', "
-//    $('#" . CHtml::getIdByName(CHtml::activeName($model, 'facultyId')) . "').trigger('change');
-//");
-?>

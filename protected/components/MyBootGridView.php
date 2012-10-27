@@ -34,7 +34,9 @@ class MyBootGridView extends BootGridView
                     echo $this->footer['prepend'];
                 else
                     echo 'С отмеченными: ';
-                echo implode((isset($this->footer['delimiter'])) ? $this->footer['delimiter'] : ', ', $itemsToShow);
+                echo implode((isset($this->footer['delimiter']))
+                    ? $this->footer['delimiter']
+                    : ', ', $itemsToShow);
                 echo '</td></tr>';
                 echo '</tfoot>';
             }

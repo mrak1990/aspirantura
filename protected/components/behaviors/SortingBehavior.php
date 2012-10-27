@@ -24,7 +24,11 @@ class SortingBehavior extends CActiveRecordBehavior
         $owner = $this->getOwner();
         $attributes = array_merge($owner->model()->attributeNames(), $include);
         $attributes = array_diff($attributes, $exclude);
-        $resolvedAttributes = $owner->getResolvedSortOptions();
+
+        if (method_exists($owner, 'getResolvedSortOptions'))
+            $resolvedAttributes = $owner->getResolvedSortOptions();
+        else
+            $resolvedAttributes = array();
 
         $options = array();
         foreach ($attributes as $attribute)

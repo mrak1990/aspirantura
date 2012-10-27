@@ -319,8 +319,12 @@ class BootActiveForm extends CActiveForm
         else
             $uncheck = '';
 
-        $hiddenOptions = isset($htmlOptions['id']) ? array('id' => CHtml::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
-        $hidden = $uncheck !== null ? CHtml::hiddenField($name, $uncheck, $hiddenOptions) : '';
+        $hiddenOptions = isset($htmlOptions['id'])
+            ? array('id' => CHtml::ID_PREFIX . $htmlOptions['id'])
+            : array('id' => false);
+        $hidden = $uncheck !== null
+            ? CHtml::hiddenField($name, $uncheck, $hiddenOptions)
+            : '';
 
         if (isset($htmlOptions['template']))
             $template = $htmlOptions['template'];
@@ -334,14 +338,20 @@ class BootActiveForm extends CActiveForm
 
         unset($htmlOptions['checkAll'], $htmlOptions['checkAllLast']);
 
-        $labelOptions = isset($htmlOptions['labelOptions']) ? $htmlOptions['labelOptions'] : array();
+        $labelOptions = isset($htmlOptions['labelOptions'])
+            ? $htmlOptions['labelOptions']
+            : array();
         unset($htmlOptions['labelOptions']);
 
         $items = array();
         $baseID = CHtml::getIdByName($name);
         $id = 0;
-        $method = $checkbox ? 'checkBox' : 'radioButton';
-        $labelCssClass = $checkbox ? 'checkbox' : 'radio';
+        $method = $checkbox
+            ? 'checkBox'
+            : 'radioButton';
+        $labelCssClass = $checkbox
+            ? 'checkbox'
+            : 'radio';
 
         if (isset($htmlOptions['inline']))
         {
@@ -414,7 +424,9 @@ class BootActiveForm extends CActiveForm
             return $this->getErrorHtml($model, $attribute, $htmlOptions);
 
         $id = CHtml::activeId($model, $attribute);
-        $inputID = isset($htmlOptions['inputID']) ? $htmlOptions['inputID'] : $id;
+        $inputID = isset($htmlOptions['inputID'])
+            ? $htmlOptions['inputID']
+            : $id;
         unset($htmlOptions['inputID']);
         if (!isset($htmlOptions['id']))
             $htmlOptions['id'] = $inputID . '_em_';
@@ -456,7 +468,9 @@ class BootActiveForm extends CActiveForm
 
         if ($enableClientValidation)
         {
-            $validators = isset($htmlOptions['clientValidation']) ? array($htmlOptions['clientValidation']) : array();
+            $validators = isset($htmlOptions['clientValidation'])
+                ? array($htmlOptions['clientValidation'])
+                : array();
             foreach ($model->getValidators($attribute) as $validator)
             {
                 if ($enableClientValidation && $validator->enableClientValidation)
@@ -483,6 +497,7 @@ class BootActiveForm extends CActiveForm
         }
 
         $this->attributes[$inputID] = $option;
+
         return $html;
     }
 
@@ -531,6 +546,7 @@ class BootActiveForm extends CActiveForm
             'data' => $data,
             'htmlOptions' => $htmlOptions,
         ));
+
         return ob_get_clean();
     }
 
