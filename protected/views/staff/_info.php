@@ -32,7 +32,7 @@
                     array(
                         'label' => 'аспиранты',
                         'url' => array(
-                            'student/index',
+                            'candidate/index',
                             'Staff[faculty_id][]' => $model->id
                         )
                     ),

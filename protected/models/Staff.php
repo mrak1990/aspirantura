@@ -33,8 +33,6 @@ class Staff extends ActiveRecord
 {
 
     public $facultyId;
-    public $facultyTitle;
-    public $departmentTitle;
 
     /**
      * Returns the static model of the specified AR class.
@@ -104,9 +102,7 @@ class Staff extends ActiveRecord
     {
         return array(
             'id' => 'ID',
-            'facultyTitle' => 'Факультет',
             'facultyId' => 'Факультет',
-            'departmentTitle' => 'Кафедра',
             'department_id' => 'Кафедра',
             'fio' => 'ФИО',
             'birth' => 'Дата рождения',
@@ -125,13 +121,28 @@ class Staff extends ActiveRecord
         $criteria = $this->getDbCriteria();
 
         $criteria->compare('id', $this->id);
-        $criteria->compare('faculty.title', $this->facultyTitle, true);
-        $criteria->compare('department.title', $this->departmentTitle, true);
         $criteria->compare('fio', $this->fio, true);
         $criteria->compare('birth', $this->birth, true);
-        $criteria->compare('academic_position_id', $this->academic_position_id);
-        $criteria->compare('administrative_position_id', $this->administrative_position_id);
-        $criteria->compare('scientific_rank_id', $this->scientific_rank_id);
+
+        $departmentsSelected = false;
+        if (is_array($this->department_id))
+        {
+            if (in_array('', $this->department_id))
+                $this->department_id = array_diff($this->department_id, array(''));
+            if (!empty($this->department_id))
+            {
+                $criteria->addInCondition('department.id', $this->department_id);
+                $departmentsSelected = true;
+            }
+        }
+
+        if (!$departmentsSelected && is_array($this->facultyId))
+        {
+            if (in_array('', $this->facultyId))
+                $this->facultyId = array_diff($this->facultyId, array(''));
+            if (!empty($this->facultyId))
+                $criteria->addInCondition('department.faculty_id', $this->facultyId);
+        }
 
         return $this;
     }
@@ -229,7 +240,7 @@ class Staff extends ActiveRecord
                     $curDegree->delete();
             }
 
-            // add new degress
+            // add new degrees
             foreach ($degrees as $curDegree)
             {
                 if (!in_array($curDegree['scientific_degree_id'], $degreesOldIds))
@@ -254,7 +265,10 @@ class Staff extends ActiveRecord
         $degrees = array();
 
         foreach ($this->scientificDegrees as $degree)
-            $degrees[] = $degree->getFullTitle();
+            $degrees[] = CHtml::link($degree->getFullTitle(), array(
+                'staffScientificDegree/view',
+                'id' => $degree->scientific_degree_id
+            ));
 
         return implode(', ', $degrees);
     }

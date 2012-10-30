@@ -21,7 +21,6 @@ class Department extends ActiveRecord
 {
 
     public $headFio;
-    public $facultyTitle;
 
     /**
      * Returns the static model of the specified AR class.
@@ -82,7 +81,6 @@ class Department extends ActiveRecord
             'title' => 'Название',
             'number' => 'Номер кафедры',
             'faculty_id' => 'Факультет',
-            'facultyTitle' => 'Факультет',
             'staff_id' => 'Заведующий',
             'headFio' => 'Заведующий',
         );
@@ -101,7 +99,7 @@ class Department extends ActiveRecord
         $criteria->compare('number', $this->number);
         if (is_array($this->faculty_id))
         {
-            if (($pos = array_search('', $this->faculty_id)) !== false)
+            if (in_array('', $this->faculty_id))
                 $this->faculty_id = array_diff($this->faculty_id, array(''));
             if (!empty($this->faculty_id))
                 $criteria->addInCondition('faculty.id', $this->faculty_id);

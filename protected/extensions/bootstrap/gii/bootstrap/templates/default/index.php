@@ -10,35 +10,54 @@ $label = $this->pluralize($this->class2id($this->modelClass));
 $id = $this->class2id($this->modelClass);
 ?>
 
-$this->breadcrumbs = array_keys($this->breadcrumbs);
-$this->menu = array(
-array('label' => 'Поиск', 'url' => array('index'), 'icon' => 'search', 'itemOptions' => array('title' => 'Поиск и фильтрация записей')),
-array('label' => 'Добавить', 'url' => array('create'), 'icon' => 'plus', 'itemOptions' => array('title' => 'Добавление новой записи')),
-array('label' => 'Корзина', 'url' => array('trash'), 'icon' => 'trash', 'itemOptions' => array('title' => 'Просмотр записей в корзине')),
-array('label' => 'Параметры', 'icon' => 'cog', 'itemOptions' => array(
-'class' => 'pull-right',
-'title' => 'Параметры вывода'
-),
-'items' => array(
-),
-));
-?>
+/**
+* @var <?php echo $this->model ?> $model
+* @var SortForm $searchModel
+* @var CDbCriteria $criteria
+* @var CSort $sort
+* @var Controller $this
+*/
 
-<?php echo "<?php "; ?>
+$this->breadcrumbs = array_keys($this->breadcrumbs);
+$this->menu = HelperHTML::getMenu(basename(__FILE__, '.php'));
+
 $this->renderPartial('_search', array(
 'model' => $model,
 'searchModel' => $searchModel,
 ));
-?>
 
-<?php echo "<?php"; ?> $this->widget('MyBootGridView', array(
+$valueFunction = function ($data)
+{
+return Yii::app()->controller->widget("ext.bootstrap.widgets.BootButtonGroup", array(
+"size" => "mini",
+"buttons" => array(
+array(
+"items" => array(
+array(
+"label" => "ссылка",
+"url" => array(
+"#",
+"Department[faculty_id][]" => $data->id
+)
+),
+"---",
+array(
+"label" => "что-то ещё",
+"url" => "#"
+),
+)
+),
+),
+), true);
+};
+
+$this->widget('MyBootGridView', array(
 'id' => '<?php echo $id; ?>-grid',
 'type' => 'striped bordered condensed',
 'dataProvider' => new CActiveDataProvider($model, array(
 'criteria' => $criteria,
 'sort' => $sort,
-'pagination' => array(
-'pageSize' => 5,
+'pagination' => array( //            'pageSize' => 5,
 ),
 )),
 'enableSorting' => false,
@@ -52,51 +71,27 @@ $this->renderPartial('_search', array(
 'title' => array(
 'header' => 'Название',
 'name' => 'title',
-'value' => 'CHtml::link($data->title, array("view", "id"=>$data->id))',
+'value' => 'CHtml::link("$data->fullTitle", array("view", "id"=>$data->id))',
 'type' => 'html',
 ),
 array(
-'header' => 'Название отношения',
-'name' => 'relation_name_sort',
-'value' => '(isset($data->relation_name)) ? $data->relation_name->attribute : null'
+'class' => 'ext.bootstrap.widgets.BootButtonColumn',
+'htmlOptions' => array('style' => 'width: 50px'),
+),
+array(
+'class' => 'CDataColumn',
+'type' => 'raw',
+'value' => $valueFunction,
+'htmlOptions' => array(
+'style' => 'width: 20px'
+),
 ),
 ),
 'footer' => array(
 'prepend' => 'С отмеченными: ',
 'class' => 'action-footer',
-'items' => array(
-array(
-'value' => CHtml::ajaxLink('В корзину', array('toTrash', 'id' => 'many'), array(
-'type' => 'POST',
-'data' => 'js:{ids : $.fn.yiiGridView.getChecked("<?php echo $id; ?>-grid", "checkboxes")}',
-'success' => 'js:$.fn.yiiGridView.update("<?php echo $id; ?>-grid")',
-'error' => 'js:function(jqXHR, textStatus, errorThrown) {alert("Error: " + textStatus)}',
-)
+'items' => $model->getFooterItems(),
 ),
-'visible' => $this->action->id === 'index',
-),
-array(
-'value' => CHtml::ajaxLink('Восстановить', array('restore', 'id' => 'many'), array(
-'type' => 'POST',
-'data' => 'js:{ids : $.fn.yiiGridView.getChecked("<?php echo $id; ?>-grid", "checkboxes")}',
-'success' => 'js:$.fn.yiiGridView.update("<?php echo $id; ?>-grid")',
-'error' => 'js:function(jqXHR, textStatus, errorThrown) {alert("Error: " + textStatus)}',
-)
-),
-'visible' => $this->action->id === 'trash',
-),
-array(
-'value' => CHtml::ajaxLink('Удалить', array('delete', 'id' => 'many'), array(
-'type' => 'POST',
-'data' => 'js:{ids : $.fn.yiiGridView.getChecked("faculty-grid", "checkboxes")}',
-'success' => 'js:$.fn.yiiGridView.update("faculty-grid")',
-'error' => 'js:function(jqXHR, textStatus, errorThrown) {alert("Error: " + textStatus)}',
-), array(
-'confirm' => 'Вы действительно хотите везвозвратно удалить отмеченные записи?',
-)
-),
-'visible' => $this->action->id === 'trash',
-),
-),
-),
-)); ?>
+));
+
+?>

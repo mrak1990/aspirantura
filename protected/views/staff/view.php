@@ -25,6 +25,7 @@ $this->widget('ext.bootstrap.widgets.BootDetailView', array(
             'degree' => array(
                 'label' => 'Учёная степень',
                 'value' => $model->getScientificDegreesAsString(),
+                'type' => 'html',
             ),
             'department' => array(
                 'label' => 'Кафедра',

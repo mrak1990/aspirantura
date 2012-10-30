@@ -9,9 +9,13 @@
 
 class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseControllerClass . "\n"; ?>
 {
-
+/**
+* @var string title of current page
+*/
 public $pageTitle = '';
-public $breadcrumbs = array('//TODO:'=>array('index'));
+public $breadcrumbs = array(
+'//TODO:'=>array('index')
+);
 
 /**
 * @return array action filters
@@ -19,6 +23,24 @@ public $breadcrumbs = array('//TODO:'=>array('index'));
 public function filters()
 {
 return array(
+);
+}
+
+public function actions()
+{
+return array(
+'search' => array(
+'class' => 'application.components.actions.SearchAction',
+'model' => <?php echo $this->modelClass; ?>::model(),
+'labelField' => 'title',
+'searchField' => 'title',
+),
+'optionList' => array(
+'class' => 'application.components.actions.ListAction',
+'model' => <?php echo $this->modelClass; ?>::model(),
+'labelField' => 'title',
+'parentIdField' => 'foreign_key_id',
+),
 );
 }
 
@@ -30,7 +52,8 @@ public function actionView($id)
 {
 $this->render('view',array(
 'model'=>$this->loadModel($id),
-));
+)
+);
 }
 
 /**
@@ -39,21 +62,53 @@ $this->render('view',array(
 */
 public function actionCreate()
 {
-$model=new <?php echo $this->modelClass; ?>;
+$model = new <?php echo $this->modelClass; ?>;
 
-// Uncomment the following line if AJAX validation is needed
-// $this->performAjaxValidation($model);
-
-if(isset($_POST['<?php echo $this->modelClass; ?>']))
+if (isset($_POST['<?php echo $this->modelClass; ?>']))
 {
-$model->attributes=$_POST['<?php echo $this->modelClass; ?>'];
-if($model->save())
-$this->redirect(array('view','id'=>$model-><?php echo $this->tableSchema->primaryKey; ?>));
+$model->attributes = $_POST['<?php echo $this->modelClass; ?>'];
+if ($model->save())
+{
+if (Yii::app()->request->isAjaxRequest)
+{
+echo CJSON::encode(array(
+'status' => 'success',
+'div' => "Запись успешно добавлена",
+'data' => array(
+'value' => $model->id,
+'title' => $model->title,
+)
+)
+);
+Yii::app()->end();
+}
+else
+$this->redirect(array(
+'view',
+'id' => $model->id
+)
+);
+}
 }
 
-$this->render('create',array(
-'model'=>$model,
-));
+if (Yii::app()->request->isAjaxRequest)
+{
+if (isset($_POST['title']))
+$model->title = mb_convert_case($_POST['title'], MB_CASE_TITLE, 'UTF-8');
+echo CJSON::encode(array(
+'status' => 'failure',
+'div' => $this->renderPartial('_form', array(
+'model' => $model
+), true)
+)
+);
+Yii::app()->end();
+}
+else
+$this->render('create', array(
+'model' => $model,
+)
+);
 }
 
 /**
@@ -64,9 +119,6 @@ $this->render('create',array(
 public function actionUpdate($id)
 {
 $model=$this->loadModel($id);
-
-// Uncomment the following line if AJAX validation is needed
-// $this->performAjaxValidation($model);
 
 if(isset($_POST['<?php echo $this->modelClass; ?>']))
 {
@@ -86,18 +138,24 @@ $this->render('update',array(
 * @param integer $id the ID of the model to be deleted
 */
 public function actionToTrash($id) {
-if (Yii::app()->request->isPostRequest) {
-if ($id === 'many') {
-if (isset($_POST['ids']) && is_array($_POST['ids'])) {
+if (Yii::app()->request->isPostRequest)
+{
+if ($id === 'many')
+{
+if (isset($_POST['ids']) && is_array($_POST['ids']))
+{
 foreach ($_POST['ids'] as $id)
 $this->loadModel($id)->setDeleted()->save();
 }
 Yii::app()->end();
-} else
+}
+else
 $this->loadModel($id)->setDeleted()->save();
 
 if (!isset($_GET['ajax']))
-$this->redirect(array('view', 'id' => $id));
+$this->redirect(Yii::app()->request->getUrlReferrer());
+else
+Yii::app()->end();
 }
 else
 throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
@@ -109,18 +167,24 @@ throw new CHttpException(400, 'Неверный запрос. Пожалуйст
 * @param integer $id the ID of the model to be deleted
 */
 public function actionRestore($id) {
-if (Yii::app()->request->isPostRequest) {
-if ($id === 'many') {
-if (isset($_POST['ids']) && is_array($_POST['ids'])) {
+if (Yii::app()->request->isPostRequest)
+{
+if ($id === 'many')
+{
+if (isset($_POST['ids']) && is_array($_POST['ids']))
+{
 foreach ($_POST['ids'] as $id)
 $this->loadModel($id)->setRestored()->save();
 }
 Yii::app()->end();
-} else
+}
+else
 $this->loadModel($id)->setRestored()->save();
 
 if (!isset($_GET['ajax']))
-$this->redirect(array('view', 'id' => $id));
+$this->redirect(Yii::app()->request->getUrlReferrer());
+else
+Yii::app()->end();
 }
 else
 throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
@@ -133,15 +197,15 @@ throw new CHttpException(400, 'Неверный запрос. Пожалуйст
 */
 public function actionDelete($id)
 {
-if(Yii::app()->request->isPostRequest)
+if (Yii::app()->request->isPostRequest)
 {
 $this->loadModel($id)->delete();
 
-if(!isset($_GET['ajax']))
-$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+if (!isset($_GET['ajax']))
+$this->redirect($this->createUrl('trash'));
 }
 else
-throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
 }
 
 /**
@@ -149,11 +213,34 @@ throw new CHttpException(400,'Invalid request. Please do not repeat this request
 */
 public function actionIndex()
 {
-$model = new <?php echo $this->modelClass; ?>;
+$model = new <?php echo $this->modelClass; ?>('search');
+$search = new SortForm;
+
+if (isset($_GET['<?php echo $this->modelClass; ?>']))
+$model->attributes = $_GET['<?php echo $this->modelClass; ?>'];
+
+if (isset($_GET['SortForm']))
+$search->attributes = $_GET['SortForm'];
+
+$search->resolveGETSort();
+
+$criteria = new CDbCriteria(array(
+'with' => array(
+)
+)
+);
+
+$sort = new CSort('Department');
+$sort->attributes = $model->getSortAttributes();
+$sort->defaultOrder = 't.title';
 
 $this->render('index', array(
-'model' => $model->getRestoredRecords(),
-));
+'model' => $model->getRestoredRecords()->search(),
+'criteria' => $criteria,
+'sort' => $sort,
+'searchModel' => $search,
+)
+);
 }
 
 /**
@@ -161,26 +248,34 @@ $this->render('index', array(
 */
 public function actionTrash()
 {
-$model = new <?php echo $this->modelClass; ?>;
+$model = new <?php echo $this->modelClass; ?>('search');
+$search = new SortForm;
+
+if (isset($_GET['<?php echo $this->modelClass; ?>']))
+$model->attributes = $_GET['<?php echo $this->modelClass; ?>'];
+
+if (isset($_GET['SortForm']))
+$search->attributes = $_GET['SortForm'];
+
+$search->resolveGETSort();
+
+$criteria = new CDbCriteria(array(
+'with' => array(
+)
+)
+);
+
+$sort = new CSort('Department');
+$sort->attributes = $model->getSortAttributes();
+$sort->defaultOrder = 't.title';
 
 $this->render('index', array(
-'model' => $model->getDeletedRecords(),
-));
-}
-
-/**
-* Manages all models.
-*/
-public function actionAdmin()
-{
-$model=new <?php echo $this->modelClass; ?>('search');
-$model->unsetAttributes();  // clear any default values
-if(isset($_GET['<?php echo $this->modelClass; ?>']))
-$model->attributes=$_GET['<?php echo $this->modelClass; ?>'];
-
-$this->render('admin',array(
-'model'=>$model,
-));
+'model' => $model->getDeletedRecords()->search(),
+'criteria' => $criteria,
+'sort' => $sort,
+'searchModel' => $search,
+)
+);
 }
 
 /**
@@ -190,9 +285,10 @@ $this->render('admin',array(
 */
 public function loadModel($id)
 {
-$model=<?php echo $this->modelClass; ?>::model()->findByPk($id);
-if($model===null)
-throw new CHttpException(404,'The requested page does not exist.');
+$model = Department::model()->findByPk($id);
+if ($model === null)
+throw new CHttpException(404, 'Страница не существует.');
+
 return $model;
 }
 
