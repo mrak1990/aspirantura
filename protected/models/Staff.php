@@ -20,7 +20,7 @@
  * @property ThesisBoard[] $thesisBoards2
  * @property Cite $cite
  * @property Disser[] $dissers
- * @property ScientificDegree[] $scientificDegrees
+ * @property scienceBranch[] $scienceDegrees
  * @property Department $department
  * @property AcademicPosition $academicPosition
  * @property AdministrativePosition $administrativePosition
@@ -84,8 +84,7 @@ class Staff extends ActiveRecord
 //            'thesisBoards2' => array(self::HAS_MANY, 'ThesisBoard', 'staff3_id'),
 //            'cite' => array(self::HAS_ONE, 'Cite', 'staff_id'),
 //            'dissers' => array(self::MANY_MANY, 'Disser', 'advisor(staff_id, disser_id)'),
-//            'scientificDegrees' => array(self::MANY_MANY, 'ScientificDegree', 'staff_scientific_degree(staff_id, scientific_degree_id)'),
-            'scientificDegrees' => array(self::HAS_MANY, 'StaffScientificDegree', 'staff_id'),
+            'scienceDegrees' => array(self::HAS_MANY, 'ScienceDegree', 'staff_id'),
 //            'academicPosition' => array(self::BELONGS_TO, 'AcademicPosition', 'academic_position_id'),
 //            'administrativePosition' => array(self::BELONGS_TO, 'AdministrativePosition', 'administrative_position_id'),
 //            'scientificRank' => array(self::BELONGS_TO, 'ScientificRank', 'scientific_rank_id'),
@@ -193,7 +192,7 @@ class Staff extends ActiveRecord
             $this->facultyId = $this->department->faculty_id;
 
         if (Yii::app()->controller->action->id === 'update')
-            foreach ($this->scientificDegrees as $degree)
+            foreach ($this->scienceDegrees as $degree)
                 $degree->doctor = $degree->doctor
                     ? 1
                     : 0;
@@ -201,13 +200,18 @@ class Staff extends ActiveRecord
         parent::afterFind();
     }
 
-    public function updateScientificDegrees(array $degrees)
+    /**
+     * Update science degrees, belonged to this model
+     *
+     * @param array $degrees from $_POST
+     */
+    public function updateScienceDegrees(array $degrees)
     {
-        if ($this->isNewRecord || count($this->scientificDegrees) === 0)
+        if ($this->isNewRecord || count($this->scienceDegrees) === 0)
         {
             foreach ($degrees as $degreeData)
             {
-                $degree = new StaffScientificDegree;
+                $degree = new ScienceDegree();
                 $degree->attributes = $degreeData;
                 $degree->staff_id = $this->id;
                 $degree->save();
@@ -218,7 +222,7 @@ class Staff extends ActiveRecord
             $degreesOldIds = array_map(function ($value)
             {
                 return $value->scientific_degree_id;
-            }, $this->scientificDegrees);
+            }, $this->scienceDegrees);
 
             $degreesNewIds = array_map(function ($value)
             {
@@ -226,27 +230,27 @@ class Staff extends ActiveRecord
             }, $degrees);
 
             // update existed degrees
-            foreach ($this->scientificDegrees as $curDegree)
+            foreach ($this->scienceDegrees as $degree)
             {
-                if (($id = array_search($curDegree->scientific_degree_id, $degreesNewIds)) !== false)
+                if (($id = array_search($degree->scientific_degree_id, $degreesNewIds)) !== false)
                 {
-                    if ($curDegree->doctor !== $degrees[$id]['doctor'])
+                    if ($degree->doctor !== $degrees[$id]['doctor'])
                     {
-                        $curDegree->doctor = $degrees[$id]['doctor'];
-                        $curDegree->update();
+                        $degree->doctor = $degrees[$id]['doctor'];
+                        $degree->update();
                     }
                 }
                 else
-                    $curDegree->delete();
+                    $degree->delete();
             }
 
             // add new degrees
-            foreach ($degrees as $curDegree)
+            foreach ($degrees as $degree)
             {
-                if (!in_array($curDegree['scientific_degree_id'], $degreesOldIds))
+                if (!in_array($degree['scientific_degree_id'], $degreesOldIds))
                 {
-                    $degree = new StaffScientificDegree;
-                    $degree->attributes = $curDegree;
+                    $degree = new ScienceDegree();
+                    $degree->attributes = $degree;
                     $degree->staff_id = $this->id;
                     $degree->save();
                 }
@@ -254,19 +258,27 @@ class Staff extends ActiveRecord
         }
     }
 
-    public function deleteScientificDegrees()
+    /**
+     * Delete all science degrees, belonged to this model
+     */
+    public function deleteScienceDegrees()
     {
-        foreach ($this->scientificDegrees as $degree)
+        foreach ($this->scienceDegrees as $degree)
             $degree->delete();
     }
 
-    public function getScientificDegreesAsString()
+    /**
+     * Get scienceDegrees as string
+     *
+     * @return string of links on correspondent science degrees
+     */
+    public function getScienceDegreesAsString()
     {
         $degrees = array();
 
-        foreach ($this->scientificDegrees as $degree)
+        foreach ($this->scienceDegrees as $degree)
             $degrees[] = CHtml::link($degree->getFullTitle(), array(
-                'staffScientificDegree/view',
+                'scienceDegree/view',
                 'id' => $degree->scientific_degree_id
             ));
 

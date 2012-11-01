@@ -45,9 +45,8 @@ class StaffController extends Controller
     public function actionView($id)
     {
         $this->render('view', array(
-                'model' => $this->loadModel($id),
-            )
-        );
+            'model' => $this->loadModel($id),
+        ));
     }
 
     /**
@@ -63,28 +62,26 @@ class StaffController extends Controller
             $model->attributes = $_POST['Staff'];
             if ($model->save())
             {
-                if (isset($_POST['StaffScientificDegree']) && is_array($_POST['StaffScientificDegree']))
-                    $model->updateScientificDegrees($_POST['StaffScientificDegree']);
+                if (isset($_POST['ScienceDegree']) && is_array($_POST['ScienceDegree']))
+                    $model->updateScienceDegrees($_POST['ScienceDegree']);
 
                 if (Yii::app()->request->isAjaxRequest)
                 {
                     echo CJSON::encode(array(
-                            'status' => 'success',
-                            'div' => "Сотрудник успешно добавлен",
-                            'data' => array(
-                                'value' => $model->id,
-                                'title' => $model->fio,
-                            )
+                        'status' => 'success',
+                        'div' => "Сотрудник успешно добавлен",
+                        'data' => array(
+                            'value' => $model->id,
+                            'title' => $model->fio,
                         )
-                    );
+                    ));
                     Yii::app()->end();
                 }
                 else
                     $this->redirect(array(
-                            'view',
-                            'id' => $model->id
-                        )
-                    );
+                        'view',
+                        'id' => $model->id
+                    ));
             }
         }
 
@@ -93,19 +90,17 @@ class StaffController extends Controller
             if (isset($_POST['title']))
                 $model->fio = mb_convert_case($_POST['title'], MB_CASE_TITLE, 'UTF-8');
             echo CJSON::encode(array(
-                    'status' => 'failure',
-                    'div' => $this->renderPartial('_form', array(
-                        'model' => $model
-                    ), true)
-                )
-            );
+                'status' => 'failure',
+                'div' => $this->renderPartial('_form', array(
+                    'model' => $model
+                ), true)
+            ));
             Yii::app()->end();
         }
         else
             $this->render('create', array(
-                    'model' => $model,
-                )
-            );
+                'model' => $model,
+            ));
     }
 
     /**
@@ -126,20 +121,18 @@ class StaffController extends Controller
             $model->attributes = $_POST['Staff'];
             if ($model->save())
             {
-                if (isset($_POST['StaffScientificDegree']) && is_array($_POST['StaffScientificDegree']))
-                    $model->updateScientificDegrees($_POST['StaffScientificDegree']);
+                if (isset($_POST['ScienceDegree']) && is_array($_POST['ScienceDegree']))
+                    $model->updateScienceDegrees($_POST['ScienceDegree']);
                 $this->redirect(array(
-                        'view',
-                        'id' => $model->id
-                    )
-                );
+                    'view',
+                    'id' => $model->id
+                ));
             }
         }
 
         $this->render('update', array(
-                'model' => $model,
-            )
-        );
+            'model' => $model,
+        ));
     }
 
     /**
@@ -216,7 +209,7 @@ class StaffController extends Controller
         {
             $model = $this->loadModel($id);
 
-            $model->deleteScientificDegrees();
+            $model->deleteScienceDegrees();
             $model->delete();
 
             if (!isset($_GET['ajax']))
@@ -243,27 +236,25 @@ class StaffController extends Controller
         $search->resolveGETSort();
 
         $criteria = new CDbCriteria(array(
-                'with' => array(
-                    'department' => array(
-                        'with' => array(
-                            'faculty'
-                        ),
-                    )
+            'with' => array(
+                'department' => array(
+                    'with' => array(
+                        'faculty'
+                    ),
                 )
             )
-        );
+        ));
 
         $sort = new CSort('Staff');
         $sort->attributes = $model->getSortAttributes();
         $sort->defaultOrder = 't.fio';
 
         $this->render('index', array(
-                'model' => $model->getRestoredRecords()->search(),
-                'criteria' => $criteria,
-                'sort' => $sort,
-                'searchModel' => $search,
-            )
-        );
+            'model' => $model->getRestoredRecords()->search(),
+            'criteria' => $criteria,
+            'sort' => $sort,
+            'searchModel' => $search,
+        ));
     }
 
     /**
@@ -283,27 +274,25 @@ class StaffController extends Controller
         $search->resolveGETSort();
 
         $criteria = new CDbCriteria(array(
-                'with' => array(
-                    'department' => array(
-                        'with' => array(
-                            'faculty'
-                        ),
-                    )
+            'with' => array(
+                'department' => array(
+                    'with' => array(
+                        'faculty'
+                    ),
                 )
             )
-        );
+        ));
 
         $sort = new CSort('Staff');
         $sort->attributes = $model->getSortAttributes();
         $sort->defaultOrder = 't.fio';
 
         $this->render('index', array(
-                'model' => $model->getDeletedRecords()->search(),
-                'criteria' => $criteria,
-                'sort' => $sort,
-                'searchModel' => $search,
-            )
-        );
+            'model' => $model->getDeletedRecords()->search(),
+            'criteria' => $criteria,
+            'sort' => $sort,
+            'searchModel' => $search,
+        ));
     }
 
     /**

@@ -8,7 +8,7 @@
  * @property integer $scientific_degree_id
  * @property boolean $doctor
  */
-class StaffScientificDegree extends ActiveRecord
+class ScienceDegree extends ActiveRecord
 {
 
     /**
@@ -16,7 +16,7 @@ class StaffScientificDegree extends ActiveRecord
      *
      * @param string $className active record class name.
      *
-     * @return StaffScientificDegree the static model class
+     * @return ScienceDegree the static model class
      */
     public static function model($className = __CLASS__)
     {
@@ -54,7 +54,7 @@ class StaffScientificDegree extends ActiveRecord
     public function relations()
     {
         return array(
-            'degree' => array(self::BELONGS_TO, 'ScientificDegree', 'scientific_degree_id'),
+            'scienceBranch' => array(self::BELONGS_TO, 'ScienceBranch', 'scientific_degree_id'),
         );
     }
 
@@ -81,7 +81,7 @@ class StaffScientificDegree extends ActiveRecord
     public function getFullTitle()
     {
         return $this->doctor
-            ? "доктор {$this->degree->full_title}"
-            : "кандидат {$this->degree->full_title}";
+            ? "доктор {$this->scienceBranch->full_title}"
+            : "кандидат {$this->scienceBranch->full_title}";
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * @var StaffScientificDegree[] $degrees
+ * @var ScienceDegree[] $degrees
  * @var Controller $this
  * @var string $hint
  */
@@ -16,13 +16,13 @@ $this->widget('ext.EChosen.EChosen', array(
 
 $this->widget('application.widget.inlineDropdownCreate.chosenInlineCreate', array(
     'jsPrefix' => $jsPrefix,
-    'url' => 'scientificDegree/create',
+    'url' => 'scienceBranch/create',
     'dialogTitle' => 'Добавить учёную степень',
 ));
 ?>
 
 <?php
-$emptyDegree = new StaffScientificDegree;
+$emptyDegree = new ScienceDegree();
 ?>
 <div class="control-group">
     <?php echo CHtml::activeLabel($emptyDegree, 'scientific_degree_id', array('class' => 'control-label')); ?>
@@ -37,7 +37,7 @@ $emptyDegree = new StaffScientificDegree;
         ), array(
             'inline' => true,
         ));
-        echo CHtml::activeDropDownList($degree, "[$i]scientific_degree_id", CHtml::listData(ScientificDegree::model()->findAll(), 'id', 'full_title'), array(
+        echo CHtml::activeDropDownList($degree, "[$i]scientific_degree_id", CHtml::listData(scienceBranch::model()->findAll(), 'id', 'full_title'), array(
             'class' => "span3 {$selector}",
         ));
         echo CHtml::link('Удалить', '#', array(
@@ -67,7 +67,7 @@ $emptyDegree = new StaffScientificDegree;
         ), array(
             'inline' => true,
         ));
-        echo CHtml::activeDropDownList($emptyDegree, '[{{i}}]scientific_degree_id', CHtml::listData(ScientificDegree::model()->findAll(), 'id', 'full_title'), array(
+        echo CHtml::activeDropDownList($emptyDegree, '[{{i}}]scientific_degree_id', CHtml::listData(ScienceBranch::model()->findAll(), 'id', 'full_title'), array(
             'class' => "span3  {$selector}",
         ));
         echo CHtml::link('Удалить', '#', array(

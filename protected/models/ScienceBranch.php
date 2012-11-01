@@ -12,14 +12,14 @@
  * @property Speciality[] $specialities
  * @property Staff[] $staffs
  */
-class ScientificDegree extends ActiveRecord
+class ScienceBranch extends ActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
      *
      * @param string $className active record class name.
      *
-     * @return ScientificDegree the static model class
+     * @return ScienceBranch the static model class
      */
     public static function model($className = __CLASS__)
     {

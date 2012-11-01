@@ -1,6 +1,6 @@
 <?php
 
-class ScientificDegreeController extends Controller
+class ScienceDegreeController extends Controller
 {
 
     public $pageTitle = 'Специальности';
@@ -32,14 +32,14 @@ class ScientificDegreeController extends Controller
      */
     public function actionCreate()
     {
-        $model = new ScientificDegree;
+        $model = new scienceBranch;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['ScientificDegree']))
+        if (isset($_POST['scienceBranch']))
         {
-            $model->attributes = $_POST['ScientificDegree'];
+            $model->attributes = $_POST['scienceBranch'];
             if ($model->save())
             {
                 if (Yii::app()->request->isAjaxRequest)
@@ -87,9 +87,9 @@ class ScientificDegreeController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['ScientificDegree']))
+        if (isset($_POST['scienceBranch']))
         {
-            $model->attributes = $_POST['ScientificDegree'];
+            $model->attributes = $_POST['scienceBranch'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -183,7 +183,7 @@ class ScientificDegreeController extends Controller
      */
     public function actionIndex()
     {
-        $model = new ScientificDegree;
+        $model = new scienceBranch;
 
         $this->render('index', array(
             'model' => $model,
@@ -195,7 +195,7 @@ class ScientificDegreeController extends Controller
      */
     public function actionTrash()
     {
-        $model = new ScientificDegree;
+        $model = new scienceBranch;
 
         $this->render('index', array(
             'model' => $model->getDeletedRecords(),
@@ -207,10 +207,10 @@ class ScientificDegreeController extends Controller
      */
     public function actionAdmin()
     {
-        $model = new ScientificDegree('search');
+        $model = new scienceBranch('search');
         $model->unsetAttributes(); // clear any default values
-        if (isset($_GET['ScientificDegree']))
-            $model->attributes = $_GET['ScientificDegree'];
+        if (isset($_GET['scienceBranch']))
+            $model->attributes = $_GET['scienceBranch'];
 
         $this->render('admin', array(
             'model' => $model,
@@ -225,7 +225,7 @@ class ScientificDegreeController extends Controller
      */
     public function loadModel($id)
     {
-        $model = ScientificDegree::model()->findByPk($id);
+        $model = scienceBranch::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
 

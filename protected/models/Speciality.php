@@ -11,7 +11,7 @@
  *
  * The followings are the available model relations:
  * @property ThesisBoard[] $thesisBoards
- * @property ScientificDegree $scientificDegree
+ * @property scienceBranch $scienceBranch
  * @property Disser[] $dissers
  */
 class Speciality extends ActiveRecord
@@ -65,7 +65,7 @@ class Speciality extends ActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'thesisBoards' => array(self::MANY_MANY, 'ThesisBoard', 'thesis_board_speciality(speciality_id, thesis_board_id)'),
-            'scientificDegree' => array(self::BELONGS_TO, 'ScientificDegree', 'scientific_degree_id'),
+            'scienceBranch' => array(self::BELONGS_TO, 'ScienceBranch', 'scientific_degree_id'),
             'dissers' => array(self::MANY_MANY, 'Disser', 'disser_speciality(speciality_id, disser_id)'),
         );
     }

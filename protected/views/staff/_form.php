@@ -62,7 +62,7 @@ echo $form->customRow($model, 'birth',
 
 <?php
 $this->renderPartial('_scienceDegrees', array(
-    'degrees' => $model->scientificDegrees,
+    'degrees' => $model->scienceDegrees,
     'form' => $form,
 ));
 ?>
