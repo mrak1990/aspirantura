@@ -1,6 +1,6 @@
 <?php
 /**
- * @var Speciality $model
+ * @var ScienceBranch $model
  * @var SortForm $searchModel
  * @var CDbCriteria $criteria
  * @var CSort $sort
@@ -8,7 +8,7 @@
  */
 
 $this->breadcrumbs = array_keys($this->breadcrumbs);
-$this->menu = HelperHTML::getMenu(basename(__FILE__, '.php'), new Speciality());
+$this->menu = HelperHTML::getMenu(basename(__FILE__, '.php'), new ScienceBranch());
 
 $this->renderPartial('_search', array(
     'model' => $model,
@@ -22,13 +22,6 @@ $valueFunction = function ($data)
         "buttons" => array(
             array(
                 "items" => array(
-                    array(
-                        "label" => "аспиранты",
-                        "url" => array(
-                            "candidate/index",
-                            "Candidate[speciality_id][]" => $data->id
-                        )
-                    ),
                     "---",
                     array(
                         "label" => "что-то ещё",
@@ -41,7 +34,7 @@ $valueFunction = function ($data)
 };
 
 $this->widget('MyBootGridView', array(
-    'id' => 'speciality-grid',
+    'id' => 'science-branch-grid',
     'type' => 'striped bordered condensed',
     'dataProvider' => new CActiveDataProvider($model, array(
         'criteria' => $criteria,
@@ -58,15 +51,9 @@ $this->widget('MyBootGridView', array(
         ),
         'id',
         'title' => array(
-            'header' => 'Шифр',
-            'name' => 'title',
-            'value' => 'CHtml::link("$data->code", array("view", "id"=>$data->id))',
-            'type' => 'html',
-        ),
-        array(
             'header' => 'Название',
-            'name' => 'dean',
-            'value' => 'CHtml::link("$data->title", array("view", "id"=>$data->id))',
+            'name' => 'full_title_nom',
+            'value' => 'CHtml::link("$data->full_title_nom", array("view", "id"=>$data->id))',
             'type' => 'html',
         ),
         array(

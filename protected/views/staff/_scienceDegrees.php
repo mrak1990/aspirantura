@@ -25,7 +25,7 @@ $this->widget('application.widget.inlineDropdownCreate.chosenInlineCreate', arra
 $emptyDegree = new ScienceDegree();
 ?>
 <div class="control-group">
-    <?php echo CHtml::activeLabel($emptyDegree, 'scientific_degree_id', array('class' => 'control-label')); ?>
+    <?php echo CHtml::activeLabel($emptyDegree, 'science_branch_id', array('class' => 'control-label')); ?>
     <?php
     $i = 0;
     foreach ($degrees as $degree)
@@ -37,7 +37,7 @@ $emptyDegree = new ScienceDegree();
         ), array(
             'inline' => true,
         ));
-        echo CHtml::activeDropDownList($degree, "[$i]scientific_degree_id", CHtml::listData(scienceBranch::model()->findAll(), 'id', 'full_title'), array(
+        echo CHtml::activeDropDownList($degree, "[$i]science_branch_id", CHtml::listData(scienceBranch::model()->findAll(), 'id', 'full_title'), array(
             'class' => "span3 {$selector}",
         ));
         echo CHtml::link('Удалить', '#', array(
@@ -67,11 +67,11 @@ $emptyDegree = new ScienceDegree();
         ), array(
             'inline' => true,
         ));
-        echo CHtml::activeDropDownList($emptyDegree, '[{{i}}]scientific_degree_id', CHtml::listData(ScienceBranch::model()->findAll(), 'id', 'full_title'), array(
+        echo CHtml::activeDropDownList($emptyDegree, '[{{i}}]science_branch_id', CHtml::listData(ScienceBranch::model()->findAll(), 'id', 'full_title'), array(
             'class' => "span3  {$selector}",
         ));
         echo CHtml::link('Удалить', '#', array(
-            'class' => 'degreeDeleteButton',
+            'class' => 'degreesDeleteButton',
         ));
         echo '</div>';
         ?>

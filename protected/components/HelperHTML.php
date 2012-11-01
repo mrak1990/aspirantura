@@ -37,7 +37,6 @@ class HelperHTML
 
     public static function getMenu($view = 'index', $model = null)
     {
-//        Yii::log('!!!' . $view, 10, true);
         if ($view === 'index')
         {
             return array(
@@ -60,6 +59,9 @@ class HelperHTML
                 array(
                     'label' => 'Корзина',
                     'url' => array('trash'),
+                    'visible' => isset($model)
+                        ? $model::DELETABLE
+                        : true,
                     'icon' => 'trash',
                     'itemOptions' => array(
                         'title' => 'Просмотр записей в корзине'
@@ -87,15 +89,18 @@ class HelperHTML
                         'title' => 'Поиск и фильтрация записей'
                     )
                 ),
-                array('label' => 'Добавить',
+                array(
+                    'label' => 'Добавить',
                     'url' => array('create'),
                     'icon' => 'plus',
                     'itemOptions' => array(
                         'title' => 'Добавление новой записи'
                     )
                 ),
-                array('label' => 'Корзина',
+                array(
+                    'label' => 'Корзина',
                     'url' => array('trash'),
+                    'visible' => $model::DELETABLE,
                     'icon' => 'trash',
                     'itemOptions' => array(
                         'title' => 'Просмотр записей в корзине'
@@ -106,7 +111,8 @@ class HelperHTML
         elseif ($view === 'update')
         {
             return array(
-                array('label' => 'Поиск',
+                array
+                ('label' => 'Поиск',
                     'url' => array('index'),
                     'icon' => 'search',
                     'itemOptions' => array(
@@ -115,9 +121,7 @@ class HelperHTML
                 ),
                 array(
                     'label' => 'Добавить',
-                    'url' => array(
-                        'create'
-                    ),
+                    'url' => array('create'),
                     'icon' => 'plus',
                     'itemOptions' => array(
                         'title' => 'Добавление новой записи'
@@ -125,8 +129,8 @@ class HelperHTML
                 ),
                 array(
                     'label' => 'Корзина',
-                    'url' => array(
-                        'trash'),
+                    'url' => array('trash'),
+                    'visible' => $model::DELETABLE,
                     'icon' => 'trash',
                     'itemOptions' => array(
                         'title' => 'Просмотр записей в корзине'
@@ -143,7 +147,9 @@ class HelperHTML
                         array(
                             'label' => 'В корзину',
                             'url' => '#',
-                            'visible' => !$model->deleted,
+                            'visible' => $model::DELETABLE
+                                ? !$model->deleted
+                                : false,
                             'icon' => 'trash',
                             'linkOptions' => array(
                                 'submit' => array(
@@ -158,7 +164,9 @@ class HelperHTML
                         array(
                             'label' => 'Восстановить',
                             'url' => '#',
-                            'visible' => $model->deleted,
+                            'visible' => $model::DELETABLE
+                                ? $model->deleted
+                                : false,
                             'icon' => 'ok-circle',
                             'linkOptions' => array(
                                 'submit' => array(
@@ -174,7 +182,9 @@ class HelperHTML
                         array(
                             'label' => 'Удалить',
                             'url' => '#',
-                            'visible' => $model->deleted,
+                            'visible' => $model::DELETABLE
+                                ? $model->deleted
+                                : false,
                             'icon' => 'remove',
                             'linkOptions' => array(
                                 'submit' => array(
@@ -218,9 +228,7 @@ class HelperHTML
             return array(
                 array(
                     'label' => 'Поиск',
-                    'url' => array(
-                        'index'
-                    ),
+                    'url' => array('index'),
                     'icon' => 'search',
                     'itemOptions' => array(
                         'title' => 'Поиск и фильтрация записей'
@@ -228,9 +236,7 @@ class HelperHTML
                 ),
                 array(
                     'label' => 'Добавить',
-                    'url' => array(
-                        'create'
-                    ),
+                    'url' => array('create'),
                     'icon' => 'plus',
                     'itemOptions' => array(
                         'title' => 'Добавление новой записи'
@@ -238,9 +244,8 @@ class HelperHTML
                 ),
                 array(
                     'label' => 'Корзина',
-                    'url' => array(
-                        'trash'
-                    ),
+                    'url' => array('trash'),
+                    'visible' => $model::DELETABLE,
                     'icon' => 'trash',
                     'itemOptions' => array(
                         'title' => 'Просмотр записей в корзине'
@@ -257,7 +262,9 @@ class HelperHTML
                         array(
                             'label' => 'В корзину',
                             'url' => '#',
-                            'visible' => !$model->deleted,
+                            'visible' => $model::DELETABLE
+                                ? !$model->deleted
+                                : false,
                             'icon' => 'trash',
                             'linkOptions' => array(
                                 'submit' => array(
@@ -272,7 +279,9 @@ class HelperHTML
                         array(
                             'label' => 'Восстановить',
                             'url' => '#',
-                            'visible' => $model->deleted,
+                            'visible' => $model::DELETABLE
+                                ? $model->deleted
+                                : false,
                             'icon' => 'ok-circle',
                             'linkOptions' => array(
                                 'submit' => array(
@@ -287,7 +296,9 @@ class HelperHTML
                         array(
                             'label' => 'Удалить',
                             'url' => '#',
-                            'visible' => $model->deleted,
+                            'visible' => $model::DELETABLE
+                                ? $model->deleted
+                                : false,
                             'icon' => 'remove',
                             'linkOptions' => array(
                                 'submit' => array(

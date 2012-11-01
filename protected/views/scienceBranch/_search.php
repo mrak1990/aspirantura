@@ -1,6 +1,6 @@
 <?php
 /**
- * @var Speciality $model
+ * @var ScienceBranch $model
  * @var MyBootActiveForm $form
  * @var SortForm $searchModel
  * @var CController $this
@@ -40,28 +40,10 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
         </div>
 
         <?php
-        echo $form->textFieldRow($model, 'code', array(
-            'class' => 'span4',
-            'maxlength' => 8,
-            'hint' => 'Введите название факультета',
-        ));
-        ?>
-
-        <?php
-        echo $form->textFieldRow($model, 'title', array(
-            'class' => 'span4',
-            'maxlength' => 200,
-            'hint' => 'Введите название специальности',
-        ));
-        ?>
-
-        <?php
-        echo $form->dropdownListRow($model, 'science_branch_id', CHtml::listData(ScienceBranch::model()->findAll(), 'id', 'full_title_nom'), array(
+        echo $form->textFieldRow($model, 'full_title_nom', array(
             'class' => 'span4',
             'maxlength' => 50,
-            'multiple' => true,
-            'empty' => 'Все',
-            'hint' => 'Выберите нужные отрасли науки (для множественно выбора используйте клавишу <span class="key_button">Ctrl</span> и левую кнопку мышку)',
+            'hint' => 'Введите название факультета',
         ));
         ?>
 
@@ -69,7 +51,7 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
     <div class="span6 last">
         <div class="page-header"><h3>Параметры сортировки</h3></div>
         <?php
-        echo $form->dropDownListRow($searchModel, 'sort', $model->getSortOptions(array(), array( //                'institute_id',
+        echo $form->dropDownListRow($searchModel, 'sort', $model->getSortOptions(array(), array(//                'institute_id',
 //                'secretariat',
 //                'deleted',
             )
@@ -84,10 +66,11 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
     </div>
 </div>
 <div class="form-actions">
-    <?php echo CHtml::submitButton('Найти',
-    array(
+    <?php
+    echo CHtml::submitButton('Найти', array(
         'class' => 'btn primary'
-    )); ?>
+    ));
+    ?>
 </div>
 
 <?php $this->endWidget(); ?>

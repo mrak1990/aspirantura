@@ -7,7 +7,7 @@
  * @property integer $id
  * @property string $code
  * @property string $title
- * @property integer $scientific_degree_id
+ * @property integer $science_branch_id
  *
  * The followings are the available model relations:
  * @property ThesisBoard[] $thesisBoards
@@ -46,13 +46,13 @@ class Speciality extends ActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('code, scientific_degree_id', 'required'),
-            array('scientific_degree_id', 'numerical', 'integerOnly' => true),
+            array('code, science_branch_id', 'required'),
+            array('science_branch_id', 'numerical', 'integerOnly' => true),
             array('code', 'length', 'max' => 8),
             array('title', 'length', 'max' => 200),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, code, title, scientific_degree_id', 'safe', 'on' => 'search'),
+            array('id, code, title, science_branch_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -65,7 +65,7 @@ class Speciality extends ActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'thesisBoards' => array(self::MANY_MANY, 'ThesisBoard', 'thesis_board_speciality(speciality_id, thesis_board_id)'),
-            'scienceBranch' => array(self::BELONGS_TO, 'ScienceBranch', 'scientific_degree_id'),
+            'scienceBranch' => array(self::BELONGS_TO, 'ScienceBranch', 'science_branch_id'),
             'dissers' => array(self::MANY_MANY, 'Disser', 'disser_speciality(speciality_id, disser_id)'),
         );
     }
@@ -79,7 +79,7 @@ class Speciality extends ActiveRecord
             'id' => 'ID',
             'code' => 'Шифр',
             'title' => 'Название',
-            'scientific_degree_id' => 'Область науки',
+            'science_branch_id' => 'Область науки',
         );
     }
 
@@ -97,7 +97,14 @@ class Speciality extends ActiveRecord
         $criteria->compare('id', $this->id);
         $criteria->compare('code', $this->code, true);
         $criteria->compare('title', $this->title, true);
-        $criteria->compare('scientific_degree_id', $this->scientific_degree_id);
+
+        if (is_array($this->science_branch_id))
+        {
+            if (in_array('', $this->science_branch_id))
+                $this->science_branch_id = array_diff($this->science_branch_id, array(''));
+            if (!empty($this->science_branch_id))
+                $criteria->addInCondition('science_branch_id', $this->science_branch_id);
+        }
 
         return $this;
     }
@@ -132,7 +139,7 @@ class Speciality extends ActiveRecord
      */
     public function getResolvedSortOptions()
     {
-        return array(//            'staff_id' => 'dean',
+        return array( //            'staff_id' => 'dean',
         );
     }
 

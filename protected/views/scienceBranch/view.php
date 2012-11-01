@@ -1,6 +1,6 @@
 <?php
 /**
- * @var Speciality $model
+ * @var ScienceBranch $model
  * @var Controller $this
  */
 
@@ -19,17 +19,12 @@ $this->widget('ext.bootstrap.widgets.BootDetailView', array(
     'data' => $model,
     'attributes' => array(
         'id',
-        'code',
+        'full_title_nom',
+        'full_title',
         'title',
-        'scienceBranch' => array(
-            'label' => 'Отрасль науки',
-            'value' => CHtml::link($model->scienceBranch->full_title_nom, array(
-                    'scienceBranch/view',
-                    'id' => $model->science_branch_id
-                )
-            ),
-            'type' => 'html',
-        ),
     ),
+    'htmlOptions' => array(
+        'class' => 'width-detail-view',
+    )
 ));
 ?>

@@ -5,7 +5,7 @@
  *
  * The followings are the available columns in table 'staff_scientific_degree':
  * @property integer $staff_id
- * @property integer $scientific_degree_id
+ * @property integer $science_branch_id
  * @property boolean $doctor
  */
 class ScienceDegree extends ActiveRecord
@@ -28,7 +28,7 @@ class ScienceDegree extends ActiveRecord
      */
     public function tableName()
     {
-        return 'staff_scientific_degree';
+        return 'science_degree';
     }
 
     /**
@@ -39,12 +39,12 @@ class ScienceDegree extends ActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('staff_id, scientific_degree_id', 'required'),
-            array('staff_id, scientific_degree_id', 'numerical', 'integerOnly' => true),
+            array('staff_id, science_branch_id', 'required'),
+            array('staff_id, science_branch_id', 'numerical', 'integerOnly' => true),
             array('doctor', 'boolean'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('staff_id, scientific_degree_id, doctor', 'safe', 'on' => 'search'),
+            array('staff_id, science_branch_id, doctor', 'safe', 'on' => 'search'),
         );
     }
 
@@ -54,7 +54,7 @@ class ScienceDegree extends ActiveRecord
     public function relations()
     {
         return array(
-            'scienceBranch' => array(self::BELONGS_TO, 'ScienceBranch', 'scientific_degree_id'),
+            'scienceBranch' => array(self::BELONGS_TO, 'ScienceBranch', 'science_branch_id'),
         );
     }
 
@@ -65,7 +65,7 @@ class ScienceDegree extends ActiveRecord
     {
         return array(
             'staff_id' => 'Сотрудник',
-            'scientific_degree_id' => 'Учёная степень',
+            'science_branch_id' => 'Учёная степень',
             'doctor' => 'Тип',
         );
     }

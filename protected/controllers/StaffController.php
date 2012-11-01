@@ -207,10 +207,25 @@ class StaffController extends Controller
     {
         if (Yii::app()->request->isPostRequest)
         {
-            $model = $this->loadModel($id);
-
-            $model->deleteScienceDegrees();
-            $model->delete();
+            if ($id === 'many')
+            {
+                if (isset($_POST['ids']) && is_array($_POST['ids']))
+                {
+                    foreach ($_POST['ids'] as $id)
+                    {
+                        $model = $this->loadModel($id);
+                        $model->deleteScienceDegrees();
+                        $model->delete();
+                    }
+                }
+                Yii::app()->end();
+            }
+            else
+            {
+                $model = $this->loadModel($id);
+                $model->deleteScienceDegrees();
+                $model->delete();
+            }
 
             if (!isset($_GET['ajax']))
                 $this->redirect($this->createUrl('trash'));

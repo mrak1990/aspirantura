@@ -122,6 +122,7 @@ if($model->save())
 $this->redirect(array(
 'view',
 'id'=>$model-><?php echo $this->tableSchema->primaryKey; ?>
+
 ));
 }
 
@@ -197,6 +198,16 @@ public function actionDelete($id)
 {
 if (Yii::app()->request->isPostRequest)
 {
+if ($id === 'many')
+{
+if (isset($_POST['ids']) && is_array($_POST['ids']))
+{
+foreach ($_POST['ids'] as $id)
+$this->loadModel($id)->delete();
+}
+Yii::app()->end();
+}
+else
 $this->loadModel($id)->delete();
 
 if (!isset($_GET['ajax']))
@@ -279,7 +290,7 @@ $this->render('index', array(
 */
 public function loadModel($id)
 {
-$model = Department::model()->findByPk($id);
+$model = <?php echo $this->modelClass; ?>::model()->findByPk($id);
 if ($model === null)
 throw new CHttpException(404, 'Страница не существует.');
 

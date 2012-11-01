@@ -1,12 +1,13 @@
 <?php
 
 /**
- * This is the model class for table "scientific_degree".
+ * This is the model class for table "science_branch".
  *
- * The followings are the available columns in table 'scientific_degree':
+ * The followings are the available columns in table 'science_branch':
  * @property integer $id
  * @property string $title
  * @property string $full_title
+ * @property string $full_title_nom
  *
  * The followings are the available model relations:
  * @property Speciality[] $specialities
@@ -14,6 +15,8 @@
  */
 class ScienceBranch extends ActiveRecord
 {
+    const DELETABLE = false;
+
     /**
      * Returns the static model of the specified AR class.
      *
@@ -31,7 +34,7 @@ class ScienceBranch extends ActiveRecord
      */
     public function tableName()
     {
-        return 'scientific_degree';
+        return 'science_branch';
     }
 
     /**
@@ -39,15 +42,11 @@ class ScienceBranch extends ActiveRecord
      */
     public function rules()
     {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
-            array('title', 'required'),
+            array('title, full_title_nom', 'required'),
             array('title', 'length', 'max' => 25),
-            array('full_title', 'length', 'max' => 50),
-            // The following rule is used by search().
-            // Please remove those attributes that should not be searched.
-            array('id, title, full_title', 'safe', 'on' => 'search'),
+            array('full_title, full_title_nom', 'length', 'max' => 50),
+            array('id, full_title_nom', 'safe', 'on' => 'search'),
         );
     }
 
@@ -56,11 +55,9 @@ class ScienceBranch extends ActiveRecord
      */
     public function relations()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
         return array(
-            'specialities' => array(self::HAS_MANY, 'Speciality', 'scientific_degree_id'),
-            'staffs' => array(self::MANY_MANY, 'Staff', 'staff_scientific_degree(scientific_degree_id, staff_id)'),
+            'specialities' => array(self::HAS_MANY, 'Speciality', 'science_branch_id'),
+            'staffs' => array(self::MANY_MANY, 'Staff', 'science_degree(science_branch_id, staff_id)'),
         );
     }
 
@@ -71,8 +68,31 @@ class ScienceBranch extends ActiveRecord
     {
         return array(
             'id' => 'ID',
-            'title' => 'Аббревиатура',
-            'full_title' => 'Название',
+            'title' => 'Краткое название (в родительном падеже)',
+            'full_title' => 'Название (в родительном падеже)',
+            'full_title_nom' => 'Название',
+        );
+    }
+
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+     */
+    public function search()
+    {
+        $criteria = $this->getDbCriteria();
+
+        $criteria->compare('full_title_nom', $this->full_title_nom, true);
+
+        return $this;
+    }
+
+    public function behaviors()
+    {
+        return array(
+            'SortingBehavior' => array(
+                'class' => 'application.components.behaviors.SortingBehavior',
+            ),
         );
     }
 }

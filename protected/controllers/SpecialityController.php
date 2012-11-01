@@ -183,7 +183,7 @@ class SpecialityController extends Controller
      */
     public function loadModel($id)
     {
-        $model = Department::model()->findByPk($id);
+        $model = Speciality::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'Страница не существует.');
 

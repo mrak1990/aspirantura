@@ -112,7 +112,7 @@ class Candidate extends ActiveRecord
                 $this->department_id = array_diff($this->department_id, array(''));
             if (!empty($this->department_id))
             {
-                $criteria->addInCondition('department.id', $this->department_id);
+                $criteria->addInCondition('department_id', $this->department_id);
                 $departmentsSelected = true;
             }
         }

@@ -1,12 +1,12 @@
 <?php
 /**
  * @var $form MyBootActiveForm
- * @var $model Faculty
+ * @var $model Speciality
  * @var $this CController
  */
 
 $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
-    'id' => 'faculty-form',
+    'id' => 'speciality-form',
     'type' => 'horizontal',
     'enableClientValidation' => true,
 ));
@@ -22,7 +22,7 @@ echo $form->customRow($model, 'code', $this->widget('CMaskedTextField', array(
         'attribute' => 'code',
         'mask' => '99.99.99',
         'htmlOptions' => array(
-            'class' => 'span1',
+            'style' => 'width: 55px;',
             'maxlength' => 8,
         )
     ), true),
@@ -49,13 +49,14 @@ $this->renderPartial('_scienceBranch', array(
 ?>
 
 <div class="form-actions">
-    <?php echo CHtml::submitButton($model->isNewRecord
-        ? 'Создать'
-        : 'Сохранить',
-    array(
-        'class' => 'btn primary'
-    )
-);
+    <?php
+    echo CHtml::submitButton($model->isNewRecord
+            ? 'Создать'
+            : 'Сохранить',
+        array(
+            'class' => 'btn primary'
+        )
+    );
     ?>
 </div>
 

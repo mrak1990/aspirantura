@@ -204,7 +204,17 @@ class DepartmentController extends Controller
     {
         if (Yii::app()->request->isPostRequest)
         {
-            $this->loadModel($id)->delete();
+            if ($id === 'many')
+            {
+                if (isset($_POST['ids']) && is_array($_POST['ids']))
+                {
+                    foreach ($_POST['ids'] as $id)
+                        $this->loadModel($id)->delete();
+                }
+                Yii::app()->end();
+            }
+            else
+                $this->loadModel($id)->delete();
 
             if (!isset($_GET['ajax']))
                 $this->redirect($this->createUrl('trash'));

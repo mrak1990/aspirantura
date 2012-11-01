@@ -62,7 +62,6 @@ a.expander:hover, a.collapser:hover {
     text-decoration: none;
 }
 
-
 /* bootstrap */
 span.label {
     vertical-align: middle;
@@ -83,4 +82,10 @@ table.table tfoot td.action-footer {
 /* search form */
 form.non-required-labels label.required span.required {
     display: none;
+}
+
+/* detail view */
+table.width-detail-view th {
+    text-align: right;
+    width: 250px;
 }
