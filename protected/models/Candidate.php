@@ -46,8 +46,8 @@ class Candidate extends ActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('fio, speciality_id', 'required'),
-            array('department_id, speciality_id', 'numerical', 'integerOnly' => true),
+            array('fio, department_id, speciality_id, staff_id', 'required'),
+            array('department_id, speciality_id, staff_id', 'numerical', 'integerOnly' => true),
             array('fio', 'length', 'max' => 50),
             array('whence', 'length', 'max' => 150),
             array('birth, is_postgrad, status', 'safe'),
@@ -78,6 +78,7 @@ class Candidate extends ActiveRecord
             'department_id' => 'Кафедра',
             'facultyId' => 'Факультет',
             'fio' => 'ФИО',
+            'staff_id' => 'Научный руководитель',
             'birth' => 'Дата рождения',
             'is_postgrad' => 'Доктор',
             'whence' => 'Откуда',

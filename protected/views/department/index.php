@@ -23,10 +23,11 @@ $valueFunction = function ($data)
             array(
                 "items" => array(
                     array(
-                        "label" => "кафедры", "url" => array(
-                        "department/index",
-                        "Department[faculty_id][]" => $data->id
-                    )
+                        "label" => "кафедры",
+                        "url" => array(
+                            "department/index",
+                            "Department[faculty_id][]" => $data->id
+                        )
                     ),
                     array(
                         "label" => "сотрудники",

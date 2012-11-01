@@ -12,9 +12,9 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
 /**
 * @var string title of current page
 */
-public $pageTitle = '';
+public $pageTitle = '<?php echo $this->modelClass; ?>';
 public $breadcrumbs = array(
-'//TODO:'=>array('index')
+'<?php echo $this->modelClass; ?>'=>array('index')
 );
 
 /**
@@ -52,8 +52,7 @@ public function actionView($id)
 {
 $this->render('view',array(
 'model'=>$this->loadModel($id),
-)
-);
+));
 }
 
 /**
@@ -78,16 +77,14 @@ echo CJSON::encode(array(
 'value' => $model->id,
 'title' => $model->title,
 )
-)
-);
+));
 Yii::app()->end();
 }
 else
 $this->redirect(array(
 'view',
 'id' => $model->id
-)
-);
+));
 }
 }
 
@@ -100,15 +97,13 @@ echo CJSON::encode(array(
 'div' => $this->renderPartial('_form', array(
 'model' => $model
 ), true)
-)
-);
+));
 Yii::app()->end();
 }
 else
 $this->render('create', array(
 'model' => $model,
-)
-);
+));
 }
 
 /**
@@ -124,7 +119,10 @@ if(isset($_POST['<?php echo $this->modelClass; ?>']))
 {
 $model->attributes=$_POST['<?php echo $this->modelClass; ?>'];
 if($model->save())
-$this->redirect(array('view','id'=>$model-><?php echo $this->tableSchema->primaryKey; ?>));
+$this->redirect(array(
+'view',
+'id'=>$model-><?php echo $this->tableSchema->primaryKey; ?>
+));
 }
 
 $this->render('update',array(
@@ -227,8 +225,7 @@ $search->resolveGETSort();
 $criteria = new CDbCriteria(array(
 'with' => array(
 )
-)
-);
+));
 
 $sort = new CSort('Department');
 $sort->attributes = $model->getSortAttributes();
@@ -239,8 +236,7 @@ $this->render('index', array(
 'criteria' => $criteria,
 'sort' => $sort,
 'searchModel' => $search,
-)
-);
+));
 }
 
 /**
@@ -262,8 +258,7 @@ $search->resolveGETSort();
 $criteria = new CDbCriteria(array(
 'with' => array(
 )
-)
-);
+));
 
 $sort = new CSort('Department');
 $sort->attributes = $model->getSortAttributes();
@@ -274,8 +269,7 @@ $this->render('index', array(
 'criteria' => $criteria,
 'sort' => $sort,
 'searchModel' => $search,
-)
-);
+));
 }
 
 /**

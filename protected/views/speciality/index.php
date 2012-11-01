@@ -1,6 +1,6 @@
 <?php
 /**
- * @var Faculty $model
+ * @var Speciality $model
  * @var SortForm $searchModel
  * @var CDbCriteria $criteria
  * @var CSort $sort
@@ -23,22 +23,11 @@ $valueFunction = function ($data)
             array(
                 "items" => array(
                     array(
-                        "label" => "кафедры",
-                        "url" => array(
-                            "department/index",
-                            "Department[faculty_id][]" => $data->id
-                        )
-                    ),
-                    array(
-                        "label" => "сотрудники",
-                        "url" => array(
-                            "staff/index",
-                            "Staff[faculty_id][]" => $data->id
-                        )
-                    ),
-                    array(
                         "label" => "аспиранты",
-                        "url" => "#"
+                        "url" => array(
+                            "candidate/index",
+                            "Candidate[speciality_id][]" => $data->id
+                        )
                     ),
                     "---",
                     array(
@@ -52,7 +41,7 @@ $valueFunction = function ($data)
 };
 
 $this->widget('MyBootGridView', array(
-    'id' => 'faculty-grid',
+    'id' => 'speciality-grid',
     'type' => 'striped bordered condensed',
     'dataProvider' => new CActiveDataProvider($model, array(
         'criteria' => $criteria,
@@ -69,15 +58,16 @@ $this->widget('MyBootGridView', array(
         ),
         'id',
         'title' => array(
-            'header' => 'Название',
+            'header' => 'Шифр',
             'name' => 'title',
-            'value' => 'CHtml::link("$data->fullTitle", array("view", "id"=>$data->id))',
+            'value' => 'CHtml::link("$data->code", array("view", "id"=>$data->id))',
             'type' => 'html',
         ),
         array(
-            'header' => 'Декан',
+            'header' => 'Название',
             'name' => 'dean',
-            'value' => '(isset($data->dean)) ? $data->dean->fio : null'
+            'value' => 'CHtml::link("$data->title", array("view", "id"=>$data->id))',
+            'type' => 'html',
         ),
         array(
             'class' => 'ext.bootstrap.widgets.BootButtonColumn',

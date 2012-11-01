@@ -1,6 +1,7 @@
 <?php
 
 Yii::import('bootstrap.widgets.BootActiveForm');
+Yii::import('ext.myBootstrap.MyBootInputHorizontal');
 
 class MyBootActiveForm extends BootActiveForm
 {

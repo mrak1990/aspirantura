@@ -1,12 +1,12 @@
 <?php
 /**
  * @var $form MyBootActiveForm
- * @var $model Staff
+ * @var $model Candidate
  * @var $this CController
  */
 
 $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
-    'id' => 'staff-form',
+    'id' => 'candidate-form',
     'type' => 'horizontal',
     'enableClientValidation' => true,
 ));
@@ -17,7 +17,7 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
 <?php echo $form->errorSummary($model); ?>
 
 <?php
-$this->renderPartial('_faculty', array(
+$this->renderPartial('application.views.staff._faculty', array(
     'model' => $model,
     'form' => $form,
     'hint' => 'Заполнить1',
@@ -25,7 +25,7 @@ $this->renderPartial('_faculty', array(
 ?>
 
 <?php
-$this->renderPartial('_department', array(
+$this->renderPartial('application.views.staff._department', array(
     'model' => $model,
     'form' => $form,
     'hint' => 'Заполнить2',
@@ -37,6 +37,22 @@ echo $form->textFieldRow($model, 'fio', array(
     'class' => 'span5',
     'maxlength' => 50,
     'hint' => 'ЗАПОЛНИТЬ',
+));
+?>
+
+<?php
+$this->renderPartial('_advisor', array(
+    'model' => $model,
+    'form' => $form,
+    'hint' => 'Начните вводить ФИО сотрудника, затем выберите его из списка / добавьте в базу',
+));
+?>
+
+<?php
+$this->renderPartial('_speciality', array(
+    'model' => $model,
+    'form' => $form,
+    'hint' => 'Начните вводить код или название специальности, затем выберите его из списка / добавьте в базу',
 ));
 ?>
 
@@ -58,13 +74,6 @@ echo $form->customRow($model, 'birth',
         'hint' => 'ЗАПОЛНИТЬ',
     )
 );
-?>
-
-<?php
-$this->renderPartial('_scienceDegrees', array(
-    'degrees' => $model->scientificDegrees,
-    'form' => $form,
-));
 ?>
 
 <div class="form-actions">

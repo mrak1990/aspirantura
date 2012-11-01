@@ -12,7 +12,7 @@
  */
 class MyRequiredValidator extends CRequiredValidator
 {
-    public $message = 'Необоходимо заполнить поле "{attribute}".';
+    public $message = 'Необходимо заполнить поле "{attribute}".';
 }
 
 ?>

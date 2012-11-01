@@ -1,6 +1,6 @@
 <?php
 /**
- * @var Faculty $model
+ * @var Speciality $model
  * @var MyBootActiveForm $form
  * @var SortForm $searchModel
  * @var CController $this
@@ -40,18 +40,18 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
         </div>
 
         <?php
-        echo $form->textFieldRow($model, 'title', array(
+        echo $form->textFieldRow($model, 'code', array(
             'class' => 'span4',
-            'maxlength' => 50,
+            'maxlength' => 8,
             'hint' => 'Введите название факультета',
         ));
         ?>
 
         <?php
-        echo $form->textFieldRow($model, 'deanFio', array(
+        echo $form->textFieldRow($model, 'title', array(
             'class' => 'span4',
-            'maxlength' => 50,
-            'hint' => 'Введите ФИО декана',
+            'maxlength' => 200,
+            'hint' => 'Введите название специальности',
         ));
         ?>
 
@@ -59,10 +59,9 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
     <div class="span6 last">
         <div class="page-header"><h3>Параметры сортировки</h3></div>
         <?php
-        echo $form->dropDownListRow($searchModel, 'sort', $model->getSortOptions(array(), array(
-                'institute_id',
-                'secretariat',
-                'deleted',
+        echo $form->dropDownListRow($searchModel, 'sort', $model->getSortOptions(array(), array( //                'institute_id',
+//                'secretariat',
+//                'deleted',
             )
         ), array(
             'class' => 'span4',
@@ -75,7 +74,10 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
     </div>
 </div>
 <div class="form-actions">
-    <?php echo CHtml::submitButton('Найти', array('class' => 'btn primary')); ?>
+    <?php echo CHtml::submitButton('Найти',
+    array(
+        'class' => 'btn primary'
+    )); ?>
 </div>
 
 <?php $this->endWidget(); ?>
