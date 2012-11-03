@@ -39,12 +39,15 @@
                         'label' => 'сотрудники',
                         'url' => array(
                             'staff/index',
-                            'Staff[faculty_id][]' => $model->id
+                            'Staff[facultyId][]' => $model->id
                         )
                     ),
                     array(
                         'label' => 'аспиранты',
-                        'url' => '#'
+                        'url' => array(
+                            'candidate/index',
+                            'Candidate[facultyId][]' => $model->id
+                        )
                     ),
                     '---',
                     array(

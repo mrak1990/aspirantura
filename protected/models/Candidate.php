@@ -16,7 +16,6 @@
 class Candidate extends ActiveRecord
 {
     public $facultyId;
-    public $advisorFio;
 
     /**
      * Returns the static model of the specified AR class.
@@ -53,7 +52,7 @@ class Candidate extends ActiveRecord
             array('birth, is_postgrad, status', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, department_id, fio, birth, is_postgrad, whence, status, speciality_id', 'safe', 'on' => 'search'),
+            array('id, facultyId, department_id, fio, birth, is_postgrad, whence, status, speciality_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -98,26 +97,25 @@ class Candidate extends ActiveRecord
 
         $criteria = $this->getDbCriteria();
 
-        $criteria->compare('id', $this->id);
-        $criteria->compare('fio', $this->fio, true);
-        $criteria->compare('birth', $this->birth, true);
-        $criteria->compare('is_postgrad', $this->is_postgrad);
-        $criteria->compare('whence', $this->whence, true);
-        $criteria->compare('advisor.fio', $this->advisorFio, true);
+        $criteria->compare('t.id', $this->id);
+        $criteria->compare('t.fio', $this->fio, true);
+        $criteria->compare('t.birth', $this->birth, true);
+        $criteria->compare('t.is_postgrad', $this->is_postgrad);
+        $criteria->compare('t.whence', $this->whence, true);
+        $criteria->compare('t.staff_id', $this->staff_id);
 
-        $departmentsSelected = false;
         if (is_array($this->department_id))
         {
             if (in_array('', $this->department_id))
                 $this->department_id = array_diff($this->department_id, array(''));
             if (!empty($this->department_id))
             {
-                $criteria->addInCondition('department_id', $this->department_id);
-                $departmentsSelected = true;
+                $criteria->addInCondition('t.department_id', $this->department_id);
+                $this->facultyId = null;
             }
         }
 
-        if (!$departmentsSelected && is_array($this->facultyId))
+        if (is_array($this->facultyId))
         {
             if (in_array('', $this->facultyId))
                 $this->facultyId = array_diff($this->facultyId, array(''));
@@ -125,9 +123,9 @@ class Candidate extends ActiveRecord
                 $criteria->addInCondition('department.faculty_id', $this->facultyId);
         }
 
-        $criteria->compare('speciality_id', $this->speciality_id);
+        $criteria->compare('t.speciality_id', $this->speciality_id);
 
-        return new $this;
+        return $this;
     }
 
     public function behaviors()
@@ -148,10 +146,10 @@ class Candidate extends ActiveRecord
     public function getSortAttributes()
     {
         return array(
-//            'dean' => array(
-//                'asc' => 'dean.fio',
-//                'desc' => 'dean.fio DESC',
-//            ),
+            'advisor' => array(
+                'asc' => 'advisor.fio',
+                'desc' => 'advisor.fio DESC',
+            ),
             '*',
         );
     }
@@ -163,7 +161,8 @@ class Candidate extends ActiveRecord
      */
     public function getResolvedSortOptions()
     {
-        return array( //            'staff_id' => 'dean',
+        return array(
+            'staff_id' => 'advisor',
         );
     }
 }

@@ -70,11 +70,11 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
         ?>
 
         <?php
-        echo $form->textFieldRow($model, 'advisorFio', array(
-            'class' => 'span4',
-            'maxlength' => 50,
-            'hint' => 'Введите ФИО научного руководителя',
-        ));
+//        echo $form->textFieldRow($model, 'advisorFio', array(
+//            'class' => 'span4',
+//            'maxlength' => 50,
+//            'hint' => 'Введите ФИО научного руководителя',
+//        ));
         ?>
 
     </div>

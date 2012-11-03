@@ -119,23 +119,22 @@ class Staff extends ActiveRecord
     {
         $criteria = $this->getDbCriteria();
 
-        $criteria->compare('id', $this->id);
-        $criteria->compare('fio', $this->fio, true);
-        $criteria->compare('birth', $this->birth, true);
+        $criteria->compare('t.id', $this->id);
+        $criteria->compare('t.fio', $this->fio, true);
+        $criteria->compare('t.birth', $this->birth, true);
 
-        $departmentsSelected = false;
         if (is_array($this->department_id))
         {
             if (in_array('', $this->department_id))
                 $this->department_id = array_diff($this->department_id, array(''));
             if (!empty($this->department_id))
             {
-                $criteria->addInCondition('department_id', $this->department_id);
-                $departmentsSelected = true;
+                $criteria->addInCondition('t.department_id', $this->department_id);
+                $this->facultyId = null;
             }
         }
 
-        if (!$departmentsSelected && is_array($this->facultyId))
+        if (is_array($this->facultyId))
         {
             if (in_array('', $this->facultyId))
                 $this->facultyId = array_diff($this->facultyId, array(''));

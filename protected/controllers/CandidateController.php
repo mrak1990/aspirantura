@@ -44,9 +44,8 @@ class CandidateController extends Controller
     public function actionView($id)
     {
         $this->render('view', array(
-                'model' => $this->loadModel($id),
-            )
-        );
+            'model' => $this->loadModel($id),
+        ));
     }
 
     /**
@@ -65,22 +64,20 @@ class CandidateController extends Controller
                 if (Yii::app()->request->isAjaxRequest)
                 {
                     echo CJSON::encode(array(
-                            'status' => 'success',
-                            'div' => "Запись успешно добавлена",
-                            'data' => array(
-                                'value' => $model->id,
-                                'title' => $model->title,
-                            )
+                        'status' => 'success',
+                        'div' => "Запись успешно добавлена",
+                        'data' => array(
+                            'value' => $model->id,
+                            'title' => $model->title,
                         )
-                    );
+                    ));
                     Yii::app()->end();
                 }
                 else
                     $this->redirect(array(
-                            'view',
-                            'id' => $model->id
-                        )
-                    );
+                        'view',
+                        'id' => $model->id
+                    ));
             }
         }
 
@@ -89,19 +86,17 @@ class CandidateController extends Controller
             if (isset($_POST['title']))
                 $model->title = mb_convert_case($_POST['title'], MB_CASE_TITLE, 'UTF-8');
             echo CJSON::encode(array(
-                    'status' => 'failure',
-                    'div' => $this->renderPartial('_form', array(
-                        'model' => $model
-                    ), true)
-                )
-            );
+                'status' => 'failure',
+                'div' => $this->renderPartial('_form', array(
+                    'model' => $model
+                ), true)
+            ));
             Yii::app()->end();
         }
         else
             $this->render('create', array(
-                    'model' => $model,
-                )
-            );
+                'model' => $model,
+            ));
     }
 
     /**
@@ -242,21 +237,26 @@ class CandidateController extends Controller
         $search->resolveGETSort();
 
         $criteria = new CDbCriteria(array(
-                'with' => array()
+            'with' => array(
+                'department' => array(
+                    'with' => array(
+                        'faculty'
+                    ),
+                ),
+                'advisor',
             )
-        );
+        ));
 
-        $sort = new CSort('Department');
+        $sort = new CSort('Candidate');
         $sort->attributes = $model->getSortAttributes();
         $sort->defaultOrder = 't.fio';
 
         $this->render('index', array(
-                'model' => $model->getRestoredRecords()->search(),
-                'criteria' => $criteria,
-                'sort' => $sort,
-                'searchModel' => $search,
-            )
-        );
+            'model' => $model->getRestoredRecords()->search(),
+            'criteria' => $criteria,
+            'sort' => $sort,
+            'searchModel' => $search,
+        ));
     }
 
     /**
@@ -276,21 +276,26 @@ class CandidateController extends Controller
         $search->resolveGETSort();
 
         $criteria = new CDbCriteria(array(
-                'with' => array()
+            'with' => array(
+                'department' => array(
+                    'with' => array(
+                        'faculty'
+                    ),
+                ),
+                'advisor',
             )
-        );
+        ));
 
-        $sort = new CSort('Department');
+        $sort = new CSort('Candidate');
         $sort->attributes = $model->getSortAttributes();
         $sort->defaultOrder = 't.fio';
 
         $this->render('index', array(
-                'model' => $model->getDeletedRecords()->search(),
-                'criteria' => $criteria,
-                'sort' => $sort,
-                'searchModel' => $search,
-            )
-        );
+            'model' => $model->getDeletedRecords()->search(),
+            'criteria' => $criteria,
+            'sort' => $sort,
+            'searchModel' => $search,
+        ));
     }
 
     /**
