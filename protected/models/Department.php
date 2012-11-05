@@ -99,8 +99,7 @@ class Department extends ActiveRecord
         $criteria->compare('number', $this->number);
         if (is_array($this->faculty_id))
         {
-            if (in_array('', $this->faculty_id))
-                $this->faculty_id = array_diff($this->faculty_id, array(''));
+            $this->faculty_id = array_diff($this->faculty_id, array(''));
             if (!empty($this->faculty_id))
                 $criteria->addInCondition('faculty_id', $this->faculty_id);
         }

@@ -43,7 +43,7 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
         echo $form->textFieldRow($model, 'full_title_nom', array(
             'class' => 'span4',
             'maxlength' => 50,
-            'hint' => 'Введите название факультета',
+            'hint' => 'Введите название отрасли науки',
         ));
         ?>
 
@@ -51,9 +51,9 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
     <div class="span6 last">
         <div class="page-header"><h3>Параметры сортировки</h3></div>
         <?php
-        echo $form->dropDownListRow($searchModel, 'sort', $model->getSortOptions(array(), array(//                'institute_id',
-//                'secretariat',
-//                'deleted',
+        echo $form->dropDownListRow($searchModel, 'sort', $model->getSortOptions(array(), array(
+                'title',
+                'full_title',
             )
         ), array(
             'class' => 'span4',

@@ -79,7 +79,7 @@ class Speciality extends ActiveRecord
             'id' => 'ID',
             'code' => 'Шифр',
             'title' => 'Название',
-            'science_branch_id' => 'Область науки',
+            'science_branch_id' => 'Отрасль науки',
         );
     }
 
@@ -100,8 +100,7 @@ class Speciality extends ActiveRecord
 
         if (is_array($this->science_branch_id))
         {
-            if (in_array('', $this->science_branch_id))
-                $this->science_branch_id = array_diff($this->science_branch_id, array(''));
+            $this->science_branch_id = array_diff($this->science_branch_id, array(''));
             if (!empty($this->science_branch_id))
                 $criteria->addInCondition('science_branch_id', $this->science_branch_id);
         }

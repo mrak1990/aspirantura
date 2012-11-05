@@ -70,6 +70,16 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
         ?>
 
         <?php
+        echo $form->dropdownListRow($model, 'speciality_id', CHtml::listData(Speciality::model()->findAll(), 'id', 'title'), array(
+            'class' => 'span4',
+            'maxlength' => 50,
+            'multiple' => true,
+            'empty' => 'Все',
+            'hint' => 'Выберите нужные специальности из списка (для множественно выбора используйте клавишу <span class="key_button">Ctrl</span> и левую кнопку мышку)',
+        ));
+        ?>
+
+        <?php
 //        echo $form->textFieldRow($model, 'advisorFio', array(
 //            'class' => 'span4',
 //            'maxlength' => 50,
@@ -98,9 +108,13 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
 </div>
 <div class="form-actions">
     <?php
-    echo CHtml::submitButton('Найти', array('class' => 'btn primary')); ?>
+    echo CHtml::submitButton('Найти', array(
+        'class' => 'btn primary'
+    ));
+    ?>
 </div>
 
 <?php
-$this->endWidget(); ?>
+$this->endWidget();
+?>
 <!-- Search form END -->

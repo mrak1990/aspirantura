@@ -68,7 +68,7 @@ $form = $this->beginWidget('ext.bootstrap.widgets.BootActiveForm', array(
     <div class="span6 last">
         <div class="page-header"><h3>Параметры сортировки</h3></div>
         <?php
-        echo $form->dropDownListRow($searchModel, 'sort', $model->getSortAttributes(array(), array(
+        echo $form->dropDownListRow($searchModel, 'sort', $model->getSortOptions(array(), array(
                 'id',
                 'faculty_id',
                 'deleted',

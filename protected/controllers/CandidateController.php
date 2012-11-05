@@ -252,7 +252,7 @@ class CandidateController extends Controller
         $sort->defaultOrder = 't.fio';
 
         $this->render('index', array(
-            'model' => $model->getRestoredRecords()->search(),
+            'model' => $model->search(),
             'criteria' => $criteria,
             'sort' => $sort,
             'searchModel' => $search,

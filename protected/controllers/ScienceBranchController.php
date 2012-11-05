@@ -1,13 +1,13 @@
 <?php
 
-class SpecialityController extends Controller
+class ScienceBranchController extends Controller
 {
     /**
      * @var string title of current page
      */
-    public $pageTitle = 'Специальности';
+    public $pageTitle = 'Отрасли науки';
     public $breadcrumbs = array(
-        'Специальности' => array('index')
+        'Отрасли науки' => array('index')
     );
 
     /**
@@ -23,16 +23,10 @@ class SpecialityController extends Controller
         return array(
             'search' => array(
                 'class' => 'application.components.actions.SearchAction',
-                'model' => Speciality::model(),
+                'model' => ScienceBranch::model(),
                 'labelField' => 'title',
                 'searchField' => 'title',
             ),
-//            'optionList' => array(
-//                'class' => 'application.components.actions.ListAction',
-//                'model' => Speciality::model(),
-//                'labelField' => 'title',
-//                'parentIdField' => 'foreign_key_id',
-//            ),
         );
     }
 
@@ -54,11 +48,11 @@ class SpecialityController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Speciality;
+        $model = new ScienceBranch;
 
-        if (isset($_POST['Speciality']))
+        if (isset($_POST['ScienceBranch']))
         {
-            $model->attributes = $_POST['Speciality'];
+            $model->attributes = $_POST['ScienceBranch'];
             if ($model->save())
             {
                 if (Yii::app()->request->isAjaxRequest)
@@ -109,9 +103,9 @@ class SpecialityController extends Controller
     {
         $model = $this->loadModel($id);
 
-        if (isset($_POST['Speciality']))
+        if (isset($_POST['ScienceBranch']))
         {
-            $model->attributes = $_POST['Speciality'];
+            $model->attributes = $_POST['ScienceBranch'];
             if ($model->save())
                 $this->redirect(array(
                     'view',
@@ -148,11 +142,11 @@ class SpecialityController extends Controller
      */
     public function actionIndex()
     {
-        $model = new Speciality('search');
+        $model = new ScienceBranch('search');
         $search = new SortForm;
 
-        if (isset($_GET['Speciality']))
-            $model->attributes = $_GET['Speciality'];
+        if (isset($_GET['ScienceBranch']))
+            $model->attributes = $_GET['ScienceBranch'];
 
         if (isset($_GET['SortForm']))
             $search->attributes = $_GET['SortForm'];
@@ -163,9 +157,9 @@ class SpecialityController extends Controller
             'with' => array()
         ));
 
-        $sort = new CSort('Speciality');
+        $sort = new CSort('Department');
         $sort->attributes = $model->getSortAttributes();
-        $sort->defaultOrder = 't.code';
+        $sort->defaultOrder = 't.title';
 
         $this->render('index', array(
             'model' => $model->search(),
@@ -183,7 +177,7 @@ class SpecialityController extends Controller
      */
     public function loadModel($id)
     {
-        $model = Speciality::model()->findByPk($id);
+        $model = ScienceBranch::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'Страница не существует.');
 
@@ -197,7 +191,7 @@ class SpecialityController extends Controller
      */
     protected function performAjaxValidation($model)
     {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'speciality-form')
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'science-branch-form')
         {
             echo CActiveForm::validate($model);
             Yii::app()->end();

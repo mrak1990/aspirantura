@@ -18,27 +18,39 @@ $this->renderPartial('_search', array(
 $valueFunction = function ($data)
 {
     return Yii::app()->controller->widget("ext.bootstrap.widgets.BootButtonGroup", array(
-        "size" => "mini",
-        "buttons" => array(
+        'size' => 'mini',
+        'buttons' => array(
             array(
-                "items" => array(
+                'items' => array(
                     array(
-                        "label" => "кафедры",
-                        "url" => array(
-                            "department/index",
-                            "Department[faculty_id][]" => $data->id
+                        'label' => 'кафедры',
+                        'url' => array(
+                            'department/index',
+                            'Department[faculty_id][]' => $data->id
+                        ),
+                        'linkOptions' => array(
+                            'title' => 'Кафедры на факультете',
                         )
                     ),
                     array(
-                        "label" => "сотрудники",
-                        "url" => array(
-                            "staff/index",
-                            "Staff[faculty_id][]" => $data->id
+                        'label' => 'сотрудники',
+                        'url' => array(
+                            'staff/index',
+                            'Staff[faculty_id][]' => $data->id
+                        ),
+                        'linkOptions' => array(
+                            'title' => 'Сотрудники на факультете',
                         )
                     ),
                     array(
                         "label" => "аспиранты",
-                        "url" => "#"
+                        "url" => array(
+                            'candidate/index',
+                            'Candidate[facultyId][]' => $data->id
+                        ),
+                        'linkOptions' => array(
+                            'title' => 'Аспиранты на факультете',
+                        )
                     ),
                     "---",
                     array(
@@ -77,7 +89,8 @@ $this->widget('MyBootGridView', array(
         array(
             'header' => 'Декан',
             'name' => 'dean',
-            'value' => '(isset($data->dean)) ? $data->dean->fio : null'
+            'value' => 'isset($data->dean) ? CHtml::link($data->dean->fio, array("staff/view", "id"=>$data->staff_id)) : null',
+            'type' => 'html',
         ),
         array(
             'class' => 'ext.bootstrap.widgets.BootButtonColumn',

@@ -9,6 +9,9 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
     'id' => 'science-branch-form',
     'type' => 'horizontal',
     'enableClientValidation' => true,
+    'htmlOptions' => array(
+        'class' => 'labels-width',
+    )
 ));
 ?>
 

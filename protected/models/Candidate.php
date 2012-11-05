@@ -15,6 +15,7 @@
  */
 class Candidate extends ActiveRecord
 {
+    const DELETABLE = false;
     public $facultyId;
 
     /**
@@ -106,8 +107,7 @@ class Candidate extends ActiveRecord
 
         if (is_array($this->department_id))
         {
-            if (in_array('', $this->department_id))
-                $this->department_id = array_diff($this->department_id, array(''));
+            $this->department_id = array_diff($this->department_id, array(''));
             if (!empty($this->department_id))
             {
                 $criteria->addInCondition('t.department_id', $this->department_id);
@@ -117,13 +117,17 @@ class Candidate extends ActiveRecord
 
         if (is_array($this->facultyId))
         {
-            if (in_array('', $this->facultyId))
-                $this->facultyId = array_diff($this->facultyId, array(''));
+            $this->facultyId = array_diff($this->facultyId, array(''));
             if (!empty($this->facultyId))
                 $criteria->addInCondition('department.faculty_id', $this->facultyId);
         }
 
-        $criteria->compare('t.speciality_id', $this->speciality_id);
+        if (is_array($this->speciality_id))
+        {
+            $this->speciality_id = array_diff($this->speciality_id, array(''));
+            if (!empty($this->speciality_id))
+                $criteria->addInCondition('t.speciality_id', $this->speciality_id);
+        }
 
         return $this;
     }

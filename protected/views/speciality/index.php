@@ -70,6 +70,12 @@ $this->widget('MyBootGridView', array(
             'type' => 'html',
         ),
         array(
+            'header' => 'Отрасль науки',
+            'name' => 'scienceBranch',
+            'value' => 'isset($data->scienceBranch) ? CHtml::link($data->scienceBranch->full_title_nom, array("scienceBranch/view", "id"=>$data->science_branch_id)) : null',
+            'type' => 'html',
+        ),
+        array(
             'class' => 'ext.bootstrap.widgets.BootButtonColumn',
             'htmlOptions' => array('style' => 'width: 50px'),
         ),

@@ -89,3 +89,12 @@ table.width-detail-view th {
     text-align: right;
     width: 250px;
 }
+
+/* width labels in form */
+form.labels-width .control-label {
+    width: 240px;
+}
+
+form.labels-width .controls {
+    margin-left: 260px;
+}

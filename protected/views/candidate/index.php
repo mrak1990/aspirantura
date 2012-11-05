@@ -8,7 +8,7 @@
  */
 
 $this->breadcrumbs = array_keys($this->breadcrumbs);
-$this->menu = HelperHTML::getMenu(basename(__FILE__, '.php'));
+$this->menu = HelperHTML::getMenu(basename(__FILE__, '.php'), new Candidate());
 
 $this->renderPartial('_search', array(
     'model' => $model,
