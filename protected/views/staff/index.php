@@ -15,28 +15,6 @@ $this->renderPartial('_search', array(
     'searchModel' => $searchModel,
 ));
 
-$valueFunction = function ($data)
-{
-    return Yii::app()->controller->widget("ext.bootstrap.widgets.BootButtonGroup", array(
-        "size" => "mini",
-        "buttons" => array(
-            array(
-                "items" => array(
-                    array(
-                        "label" => "аспиранты",
-                        "url" => "#"
-                    ),
-                    "---",
-                    array(
-                        "label" => "что-то ещё",
-                        "url" => "#"
-                    ),
-                )
-            ),
-        ),
-    ), true);
-};
-
 $this->widget('MyBootGridView', array(
     'id' => 'staff-grid',
     'type' => 'striped bordered condensed',
@@ -79,8 +57,8 @@ $this->widget('MyBootGridView', array(
         array(
             'class' => 'CDataColumn',
             'type' => 'raw',
-            'value' => $valueFunction,
-            'htmlOptions' => array('style' => 'width: 20px'),
+            'value' => Staff::getSubModelMenuFunction('mini'),
+            'htmlOptions' => array('style' => 'width: 37px'),
         ),
     ),
     'footer' => array(

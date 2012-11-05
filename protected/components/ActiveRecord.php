@@ -8,6 +8,9 @@
 class ActiveRecord extends CActiveRecord
 {
 
+    /**
+     * boolean this model can be moved to trash
+     */
     const DELETABLE = true;
 
     /**
@@ -101,6 +104,35 @@ class ActiveRecord extends CActiveRecord
     public function getSortAttributes()
     {
         return array('*');
+    }
+
+    /**
+     * Get function returning callable that return BootButtonGroup
+     *
+     * @param string $size size of button
+     *
+     * @return callable function with one parameter $data
+     */
+    static public function getSubModelMenuFunction($size = '')
+    {
+        return function ($data) use ($size)
+        {
+            return Yii::app()->controller->widget("ext.bootstrap.widgets.BootButtonGroup", array(
+                'size' => $size,
+                'buttons' => array(
+                    array(
+                        'icon' => 'search',
+                        'items' => array(
+                            array(
+                                'label' => 'Ссылка',
+                                'url' => '#'
+                            ),
+                            '---',
+                        )
+                    ),
+                ),
+            ), true);
+        };
     }
 }
 

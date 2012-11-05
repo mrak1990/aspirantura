@@ -20,30 +20,8 @@
         );
     ?>
 </h2>
-<div class="btn-toolbar pull-right">
+<div class="pull-right">
     <?php
-    $this->widget('ext.bootstrap.widgets.BootButtonGroup', array(
-        'size' => 'small',
-        'buttons' => array(
-            array(
-                'label' => 'У сотрудника',
-                'icon' => 'search',
-                'items' => array(
-                    array(
-                        'label' => 'аспиранты',
-                        'url' => array(
-                            'candidate/index',
-                            'Staff[faculty_id][]' => $model->id
-                        )
-                    ),
-                    '---',
-                    array(
-                        'label' => 'что-то ещё',
-                        'url' => '#'
-                    ),
-                )
-            ),
-        ),
-    ), false);
+    echo call_user_func(Staff::getSubModelMenuFunction(''), $model);
     ?>
 </div>

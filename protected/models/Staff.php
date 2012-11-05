@@ -282,4 +282,38 @@ class Staff extends ActiveRecord
 
         return implode(', ', $degrees);
     }
+
+    /**
+     * Get function returning callable that return BootButtonGroup
+     *
+     * @param string $size size of button
+     *
+     * @return callable function with one parameter $data
+     */
+    static public function getSubModelMenuFunction($size = '')
+    {
+        return function ($data) use ($size)
+        {
+            return Yii::app()->controller->widget("ext.bootstrap.widgets.BootButtonGroup", array(
+                'size' => $size,
+                'buttons' => array(
+                    array(
+                        'icon' => 'search',
+                        'items' => array(
+                            array(
+                                "label" => "Аспиранты",
+                                "url" => array(
+                                    'candidate/index',
+                                    'Candidate[facultyId][]' => $data->id
+                                ),
+                                'linkOptions' => array(
+                                    'title' => 'Аспиранты на факультете',
+                                )
+                            ),
+                        )
+                    ),
+                ),
+            ), true);
+        };
+    }
 }

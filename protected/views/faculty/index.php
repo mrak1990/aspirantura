@@ -15,54 +15,6 @@ $this->renderPartial('_search', array(
     'searchModel' => $searchModel,
 ));
 
-$valueFunction = function ($data)
-{
-    return Yii::app()->controller->widget("ext.bootstrap.widgets.BootButtonGroup", array(
-        'size' => 'mini',
-        'buttons' => array(
-            array(
-                'items' => array(
-                    array(
-                        'label' => 'кафедры',
-                        'url' => array(
-                            'department/index',
-                            'Department[faculty_id][]' => $data->id
-                        ),
-                        'linkOptions' => array(
-                            'title' => 'Кафедры на факультете',
-                        )
-                    ),
-                    array(
-                        'label' => 'сотрудники',
-                        'url' => array(
-                            'staff/index',
-                            'Staff[faculty_id][]' => $data->id
-                        ),
-                        'linkOptions' => array(
-                            'title' => 'Сотрудники на факультете',
-                        )
-                    ),
-                    array(
-                        "label" => "аспиранты",
-                        "url" => array(
-                            'candidate/index',
-                            'Candidate[facultyId][]' => $data->id
-                        ),
-                        'linkOptions' => array(
-                            'title' => 'Аспиранты на факультете',
-                        )
-                    ),
-                    "---",
-                    array(
-                        "label" => "что-то ещё",
-                        "url" => "#"
-                    ),
-                )
-            ),
-        ),
-    ), true);
-};
-
 $this->widget('MyBootGridView', array(
     'id' => 'faculty-grid',
     'type' => 'striped bordered condensed',
@@ -99,9 +51,9 @@ $this->widget('MyBootGridView', array(
         array(
             'class' => 'CDataColumn',
             'type' => 'raw',
-            'value' => $valueFunction,
+            'value' => Faculty::getSubModelMenuFunction('mini'),
             'htmlOptions' => array(
-                'style' => 'width: 20px'
+                'style' => 'width: 37px'
             ),
         ),
     ),

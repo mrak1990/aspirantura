@@ -19,44 +19,8 @@
         ));
     ?>
 </h2>
-<div class="btn-toolbar pull-right">
+<div class="pull-right">
     <?php
-    $this->widget('ext.bootstrap.widgets.BootButtonGroup', array(
-        'size' => 'small',
-        'buttons' => array(
-            array(
-                'label' => 'На факультете',
-                'icon' => 'search',
-                'items' => array(
-                    array(
-                        'label' => 'кафедры',
-                        'url' => array(
-                            'department/index',
-                            'Department[faculty_id][]' => $model->id
-                        )
-                    ),
-                    array(
-                        'label' => 'сотрудники',
-                        'url' => array(
-                            'staff/index',
-                            'Staff[facultyId][]' => $model->id
-                        )
-                    ),
-                    array(
-                        'label' => 'аспиранты',
-                        'url' => array(
-                            'candidate/index',
-                            'Candidate[facultyId][]' => $model->id
-                        )
-                    ),
-                    '---',
-                    array(
-                        'label' => 'что-то ещё',
-                        'url' => '#'
-                    ),
-                )
-            ),
-        ),
-    ), false);
+    echo call_user_func(Faculty::getSubModelMenuFunction(), $model);
     ?>
 </div>

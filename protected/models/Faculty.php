@@ -155,4 +155,51 @@ class Faculty extends ActiveRecord
     {
         return "$this->title ({$this->short_title})";
     }
+
+    static public function getSubModelMenuFunction($size = '')
+    {
+        return function ($data) use ($size)
+        {
+            return Yii::app()->controller->widget("ext.bootstrap.widgets.BootButtonGroup", array(
+                'size' => $size,
+                'buttons' => array(
+                    array(
+                        'icon' => 'search',
+                        'items' => array(
+                            array(
+                                'label' => 'Кафедры',
+                                'url' => array(
+                                    'department/index',
+                                    'Department[faculty_id][]' => $data->id
+                                ),
+                                'linkOptions' => array(
+                                    'title' => 'Кафедры на факультете',
+                                )
+                            ),
+                            array(
+                                'label' => 'Сотрудники',
+                                'url' => array(
+                                    'staff/index',
+                                    'Staff[faculty_id][]' => $data->id
+                                ),
+                                'linkOptions' => array(
+                                    'title' => 'Сотрудники на факультете',
+                                )
+                            ),
+                            array(
+                                "label" => "Аспиранты",
+                                "url" => array(
+                                    'candidate/index',
+                                    'Candidate[facultyId][]' => $data->id
+                                ),
+                                'linkOptions' => array(
+                                    'title' => 'Аспиранты на факультете',
+                                )
+                            ),
+                        )
+                    ),
+                ),
+            ), true);
+        };
+    }
 }

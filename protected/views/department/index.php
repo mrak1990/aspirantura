@@ -15,42 +15,6 @@ $this->renderPartial('_search', array(
     'searchModel' => $searchModel,
 ));
 
-$valueFunction = function ($data)
-{
-    return Yii::app()->controller->widget("ext.bootstrap.widgets.BootButtonGroup", array(
-        "size" => "mini",
-        "buttons" => array(
-            array(
-                "items" => array(
-                    array(
-                        "label" => "кафедры",
-                        "url" => array(
-                            "department/index",
-                            "Department[faculty_id][]" => $data->id
-                        )
-                    ),
-                    array(
-                        "label" => "сотрудники",
-                        "url" => array(
-                            "staff/index",
-                            "Staff[faculty_id][]" => $data->id
-                        )
-                    ),
-                    array(
-                        "label" => "аспиранты",
-                        "url" => "#"
-                    ),
-                    "---",
-                    array(
-                        "label" => "что-то ещё",
-                        "url" => "#"
-                    ),
-                )
-            ),
-        ),
-    ), true);
-};
-
 $this->widget('MyBootGridView', array(
     'id' => 'department-grid',
     'type' => 'striped bordered condensed',
@@ -93,9 +57,9 @@ $this->widget('MyBootGridView', array(
         array(
             'class' => 'CDataColumn',
             'type' => 'raw',
-            'value' => $valueFunction,
+            'value' => Department::getSubModelMenuFunction('mini'),
             'htmlOptions' => array(
-                'style' => 'width: 20px'
+                'style' => 'width: 37px'
             ),
         ),
     ),
