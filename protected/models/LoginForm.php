@@ -13,6 +13,11 @@ class LoginForm extends CFormModel
     public $rememberMe;
     private $_identity;
 
+    static $errorDescription = array(
+        CBaseUserIdentity::ERROR_USERNAME_INVALID => 'Неизвестный пользователь',
+        CBaseUserIdentity::ERROR_PASSWORD_INVALID => 'Неверный пароль',
+    );
+
     /**
      * Declares the validation rules.
      * The rules state that username and password are required,
@@ -36,6 +41,8 @@ class LoginForm extends CFormModel
     public function attributeLabels()
     {
         return array(
+            'username' => 'Имя пользователя',
+            'password' => 'Пароль',
             'rememberMe' => 'Запомнить меня',
         );
     }
@@ -50,9 +57,15 @@ class LoginForm extends CFormModel
         {
             $this->_identity = new UserIdentity($this->username, $this->password);
             if (!$this->_identity->authenticate())
-                $this->addError('password', $this->_identity->errorCode);
-            else
-                CVarDumper::dump('authenticate OK', 10, true);
+            {
+                $errorCode = $this->_identity->errorCode;
+                if ($errorCode === CBaseUserIdentity::ERROR_USERNAME_INVALID)
+                    $this->addError('username', self::$errorDescription[$this->_identity->errorCode]);
+                else
+                    $this->addError('password', self::$errorDescription[$this->_identity->errorCode]);
+            }
+//            else
+//                CVarDumper::dump('authenticate OK', 10, true);
         }
     }
 
@@ -67,12 +80,13 @@ class LoginForm extends CFormModel
             $this->_identity = new UserIdentity($this->username, $this->password);
             $this->_identity->authenticate();
         }
-        CVarDumper::dump($this->_identity, 10, true);
+
         if ($this->_identity->errorCode === UserIdentity::ERROR_NONE)
         {
             $duration = $this->rememberMe
+                // 30 days
                 ? 3600 * 24 * 30
-                : 0; // 30 days
+                : 0;
             Yii::app()->user->login($this->_identity, $duration);
 
             return true;

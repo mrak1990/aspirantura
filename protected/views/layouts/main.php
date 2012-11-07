@@ -65,40 +65,35 @@
                 </li>
             </ul>
             <ul class="nav pull-right">
+                <?php if (Yii::app()->user->isGuest): ?>
+                <li>
+                    <?php echo CHtml::link('Войти', array('site/login')); ?>
+                </li>
+                <?php else: ?>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        mrak1990
+                        <?php echo Yii::app()->user->name; ?>
                         <b class="caret"></b>
                     </a>
-                    <?php
-                    $this->widget('zii.widgets.CMenu', array(
-                        'items' => array(
-                            array(
-                                'label' => 'Добавить пользователя',
-                                'url' => array('user/create')
-                            ),
-                            array(
-                                'itemOptions' => array(
-                                    'class' => 'divider'
-                                )
-                            ),
+                    <?php $this->widget('zii.widgets.CMenu', array(
+                    'items' => array(
 //                            array(
-//                                'label' => 'Login',
-//                                'url' => array('/site/login'),
-//                                'visible' => Yii::app()->user->isGuest
+//                                'itemOptions' => array(
+//                                    'class' => 'divider'
+//                                )
 //                            ),
-                            array(
-                                'label' => 'Выйти',
-                                'url' => array('site/logout'),
-                                'visible' => !Yii::app()->user->isGuest
-                            )
-                        ),
-                        'htmlOptions' => array(
-                            'class' => 'dropdown-menu',
+                        array(
+                            'label' => 'Выйти',
+                            'url' => array('site/logout'),
+                            'visible' => !Yii::app()->user->isGuest
                         )
-                    ));
-                    ?>
+                    ),
+                    'htmlOptions' => array(
+                        'class' => 'dropdown-menu',
+                    )
+                )); ?>
                 </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>

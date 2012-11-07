@@ -1,49 +1,57 @@
 <?php
-$this->pageTitle = Yii::app()->name . ' - Login';
-$this->breadcrumbs = array(
-    'Login',
-);
-?>
+/**
+ * @var $form MyBootActiveForm
+ * @var $model LoginForm
+ * @var $this CController
+ */
 
-<h1>Login</h1>
-
-<p>Please fill out the following form with your login credentials:</p>
-
-<div class="form">
-    <?php $form = $this->beginWidget('CActiveForm', array(
+$form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
     'id' => 'login-form',
+    'type' => 'horizontal',
+    'enableAjaxValidation' => true,
     'enableClientValidation' => true,
     'clientOptions' => array(
         'validateOnSubmit' => true,
     ),
-)); ?>
+));
 
-    <p class="note">Fields with <span class="required">*</span> are required.</p>
+$this->breadcrumbs = array_merge($this->breadcrumbs, array(
+    'Авторизация',
+));
+?>
 
-    <div class="row">
-        <?php echo $form->labelEx($model, 'username'); ?>
-        <?php echo $form->textField($model, 'username'); ?>
-        <?php echo $form->error($model, 'username'); ?>
-    </div>
+<h2>Авторизация</h2>
 
-    <div class="row">
-        <?php echo $form->labelEx($model, 'password'); ?>
-        <?php echo $form->passwordField($model, 'password'); ?>
-        <?php echo $form->error($model, 'password'); ?>
-        <p class="hint">
-            Hint: You may login with <tt>demo/demo</tt> or <tt>admin/admin</tt>.
-        </p>
-    </div>
+<div class="form-note"><em>Поля, помеченные <span class="required">*</span>, обязательны для заполнения.</em></div>
 
-    <div class="row rememberMe">
-        <?php echo $form->checkBox($model, 'rememberMe'); ?>
-        <?php echo $form->label($model, 'rememberMe'); ?>
-        <?php echo $form->error($model, 'rememberMe'); ?>
-    </div>
+<?php
+echo $form->textFieldRow($model, 'username', array(
+    'class' => 'span3',
+    'maxlength' => 30,
+//    'hint' => 'Введите имя учётной записи',
+));
+?>
 
-    <div class="row buttons">
-        <?php echo CHtml::submitButton('Login'); ?>
-    </div>
+<?php
+echo $form->passwordFieldRow($model, 'password', array(
+    'class' => 'span3',
+    'maxlength' => 50,
+//    'hint' => 'Введите пароль от учётной записи',
+));
+?>
 
-    <?php $this->endWidget(); ?>
-</div><!-- form -->
+<?php
+echo $form->checkBoxRow($model, 'rememberMe', array(
+    'hint' => 'Отметьте галочку, чтобы автоматически войти в следующий раз (действует 1 месяц)',
+))
+?>
+
+<div class="form-actions">
+    <?php
+    echo CHtml::submitButton('Войти', array(
+        'class' => 'btn primary'
+    ));
+    ?>
+</div>
+
+<?php $this->endWidget(); ?>

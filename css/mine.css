@@ -98,3 +98,10 @@ form.labels-width .control-label {
 form.labels-width .controls {
     margin-left: 260px;
 }
+
+/* chosen for degree add */
+div.degrees-add div.chzn-container {
+    vertical-align: middle;
+    margin-left: 10px;
+    margin-right: 10px;
+}

@@ -123,6 +123,9 @@ class StaffController extends Controller
             {
                 if (isset($_POST['ScienceDegree']) && is_array($_POST['ScienceDegree']))
                     $model->updateScienceDegrees($_POST['ScienceDegree']);
+                else
+                    $model->updateScienceDegrees(array());
+
                 $this->redirect(array(
                     'view',
                     'id' => $model->id

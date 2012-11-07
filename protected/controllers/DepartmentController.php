@@ -33,6 +33,7 @@ class DepartmentController extends Controller
                 'model' => Department::model(),
                 'labelField' => 'title',
                 'parentIdField' => 'faculty_id',
+                'emptyText' => 'Нет кафедр на данном факультете'
             ),
         );
     }

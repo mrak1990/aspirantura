@@ -180,7 +180,7 @@ class Faculty extends ActiveRecord
                                 'label' => 'Сотрудники',
                                 'url' => array(
                                     'staff/index',
-                                    'Staff[faculty_id][]' => $data->id
+                                    'Staff[facultyId][]' => $data->id
                                 ),
                                 'linkOptions' => array(
                                     'title' => 'Сотрудники на факультете',

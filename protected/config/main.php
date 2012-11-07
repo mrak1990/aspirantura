@@ -108,6 +108,8 @@ return array(
                     'options' => array(
                         'changeMonth' => true,
                         'changeYear' => true,
+                        'showAnim' => 'fold',
+                        'dateFormat' => 'dd.mm.yy',
                     ),
                 ),
             ),

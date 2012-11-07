@@ -18,8 +18,13 @@ abstract class contentDynamicAdder extends CWidget
 
     public function renderAddButton()
     {
-        echo CHtml::link('Добавить', '#', array(
-            'id' => "{$this->jsPrefix}AddButton",
+        $this->widget('bootstrap.widgets.BootButton', array(
+            'label' => 'Добавить',
+            'size' => 'mini',
+            'htmlOptions' => array(
+                'id' => "{$this->jsPrefix}AddButton",
+                'style' => 'margin-top: 5px;',
+            )
         ));
     }
 

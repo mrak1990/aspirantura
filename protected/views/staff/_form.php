@@ -20,7 +20,7 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
 $this->renderPartial('_faculty', array(
     'model' => $model,
     'form' => $form,
-    'hint' => 'Заполнить1',
+    'hint' => 'Начните вводить название факультета, затем выберите его из списка / добавьте в базу',
 ));
 ?>
 
@@ -28,7 +28,7 @@ $this->renderPartial('_faculty', array(
 $this->renderPartial('_department', array(
     'model' => $model,
     'form' => $form,
-    'hint' => 'Заполнить2',
+    'hint' => 'Начните вводить название кафедры, затем выберите её из списка / добавьте в базу',
 ));
 ?>
 
@@ -36,7 +36,7 @@ $this->renderPartial('_department', array(
 echo $form->textFieldRow($model, 'fio', array(
     'class' => 'span5',
     'maxlength' => 50,
-    'hint' => 'ЗАПОЛНИТЬ',
+    'hint' => 'Введите ФИО сотрудника',
 ));
 ?>
 
@@ -45,9 +45,6 @@ echo $form->customRow($model, 'birth',
     $this->widget('zii.widgets.jui.CJuiDatePicker', array(
         'model' => $model,
         'attribute' => 'birth',
-        'options' => array(
-            'showAnim' => 'fold',
-        ),
         'htmlOptions' => array(
             'style' => 'height:20px;'
         ),
@@ -55,7 +52,7 @@ echo $form->customRow($model, 'birth',
     array(
         'class' => 'span5',
         'maxlength' => 50,
-        'hint' => 'ЗАПОЛНИТЬ',
+        'hint' => 'Выберите дату рождения сотрудника',
     )
 );
 ?>

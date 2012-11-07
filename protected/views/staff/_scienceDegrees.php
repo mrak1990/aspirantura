@@ -24,7 +24,7 @@ $this->widget('application.widget.inlineDropdownCreate.chosenInlineCreate', arra
 <?php
 $emptyDegree = new ScienceDegree();
 ?>
-<div class="control-group">
+<div class="control-group degrees-add">
     <?php echo CHtml::activeLabel($emptyDegree, 'science_branch_id', array('class' => 'control-label')); ?>
     <?php
     $i = 0;
@@ -37,11 +37,18 @@ $emptyDegree = new ScienceDegree();
         ), array(
             'inline' => true,
         ));
+
         echo CHtml::activeDropDownList($degree, "[$i]science_branch_id", CHtml::listData(scienceBranch::model()->findAll(), 'id', 'full_title'), array(
             'class' => "span3 {$selector}",
         ));
-        echo CHtml::link('Удалить', '#', array(
-            'class' => 'degreeDeleteButton',
+
+        $this->widget('bootstrap.widgets.BootButton', array(
+            'label' => 'Удалить',
+            'size' => 'mini',
+            'type' => 'danger',
+            'htmlOptions' => array(
+                'class' => 'degreesDeleteButton',
+            )
         ));
 
         $i++;
@@ -57,8 +64,7 @@ $emptyDegree = new ScienceDegree();
         ));
         ?>
     </div>
-    <script type="text/html" id="<?php echo $jsPrefix; ?>Template" style="display: none;"
-            data-count="<?php echo count($degrees); ?>">
+    <script type="text/html" id="<?php echo $jsPrefix; ?>Template" style="display: none;" data-count="<?php echo count($degrees); ?>">
         <?php
         echo '<div class="controls">';
         echo $form->radioButtonList($emptyDegree, '[{{i}}]doctor', array(
@@ -67,12 +73,20 @@ $emptyDegree = new ScienceDegree();
         ), array(
             'inline' => true,
         ));
+
         echo CHtml::activeDropDownList($emptyDegree, '[{{i}}]science_branch_id', CHtml::listData(ScienceBranch::model()->findAll(), 'id', 'full_title'), array(
-            'class' => "span3  {$selector}",
+            'class' => "span3 {$selector}",
         ));
-        echo CHtml::link('Удалить', '#', array(
-            'class' => 'degreesDeleteButton',
+
+        $this->widget('bootstrap.widgets.BootButton', array(
+            'label' => 'Удалить',
+            'size' => 'mini',
+            'type' => 'danger',
+            'htmlOptions' => array(
+                'class' => 'degreesDeleteButton',
+            )
         ));
+
         echo '</div>';
         ?>
     </script>

@@ -183,7 +183,7 @@ class Department extends ActiveRecord
                                 'label' => 'Сотрудники',
                                 'url' => array(
                                     'staff/index',
-                                    'Staff[faculty_id][]' => $data->id
+                                    'Staff[department_id][]' => $data->id
                                 ),
                                 'linkOptions' => array(
                                     'title' => 'Сотрудники на факультете',
@@ -193,7 +193,7 @@ class Department extends ActiveRecord
                                 "label" => "Аспиранты",
                                 "url" => array(
                                     'candidate/index',
-                                    'Candidate[facultyId][]' => $data->id
+                                    'Candidate[department_id][]' => $data->id
                                 ),
                                 'linkOptions' => array(
                                     'title' => 'Аспиранты на факультете',

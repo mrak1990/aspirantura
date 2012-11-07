@@ -51,7 +51,11 @@ class AuthItem extends CActiveRecord
 //    public $parentsOperations = array();
 //    public $parentsTasks = array();
 //    public $parentsRoles = array();
-    static public $types = array('Операция', 'Задача', 'Роль');
+    static public $types = array(
+        'Операция',
+        'Задача',
+        'Роль'
+    );
     public $users = array();
 
     public function getLongType()
