@@ -21,11 +21,18 @@ $this->widget('application.widget.inlineDropdownCreate.chosenInlineCreate', arra
     'dialogTitle' => 'Добавить факультет',
 ));
 
-echo $form->dropDownListRow($model, 'facultyId', CHtml::listData(Faculty::model()->findAll(), 'id', 'title'), array(
+$data = Faculty::model()->findAll();
+$count = count($data);
+if ($count === 0)
+    $data[] = array(
+        'id' => '',
+        'title' => 'Записи отсутствуют'
+    );
+echo $form->dropDownListRow($model, 'facultyId', CHtml::listData($data, 'id', 'title'), array(
     'class' => 'span4',
     'maxlength' => 20,
     'hint' => $hint,
-    'empty' => 'Все',
+    'empty' => $count ? 'Все' : null,
     'ajax' => array(
         'type' => 'GET',
         'url' => $this->createUrl('department/optionList'),

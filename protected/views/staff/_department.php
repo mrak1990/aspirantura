@@ -20,7 +20,13 @@ $this->widget('application.widget.inlineDropdownCreate.chosenInlineCreate', arra
     'dialogTitle' => 'Добавить кафедру',
 ));
 
-echo $form->dropDownListRow($model, 'department_id', CHtml::listData(Department::model()->findAll(), 'id', 'title'), array(
+$data = Department::model()->findAll();
+if (count($data) === 0)
+    $data[] = array(
+        'id' => '',
+        'title' => 'Записи отсутствуют'
+    );
+echo $form->dropDownListRow($model, 'department_id', CHtml::listData($data, 'id', 'title'), array(
     'class' => 'span4',
     'maxlength' => 20,
     'hint' => $hint,
