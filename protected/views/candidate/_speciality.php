@@ -6,7 +6,9 @@
  */
 
 $jsPrefix = 'speciality';
-$selector = '#' . CHtml::activeId($model, 'staff_id');
+$attribute = 'speciality_id';
+
+$selector = '#' . CHtml::activeId($model, $attribute);
 $chosenOptions = optionsData::getChosenOptions($jsPrefix, $selector);
 
 $this->widget('ext.EChosen.EChosen', array(
@@ -20,10 +22,14 @@ $this->widget('application.widget.inlineDropdownCreate.chosenInlineCreate', arra
     'dialogTitle' => 'Добавить специальность',
 ));
 
-echo $form->dropDownListRow($model, 'staff_id', CHtml::listData(Speciality::model()->findAll(), 'id', 'title'), array(
+$data = Speciality::model()->findAll();
+$count = count($data);
+if ($count === 0)
+    $data[] = array();
+echo $form->dropDownListRow($model, $attribute, CHtml::listData($data, 'id', 'title'), array(
     'class' => 'span4',
     'maxlength' => 20,
     'hint' => $hint,
-    'empty' => 'Все',
+    'data-placeholder' => 'Добавить запись...',
 ));
 ?>

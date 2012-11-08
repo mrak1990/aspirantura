@@ -10,10 +10,10 @@ $this->breadcrumbs = array_merge(
 );
 $this->menu = HelperHTML::getMenu(basename(__FILE__, '.php'), $model);
 
-$this->renderPartial('_info', array(
-    'model' => $model,
-    'title' => 'Просмотр записи',
-));
+//$this->renderPartial('_info', array(
+//    'model' => $model,
+//    'title' => 'Просмотр записи',
+//));
 
 $this->widget('ext.bootstrap.widgets.BootDetailView', array(
         'data' => $model,

@@ -3,12 +3,13 @@
 class UserController extends Controller
 {
     /**
-     * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-     * using two-column layout. See 'protected/views/layouts/column2.php'.
+     * @var string title of current page
      */
-    public $layout = '//layouts/column2';
+    public $pageTitle = 'Пользователи';
 
-    public $breadcrumbs = array('Пользователи' => array('index'));
+    public $breadcrumbs = array(
+        'Пользователи' => array('index')
+    );
 
     /**
      * @return array action filters
@@ -46,7 +47,10 @@ class UserController extends Controller
         {
             $model->attributes = $_POST['User'];
             if ($model->save())
-                $this->redirect(array('view', 'id' => $model->id));
+                $this->redirect(array(
+                    'view',
+                    'id' => $model->id
+                ));
         }
 
         $this->render('create', array(
@@ -64,14 +68,14 @@ class UserController extends Controller
     {
         $model = $this->loadModel($id);
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
         if (isset($_POST['User']))
         {
             $model->attributes = $_POST['User'];
             if ($model->save())
-                $this->redirect(array('view', 'id' => $model->id));
+                $this->redirect(array(
+                    'view',
+                    'id' => $model->id
+                ));
         }
 
         $this->render('update', array(
@@ -99,7 +103,7 @@ class UserController extends Controller
                     : array('admin'));
         }
         else
-            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+            throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
     }
 
     /**
@@ -107,23 +111,53 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new CActiveDataProvider('User');
+        $model = new User('search');
+        $search = new SortForm;
+
+        if (isset($_GET['User']))
+            $model->attributes = $_GET['User'];
+
+        if (isset($_GET['SortForm']))
+            $search->attributes = $_GET['SortForm'];
+
+        $search->resolveGETSort();
+
+        $criteria = new CDbCriteria(array(//            'with' => array('dean')
+        ));
+
+        $sort = new CSort('User');
+        $sort->attributes = $model->getSortAttributes();
+        $sort->defaultOrder = 't.username';
+
         $this->render('index', array(
-            'dataProvider' => $dataProvider,
+            'model' => $model->getRestoredRecords()->search(),
+            'criteria' => $criteria,
+            'sort' => $sort,
+            'searchModel' => $search,
         ));
     }
 
     /**
-     * Manages all models.
+     * Set new password for user
+     *
+     * @param integer $id the ID of the model
      */
-    public function actionAdmin()
+    public function actionNewPassword($id)
     {
-        $model = new User('search');
-        $model->unsetAttributes(); // clear any default values
-        if (isset($_GET['User']))
-            $model->attributes = $_GET['User'];
+        $model = $this->loadModel($id);
+        $model->scenario = 'newPassword';
 
-        $this->render('admin', array(
+        if (isset($_POST['User']) && isset($_POST['User']['password']))
+        {
+            $model->attributes = array('password' => $_POST['User']['password']);
+            if ($model->save())
+                $this->redirect(array(
+                    'view',
+                    'id' => $model->id
+                ));
+        }
+
+        $this->render('newPassword', array(
             'model' => $model,
         ));
     }
@@ -138,7 +172,7 @@ class UserController extends Controller
     {
         $model = User::model()->findByPk($id);
         if ($model === null)
-            throw new CHttpException(404, 'The requested page does not exist.');
+            throw new CHttpException(404, 'Страница не существует.');
 
         return $model;
     }

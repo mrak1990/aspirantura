@@ -2,7 +2,10 @@
 <?php
 $this->widget('bootstrap.widgets.BootBreadcrumbs', array(
     'links' => $this->breadcrumbs,
-    'homeLink' => array('label' => 'Главная', 'url' => array('staff/index')),
+    'homeLink' => array(
+        'label' => 'Главная',
+        'url' => Yii::app()->homeUrl,
+    ),
 ));
 ?>
 <?php

@@ -26,10 +26,13 @@ $this->widget('application.widget.inlineDropdownCreate.chosenInlineCreate', arra
     'dialogTitle' => 'Добавить сотрудника',
 ));
 
-$data = isset($model->head)
-    ? CHtml::listData(array($model->head), 'id', 'fio')
-    : array();
-echo $form->dropDownListRow($model, 'staff_id', $data, array(
+$data = array();
+$data[] = isset($model->advisor)
+    ? $model->advisor
+    : isset($model->staff_id)
+        ? Staff::model()->findByPk($model->staff_id)
+        : array();
+echo $form->dropDownListRow($model, 'staff_id', CHtml::listData($data, 'id', 'fio'), array(
     'class' => 'span5',
     'maxlength' => 20,
     'hint' => $hint,

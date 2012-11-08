@@ -12,8 +12,7 @@
 <body>
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
-        <a class="brand" href="#">АСиДС</a>
-
+        <div class="brand">АСиДС</div>
         <div class="container">
             <ul class="nav">
                 <li class="active">
@@ -28,19 +27,19 @@
                         'items' => array(
                             array(
                                 'label' => 'Факультеты',
-                                'url' => array('/faculty')
+                                'url' => array('faculty/index')
                             ),
                             array(
                                 'label' => 'Кафедры',
-                                'url' => array('/department')
+                                'url' => array('department/index')
                             ),
                             array(
                                 'label' => 'Сотрудники',
-                                'url' => array('/staff')
+                                'url' => array('staff/index')
                             ),
                             array(
                                 'label' => 'Аспиранты',
-                                'url' => array('/candidate')
+                                'url' => array('candidate/index')
                             ),
                             array(
                                 'itemOptions' => array(
@@ -49,11 +48,11 @@
                             ),
                             array(
                                 'label' => 'Отрасли науки',
-                                'url' => array('/scienceBranch')
+                                'url' => array('scienceBranch/index')
                             ),
                             array(
                                 'label' => 'Специальности',
-                                'url' => array('/speciality')
+                                'url' => array('speciality/index')
                             ),
                         ),
                         'htmlOptions' => array(
@@ -75,23 +74,20 @@
                         <?php echo Yii::app()->user->name; ?>
                         <b class="caret"></b>
                     </a>
-                    <?php $this->widget('zii.widgets.CMenu', array(
-                    'items' => array(
-//                            array(
-//                                'itemOptions' => array(
-//                                    'class' => 'divider'
-//                                )
-//                            ),
-                        array(
-                            'label' => 'Выйти',
-                            'url' => array('site/logout'),
-                            'visible' => !Yii::app()->user->isGuest
+                    <?php
+                    $this->widget('zii.widgets.CMenu', array(
+                        'items' => array(
+                            array(
+                                'label' => 'Выйти',
+                                'url' => array('site/logout'),
+                                'visible' => !Yii::app()->user->isGuest
+                            )
+                        ),
+                        'htmlOptions' => array(
+                            'class' => 'dropdown-menu',
                         )
-                    ),
-                    'htmlOptions' => array(
-                        'class' => 'dropdown-menu',
-                    )
-                )); ?>
+                    ));
+                    ?>
                 </li>
                 <?php endif; ?>
             </ul>

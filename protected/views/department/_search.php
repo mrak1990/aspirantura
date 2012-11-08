@@ -81,7 +81,11 @@ $form = $this->beginWidget('ext.bootstrap.widgets.BootActiveForm', array(
     </div>
 </div>
 <div class="form-actions">
-    <?php echo CHtml::submitButton('Найти', array('class' => 'btn primary')); ?>
+    <?php
+    echo CHtml::submitButton('Найти', array(
+        'class' => 'btn primary'
+    ));
+    ?>
 </div>
 
 <?php $this->endWidget(); ?>

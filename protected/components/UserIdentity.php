@@ -7,6 +7,7 @@
  */
 class UserIdentity extends CUserIdentity
 {
+    private $_id;
 
     /**
      * Authenticates a user.
@@ -28,6 +29,13 @@ class UserIdentity extends CUserIdentity
         if ($this->username === 'admin' && $this->password === 'admin')
             $this->errorCode = self::ERROR_NONE;
 
+        $this->_id = $record->id;
+
         return !$this->errorCode;
+    }
+
+    public function getId()
+    {
+        return $this->_id;
     }
 }

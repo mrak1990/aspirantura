@@ -78,26 +78,22 @@ class SiteController extends Controller
     {
         $model = new LoginForm;
 
-        // if it is ajax validation request
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'login-form')
         {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
 
-        // collect user input data
         if (isset($_POST['LoginForm']))
         {
             $model->attributes = $_POST['LoginForm'];
-            // validate user input and redirect to the previous page if valid
             if ($model->validate() && $model->login())
                 $this->redirect(Yii::app()->request->urlReferrer !== null
                         ? Yii::app()->request->urlReferrer
                         : Yii::app()->homeUrl
                 );
-//                $this->redirect(Yii::app()->user->returnUrl);
         }
-        // display the login form
+
         $this->render('login', array(
             'model' => $model
         ));
@@ -110,5 +106,21 @@ class SiteController extends Controller
     {
         Yii::app()->user->logout();
         $this->redirect(Yii::app()->homeUrl);
+    }
+
+    /**
+     * Open profile for authorized user
+     */
+    public function actionProfile()
+    {
+        if (Yii::app()->user->isGuest)
+            $this->redirect(Yii::app()->homeUrl);
+//CVarDumper::dump(Yii::app()->user->id, 10, true);
+//        Yii::app()->end();
+        $model = User::model()->findByPk(Yii::app()->user->id);
+
+        $this->render('profile', array(
+            'model' => $model,
+        ));
     }
 }

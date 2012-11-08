@@ -13,6 +13,7 @@
  */
 class User extends ActiveRecord
 {
+    const DELETABLE = false;
 
     public $password;
     public $password2;
@@ -42,18 +43,16 @@ class User extends ActiveRecord
      */
     public function rules()
     {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('email, middle_name', 'default', 'value' => null),
-            array('username, password, email, first_name, last_name', 'required', 'message' => 'Необходимо заполнить поле.'),
-            array('username, password', 'length', 'min' => 4, 'max' => 20,),
+            array('username, email, first_name, last_name', 'required'),
+            array('username', 'length', 'min' => 4, 'max' => 20,),
+            array('password', 'required', 'message' => 'Необходимо ввести пароль.', 'on' => 'insert, newPassword'),
+            array('password', 'length', 'min' => 5, 'on' => 'insert, newPassword'),
             array('password2', 'compare', 'compareAttribute' => 'password', 'message' => 'Введённые пароли не совпадают.', 'on' => 'insert'),
-            array('email', 'email', 'message' => 'Неверно указан адрес.'),
-            array('first_name, last_name, middle_name', 'length', 'max' => 20),
-            // The following rule is used by search().
-            // Please remove those attributes that should not be searched.
-            array('username, password, first_name, last_name, middle_name, full_name', 'safe', 'on' => 'search'),
+            array('email', 'email', 'message' => 'Неверно указан адрес почты.'),
+            array('first_name, last_name, middle_name', 'length', 'max' => 30),
+            array('username, email', 'safe', 'on' => 'search'),
         );
     }
 
@@ -62,8 +61,6 @@ class User extends ActiveRecord
      */
     public function relations()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
         return array();
     }
 
@@ -91,33 +88,35 @@ class User extends ActiveRecord
      */
     public function search()
     {
-        // Warning: Please modify the following code to remove attributes that
-        // should not be searched.
-
-        $criteria = new CDbCriteria;
+        $criteria = $this->getDbCriteria();
 
         $criteria->compare('username', $this->username, true);
         $criteria->compare('first_name', $this->first_name, true);
         $criteria->compare('last_name', $this->last_name, true);
         $criteria->compare('middle_name', $this->middle_name, true);
 
-        return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
-        ));
+        return $this;
     }
 
-    public function beforeValidate()
+    public function behaviors()
     {
-        if ($this->middle_name === '')
-            $this->fio = $this->last_name . ' ' . mb_substr($this->first_name, 0, 1) . '.';
-        else
-            $this->fio = $this->last_name . ' ' . mb_substr($this->first_name, 0, 1) . '.' . mb_substr($this->middle_name, 0, 1) . '.';
-
-        return parent::beforeValidate();
+        return array(
+            'SoftDeleteBehavior' => array(
+                'class' => 'application.components.behaviors.TrashBinBehavior',
+            ),
+            'SortingBehavior' => array(
+                'class' => 'application.components.behaviors.SortingBehavior',
+            )
+        );
     }
 
     public function beforeSave()
     {
+        if ($this->middle_name === '')
+            $this->fio = $this->last_name . ' ' . mb_substr($this->first_name, 0, 1, 'UTF-8') . '.';
+        else
+            $this->fio = $this->last_name . ' ' . mb_substr($this->first_name, 0, 1, 'UTF-8') . '.' . mb_substr($this->middle_name, 0, 1, 'UTF-8') . '.';
+
         $this->password_hash = crypt($this->password, Randomness::blowfishSalt());
 
         return parent::beforeSave();
@@ -125,10 +124,9 @@ class User extends ActiveRecord
 
     public function getFullName()
     {
-        if ($this->middle_name === '')
-            return $this->last_name . ' ' . $this->first_name;
-        else
-            return $this->last_name . ' ' . $this->first_name . ' ' . $this->middle_name;
+        return $this->middle_name === ''
+            ? $this->last_name . ' ' . $this->first_name
+            : $this->last_name . ' ' . $this->first_name . ' ' . $this->middle_name;
     }
 
     public static function getAll($userTable)
@@ -145,11 +143,30 @@ class User extends ActiveRecord
         return $users;
     }
 
-    protected function afterFind()
+    static public function getSubModelMenuFunction($size = '')
     {
-        $this->password = '11111';
-        $this->password2 = '11111';
-
-        parent::afterFind();
+        return function ($data) use ($size)
+        {
+            return Yii::app()->controller->widget("ext.bootstrap.widgets.BootButtonGroup", array(
+                'size' => $size,
+                'buttons' => array(
+                    array(
+                        'icon' => 'search',
+                        'items' => array(
+                            array(
+                                'label' => 'Новый пароль',
+                                'url' => array(
+                                    'newPassword',
+                                    'id' => $data->id
+                                ),
+                                'linkOptions' => array(
+                                    'title' => 'Установить новый пароль',
+                                )
+                            ),
+                        )
+                    ),
+                ),
+            ), true);
+        };
     }
 }

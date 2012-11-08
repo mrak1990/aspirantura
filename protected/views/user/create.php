@@ -1,14 +1,19 @@
 <?php
+/**
+ * @var Faculty $model
+ * @var Controller $this
+ */
+
 $this->breadcrumbs = array_merge($this->breadcrumbs, array(
     'Добавление',
 ));
 
-$this->menu = array(
-    array('label' => 'Все записи', 'icon' => 'list', 'url' => array('index')),
-    array('label' => 'Администрирование', 'icon' => 'cog', 'url' => array('admin')),
-);
+$this->menu = HelperHTML::getMenu(basename(__FILE__, '.php'), $model);
 ?>
 
 <h2>Добавление</h2>
 
-<?php echo $this->renderPartial('_form', array('model' => $model)); ?>
+<?php echo $this->renderPartial('_form', array(
+    'model' => $model
+));
+?>
