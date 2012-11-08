@@ -15,7 +15,7 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
 <?php
 $this->renderPartial('_info', array(
     'model' => $model,
-    'title' => 'Установка нового пароля',
+    'title' => 'Изменение имени учётной записи',
 ));
 ?>
 
@@ -24,10 +24,10 @@ $this->renderPartial('_info', array(
 <?php echo $form->errorSummary($model); ?>
 
 <?php
-echo $form->passwordFieldRow($model, 'password', array(
+echo $form->textFieldRow($model, 'username', array(
     'class' => 'span5',
-    'maxlength' => 50,
-    'hint' => 'Введите новый пароль',
+    'maxlength' => 30,
+    'hint' => 'Введите логин пользователя',
 ));
 ?>
 

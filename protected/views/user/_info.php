@@ -21,6 +21,6 @@
 </h2>
 <div class="pull-right">
     <?php
-    echo call_user_func(Faculty::getSubModelMenuFunction(), $model);
+    echo call_user_func(User::getSubModelMenuFunction(), $model);
     ?>
 </div>

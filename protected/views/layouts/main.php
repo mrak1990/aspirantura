@@ -16,7 +16,7 @@
         <div class="container">
             <ul class="nav">
                 <li class="active">
-                    <a href="#">Главная</a>
+                    <?php echo CHtml::link('Главная', Yii::app()->homeUrl); ?>
                 </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">

@@ -293,14 +293,9 @@ class DepartmentController extends Controller
         $sort->defaultOrder = 't.title';
 
         $this->render('index', array(
-            'provider' => new CActiveDataProvider($model->getDeletedRecords()->search(), array(
-                    'criteria' => $criteria,
-                    'sort' => $sort,
-                    'pagination' => array(
-                        'pageSize' => 5,
-                    ),
-                )
-            ),
+            'model' => $model->getRestoredRecords()->search(),
+            'criteria' => $criteria,
+            'sort' => $sort,
             'searchModel' => $search,
         ));
     }

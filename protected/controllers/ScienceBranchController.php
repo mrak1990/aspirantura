@@ -78,7 +78,7 @@ class ScienceBranchController extends Controller
         if (Yii::app()->request->isAjaxRequest)
         {
             if (isset($_POST['title']))
-                $model->title = mb_convert_case($_POST['title'], MB_CASE_TITLE, 'UTF-8');
+                $model->full_title = $_POST['title'];
             echo CJSON::encode(array(
                 'status' => 'failure',
                 'div' => $this->renderPartial('_form', array(
@@ -128,7 +128,17 @@ class ScienceBranchController extends Controller
     {
         if (Yii::app()->request->isPostRequest)
         {
-            $this->loadModel($id)->delete();
+            if ($id === 'many')
+            {
+                if (isset($_POST['ids']) && is_array($_POST['ids']))
+                {
+                    foreach ($_POST['ids'] as $id)
+                        $this->loadModel($id)->delete();
+                }
+                Yii::app()->end();
+            }
+            else
+                $this->loadModel($id)->delete();
 
             if (!isset($_GET['ajax']))
                 $this->redirect($this->createUrl('index'));

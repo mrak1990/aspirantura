@@ -163,6 +163,31 @@ class UserController extends Controller
     }
 
     /**
+     * Set new password for user
+     *
+     * @param integer $id the ID of the model
+     */
+    public function actionChangeUsername($id)
+    {
+        $model = $this->loadModel($id);
+        $model->scenario = 'changeUsername';
+
+        if (isset($_POST['User']) && isset($_POST['User']['username']))
+        {
+            $model->attributes = array('username' => $_POST['User']['username']);
+            if ($model->save())
+                $this->redirect(array(
+                    'view',
+                    'id' => $model->id
+                ));
+        }
+
+        $this->render('changeUsername', array(
+            'model' => $model,
+        ));
+    }
+
+    /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      *

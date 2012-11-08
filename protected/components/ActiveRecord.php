@@ -36,9 +36,10 @@ class ActiveRecord extends CActiveRecord
      * Get items for footer in table
      * @return array
      */
-    public function getFooterItems()
+    public function getFooterItems($id = null)
     {
-        $id = mb_strtolower(get_class($this), 'UTF-8') . '-grid';
+        if ($id === null)
+            $id = mb_strtolower(get_class($this), 'UTF-8') . '-grid';
         if (static::DELETABLE)
         {
             $actionId = Yii::app()->getController()->action->id;

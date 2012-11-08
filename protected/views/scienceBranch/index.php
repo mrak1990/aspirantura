@@ -72,7 +72,7 @@ $this->widget('MyBootGridView', array(
     'footer' => array(
         'prepend' => 'С отмеченными: ',
         'class' => 'action-footer',
-        'items' => $model->getFooterItems(),
+        'items' => $model->getFooterItems('science-branch-grid'),
     ),
 ));
 ?>

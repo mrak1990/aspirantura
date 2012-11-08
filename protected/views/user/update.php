@@ -19,7 +19,7 @@ $this->menu = HelperHTML::getMenu(basename(__FILE__, '.php'), $model);
 
 echo $this->renderPartial('_info', array(
         'model' => $model,
-        'title' => 'Редактирование записи',
+        'title' => 'Редактирование учётной записи',
     )
 );
 

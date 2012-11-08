@@ -5,12 +5,21 @@
  * @var string $hint
  */
 
-$selector = 'degreesInlineCreate';
 $jsPrefix = 'degrees';
-$chosenOptions = optionsData::getChosenOptions($jsPrefix, $selector);
+$selector = 'degreesInlineCreate';
+$prefixedSelector = '.' .$selector;
+$chosenOptions = optionsData::getChosenOptions($jsPrefix, $prefixedSelector);
+
+$data = ScienceBranch::model()->findAll();
+$count = count($data);
+if ($count === 0)
+    $data[] = array(
+        'id' => '',
+        'full_title' => 'Записи отсутствуют'
+    );
 
 $this->widget('ext.EChosen.EChosen', array(
-    'target' => ".{$selector}",
+    'target' => $prefixedSelector,
     'options' => $chosenOptions,
 ));
 
@@ -25,7 +34,11 @@ $this->widget('application.widget.inlineDropdownCreate.chosenInlineCreate', arra
 $emptyDegree = new ScienceDegree();
 ?>
 <div class="control-group degrees-add">
-    <?php echo CHtml::activeLabel($emptyDegree, 'science_branch_id', array('class' => 'control-label')); ?>
+    <?php
+    echo CHtml::activeLabel($emptyDegree, 'science_branch_id', array(
+        'class' => 'control-label'
+    ));
+    ?>
     <?php
     $i = 0;
     foreach ($degrees as $degree)
@@ -38,7 +51,7 @@ $emptyDegree = new ScienceDegree();
             'inline' => true,
         ));
 
-        echo CHtml::activeDropDownList($degree, "[$i]science_branch_id", CHtml::listData(scienceBranch::model()->findAll(), 'id', 'full_title'), array(
+        echo CHtml::activeDropDownList($degree, "[$i]science_branch_id", CHtml::listData($data, 'id', 'full_title'), array(
             'class' => "span3 {$selector}",
         ));
 
@@ -64,7 +77,8 @@ $emptyDegree = new ScienceDegree();
         ));
         ?>
     </div>
-    <script type="text/html" id="<?php echo $jsPrefix; ?>Template" style="display: none;" data-count="<?php echo count($degrees); ?>">
+    <script type="text/html" id="<?php echo $jsPrefix; ?>Template" style="display: none;"
+            data-count="<?php echo count($degrees); ?>">
         <?php
         echo '<div class="controls">';
         echo $form->radioButtonList($emptyDegree, '[{{i}}]doctor', array(
@@ -74,7 +88,7 @@ $emptyDegree = new ScienceDegree();
             'inline' => true,
         ));
 
-        echo CHtml::activeDropDownList($emptyDegree, '[{{i}}]science_branch_id', CHtml::listData(ScienceBranch::model()->findAll(), 'id', 'full_title'), array(
+        echo CHtml::activeDropDownList($emptyDegree, '[{{i}}]science_branch_id', CHtml::listData($data, 'id', 'full_title'), array(
             'class' => "span3 {$selector}",
         ));
 

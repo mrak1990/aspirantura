@@ -45,8 +45,9 @@ class User extends ActiveRecord
     {
         return array(
             array('email, middle_name', 'default', 'value' => null),
-            array('username, email, first_name, last_name', 'required'),
-            array('username', 'length', 'min' => 4, 'max' => 20,),
+            array('email, first_name, last_name', 'required'),
+            array('username', 'required', 'on'=>'changeUsername'),
+            array('username', 'length', 'min' => 4, 'max' => 20, 'on'=>'changeUsername'),
             array('password', 'required', 'message' => 'Необходимо ввести пароль.', 'on' => 'insert, newPassword'),
             array('password', 'length', 'min' => 5, 'on' => 'insert, newPassword'),
             array('password2', 'compare', 'compareAttribute' => 'password', 'message' => 'Введённые пароли не совпадают.', 'on' => 'insert'),
@@ -153,6 +154,16 @@ class User extends ActiveRecord
                     array(
                         'icon' => 'search',
                         'items' => array(
+                            array(
+                                'label' => 'Изменить логин',
+                                'url' => array(
+                                    'changeUsername',
+                                    'id' => $data->id
+                                ),
+                                'linkOptions' => array(
+                                    'title' => 'Изменить имя учётной записи',
+                                )
+                            ),
                             array(
                                 'label' => 'Новый пароль',
                                 'url' => array(
