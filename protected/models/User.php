@@ -102,9 +102,6 @@ class User extends ActiveRecord
     public function behaviors()
     {
         return array(
-            'SoftDeleteBehavior' => array(
-                'class' => 'application.components.behaviors.TrashBinBehavior',
-            ),
             'SortingBehavior' => array(
                 'class' => 'application.components.behaviors.SortingBehavior',
             )
@@ -113,7 +110,7 @@ class User extends ActiveRecord
 
     public function beforeSave()
     {
-        if ($this->middle_name === '')
+        if ($this->middle_name === null)
             $this->fio = $this->last_name . ' ' . mb_substr($this->first_name, 0, 1, 'UTF-8') . '.';
         else
             $this->fio = $this->last_name . ' ' . mb_substr($this->first_name, 0, 1, 'UTF-8') . '.' . mb_substr($this->middle_name, 0, 1, 'UTF-8') . '.';

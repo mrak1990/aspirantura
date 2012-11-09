@@ -20,7 +20,7 @@ class HelperHTML
     {
         $list_tmp = array_map(function ($item) use ($name, $route)
         {
-            return CHtml::link($item, array($route, $name => $item));
+            return CHtml::link($item['label'], array($route, $name => $item['id']));
         }, $data);
         if (count($list_tmp) > $count)
         {
@@ -35,7 +35,7 @@ class HelperHTML
             return implode(', ', $list_tmp);
     }
 
-    public static function getMenu($view = 'index', $model = null)
+    public static function getMenu($view = 'index', $model = null, $idField = 'id')
     {
         if ($view === 'index')
         {
@@ -154,7 +154,7 @@ class HelperHTML
                             'linkOptions' => array(
                                 'submit' => array(
                                     'toTrash',
-                                    'id' => $model->id
+                                    $idField => $model->{$idField}
                                 ),
                                 'params' => array(
                                     'ajax' => true,
@@ -171,7 +171,7 @@ class HelperHTML
                             'linkOptions' => array(
                                 'submit' => array(
                                     'restore',
-                                    'id' => $model->id
+                                    $idField => $model->{$idField}
                                 ),
                                 'params' => array(
                                     'ajax' => true,
@@ -189,7 +189,7 @@ class HelperHTML
                             'linkOptions' => array(
                                 'submit' => array(
                                     'delete',
-                                    'id' => $model->id
+                                    $idField => $model->{$idField}
                                 ),
                                 'confirm' => 'Вы действительно хотите безвозвратно удалить эту запись?',
                             ),
@@ -200,7 +200,7 @@ class HelperHTML
                     'label' => 'Редактирование',
                     'url' => array(
                         'update',
-                        'id' => $model->id
+                        $idField => $model->{$idField}
                     ),
                     'icon' => 'pencil',
                     'itemOptions' => array(
@@ -213,7 +213,7 @@ class HelperHTML
                     'label' => 'Просмотр',
                     'url' => array(
                         'view',
-                        'id' => $model->id
+                        $idField => $model->{$idField}
                     ),
                     'icon' => 'th-list',
                     'itemOptions' => array(
@@ -269,7 +269,7 @@ class HelperHTML
                             'linkOptions' => array(
                                 'submit' => array(
                                     'toTrash',
-                                    'id' => $model->id
+                                    $idField => $model->{$idField}
                                 ),
                                 'params' => array(
                                     'ajax' => true,
@@ -286,7 +286,7 @@ class HelperHTML
                             'linkOptions' => array(
                                 'submit' => array(
                                     'restore',
-                                    'id' => $model->id
+                                    $idField => $model->{$idField}
                                 ),
                                 'params' => array(
                                     'ajax' => true,
@@ -303,7 +303,7 @@ class HelperHTML
                             'linkOptions' => array(
                                 'submit' => array(
                                     'delete',
-                                    'id' => $model->id
+                                    $idField => $model->{$idField}
                                 ),
                                 'confirm' => 'Вы действительно хотите безвозвратно удалить эту запись?',
                             ),
@@ -314,7 +314,7 @@ class HelperHTML
                     'label' => 'Редактирование',
                     'url' => array(
                         'update',
-                        'id' => $model->id
+                        $idField => $model->{$idField}
                     ),
                     'icon' => 'pencil',
                     'itemOptions' => array(
@@ -326,7 +326,7 @@ class HelperHTML
                     'label' => 'Просмотр',
                     'url' => array(
                         'view',
-                        'id' => $model->id
+                        $idField => $model->{$idField}
                     ),
                     'icon' => 'th-list',
                     'itemOptions' => array(

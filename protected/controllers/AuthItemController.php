@@ -2,13 +2,13 @@
 
 class AuthItemController extends Controller
 {
-
     /**
-     * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-     * using two-column layout. See 'protected/views/layouts/column2.php'.
+     * @var string title of current page
      */
-    public $layout = '//layouts/column2';
-    public $breadcrumbs = array('Права доступа' => array('index'),);
+    public $pageTitle = 'Права доступа';
+    public $breadcrumbs = array(
+        'Права доступа' => array('index')
+    );
 
     /**
      * @return array action filters
@@ -178,10 +178,30 @@ class AuthItemController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new CActiveDataProvider('AuthItem');
+        $model = new AuthItem('search');
+        $search = new SortForm;
+
+        if (isset($_GET['AuthItem']))
+            $model->attributes = $_GET['AuthItem'];
+
+        if (isset($_GET['SortForm']))
+            $search->attributes = $_GET['SortForm'];
+
+        $search->resolveGETSort();
+
+        $criteria = new CDbCriteria(array(
+            'with' => array()
+        ));
+
+        $sort = new CSort('AuthItem');
+        $sort->attributes = $model->getSortAttributes();
+        $sort->defaultOrder = 't.name';
+
         $this->render('index', array(
-            'dataProvider' => $dataProvider,
-            'breadcrumbsInit' => $this->breadcrumbs,
+            'model' => $model->search(),
+            'criteria' => $criteria,
+            'sort' => $sort,
+            'searchModel' => $search,
         ));
     }
 

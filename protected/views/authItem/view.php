@@ -1,18 +1,22 @@
 <?php
-$this->breadcrumbs = array_merge($breadcrumbsInit, array(
-    $model->name,
+/**
+ * @var Candidate $model
+ * @var Controller $this
+ */
+
+$this->breadcrumbs = array_merge(
+    $this->breadcrumbs,
+    array($model->name)
+);
+//CVarDumper::dump($model->users, 10 ,true);
+
+$this->menu = HelperHTML::getMenu(basename(__FILE__, '.php'), $model, 'name');
+
+$this->renderPartial('_info', array(
+    'model' => $model,
+    'title' => 'Просмотр записи',
 ));
 
-$this->menu = array(
-    array('label' => 'Все записи', 'icon' => 'list', 'url' => array('index')),
-    array('label' => 'Добавить запись', 'icon' => 'plus', 'url' => array('create')),
-    array('label' => 'Исправить эту запись', 'icon' => 'pencil', 'url' => array('update', 'name' => $model->name)),
-    array('label' => 'Удалить эту запись', 'icon' => 'trash', 'url' => '#', 'linkOptions' => array(
-        'submit' => array('delete', 'name' => $model->name),
-        'confirm' => 'Вы действительно хотите удалить эту запись?'
-    )),
-    array('label' => 'Администрирование', 'icon' => 'cog', 'url' => array('admin')),
-);
 
 Yii::import('application.components.HelperHTML');
 $helperRun = function ($data)

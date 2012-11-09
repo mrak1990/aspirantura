@@ -1,6 +1,6 @@
 <?php
 /**
- * @var User $model
+ * @var AuthItem $model
  * @var Controller $this
  * @var string $title
  */
@@ -13,6 +13,6 @@
 </h2>
 <div class="pull-right">
     <?php
-    echo call_user_func(User::getSubModelMenuFunction(), $model);
+    echo call_user_func(AuthItem::getSubModelMenuFunction(), $model);
     ?>
 </div>

@@ -1,31 +1,68 @@
 <?php
-$this->breadcrumbs = $breadcrumbsInit;
+/**
+ * @var AuthItem $model
+ * @var SortForm $searchModel
+ * @var CDbCriteria $criteria
+ * @var CSort $sort
+ * @var Controller $this
+ */
 
-$this->menu = array(
-    array('label' => 'Добавить запись', 'icon' => 'plus', 'url' => array('create')),
-    array('label' => 'Администрирование', 'icon' => 'cog', 'url' => array('admin')),
-);
-?>
+$this->breadcrumbs = array_keys($this->breadcrumbs);
+$this->menu = HelperHTML::getMenu(basename(__FILE__, '.php'), new Candidate());
 
-<h2>Список всех элементов</h2>
+//$this->renderPartial('_search', array(
+//    'model' => $model,
+//    'searchModel' => $searchModel,
+//));
 
-<?php
-$this->widget('bootstrap.widgets.BootGridView', array(
-    'dataProvider' => $dataProvider,
-    'template' => "{items}",
-    'itemsCssClass' => 'table table-striped table-bordered table-condensed',
+$this->widget('MyBootGridView', array(
+    'id' => 'candidate-grid',
+    'type' => 'striped bordered condensed',
+    'dataProvider' => new CActiveDataProvider($model, array(
+        'criteria' => $criteria,
+        'sort' => $sort,
+        'pagination' => array( //            'pageSize' => 5,
+        ),
+    )),
+    'enableSorting' => false,
     'columns' => array(
-        'name:text:Название',
+        'checbox' => array(
+            'class' => 'CCheckBoxColumn',
+            'id' => 'checkboxes',
+            'selectableRows' => 2,
+        ),
+        'name' => array(
+            'header' => 'Название',
+            'name' => 'name',
+            'value' => 'CHtml::link($data->name, array("view", "name"=>$data->name))',
+            'type' => 'html',
+        ),
         'longType:text:Тип',
         'description:text:Описание',
-//        array('name' => 'description', 'header' => 'Описание'),
         array(
-            'class' => 'bootstrap.widgets.BootButtonColumn',
-            'viewButtonUrl' => 'Yii::app()->controller->createUrl("view",array("name"=>$data->primaryKey))',
-            'updateButtonUrl' => 'Yii::app()->controller->createUrl("update",array("name"=>$data->primaryKey))',
-            'deleteButtonUrl' => 'Yii::app()->controller->createUrl("delete",array("name"=>$data->primaryKey))',
-            'htmlOptions' => array('style' => 'width: 50px'),
+            'class' => 'ext.bootstrap.widgets.BootButtonColumn',
+            'htmlOptions' => array(
+                'style' => 'width: 50px',
+                                'viewButtonUrl' => '$this->createUrl("view",array("name"=>$data->primaryKey))',
+                'updateButtonUrl' => '$this->createUrl("update",array("name"=>$data->primaryKey))',
+                'deleteButtonUrl' => '$this->createUrl("delete",array("name"=>$data->primaryKey))',
+            ),
         ),
+//        array(
+//            'class' => 'CDataColumn',
+//            'type' => 'raw',
+//            'value' => Candidate::getSubModelMenuFunction('mini'),
+//            'htmlOptions' => array(
+//                'style' => 'width: 37px'
+//            ),
+//        ),
+    ),
+    'footer' => array(
+        'prepend' => 'С отмеченными: ',
+        'class' => 'action-footer',
+        'items' => $model->getFooterItems(),
     ),
 ));
+
 ?>
+

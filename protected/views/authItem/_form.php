@@ -7,13 +7,12 @@ $form = $this->beginWidget('ext.bootstrap.widgets.BootActiveForm', array(
 ));
 
 $this->widget('application.widget.emultiselect.EMultiSelect', array(
-        'sortable' => true,
-        'searchable' => true,
-        'dividerLocation' => 0.5,
-        'height' => 150,
-        'width' => 540,
-    )
-);
+    'sortable' => true,
+    'searchable' => true,
+    'dividerLocation' => 0.5,
+    'height' => 150,
+    'width' => 540,
+));
 
 $allAuthItems = AuthItem::getAll($model->name);
 ?>

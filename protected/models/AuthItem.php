@@ -17,8 +17,9 @@
  * @property AuthItemChild[] $children
  * @property AuthItemChild[] $parents
  */
-class AuthItem extends CActiveRecord
+class AuthItem extends ActiveRecord
 {
+    const DELETABLE = false;
 
     private $_authItem;
     public $children = array(
@@ -141,10 +142,7 @@ class AuthItem extends CActiveRecord
      */
     public function search()
     {
-// Warning: Please modify the following code to remove attributes that
-// should not be searched.
-
-        $criteria = new CDbCriteria;
+        $criteria = $this->getDbCriteria();
 
         $criteria->compare('name', $this->name, true);
         $criteria->compare('type', $this->type);
@@ -152,9 +150,7 @@ class AuthItem extends CActiveRecord
         $criteria->compare('bizrule', $this->bizrule, true);
         $criteria->compare('data', $this->data, true);
 
-        return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
-        ));
+        return $this;
     }
 
     public function mergeChild()
@@ -224,7 +220,10 @@ class AuthItem extends CActiveRecord
 
         $this->users = array_map(function ($value)
         {
-            return $value->userid;
+            return array(
+                'id' => $value->userid,
+                'label' => User::model()->findByPk($value->userid)->fio
+            );
         }, Yii::app()->authManager->getAuthAssignmentsByItemName($this->name));
 
         parent::afterFind();

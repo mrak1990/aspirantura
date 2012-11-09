@@ -35,7 +35,7 @@ $this->widget('MyBootGridView', array(
         'fio' => array(
             'header' => 'ФИО',
             'name' => 'title',
-            'value' => 'CHtml::link("$data->fio", array("view", "id"=>$data->id))',
+            'value' => 'CHtml::link($data->fio, array("view", "id"=>$data->id))',
             'type' => 'html',
         ),
         'department' => array(
