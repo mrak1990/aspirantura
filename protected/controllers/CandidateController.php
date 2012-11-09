@@ -122,68 +122,6 @@ class CandidateController extends Controller
     }
 
     /**
-     * Move a particular model to trash.
-     * If deletion is successful, the browser will be redirected to the 'admin' page.
-     *
-     * @param integer $id the ID of the model to be deleted
-     */
-    public function actionToTrash($id)
-    {
-        if (Yii::app()->request->isPostRequest)
-        {
-            if ($id === 'many')
-            {
-                if (isset($_POST['ids']) && is_array($_POST['ids']))
-                {
-                    foreach ($_POST['ids'] as $id)
-                        $this->loadModel($id)->setDeleted()->save();
-                }
-                Yii::app()->end();
-            }
-            else
-                $this->loadModel($id)->setDeleted()->save();
-
-            if (!isset($_GET['ajax']))
-                $this->redirect(Yii::app()->request->getUrlReferrer());
-            else
-                Yii::app()->end();
-        }
-        else
-            throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
-    }
-
-    /**
-     * Restore a particular model from trash.
-     * If deletion is successful, the browser will be redirected to the 'admin' page.
-     *
-     * @param integer $id the ID of the model to be deleted
-     */
-    public function actionRestore($id)
-    {
-        if (Yii::app()->request->isPostRequest)
-        {
-            if ($id === 'many')
-            {
-                if (isset($_POST['ids']) && is_array($_POST['ids']))
-                {
-                    foreach ($_POST['ids'] as $id)
-                        $this->loadModel($id)->setRestored()->save();
-                }
-                Yii::app()->end();
-            }
-            else
-                $this->loadModel($id)->setRestored()->save();
-
-            if (!isset($_GET['ajax']))
-                $this->redirect(Yii::app()->request->getUrlReferrer());
-            else
-                Yii::app()->end();
-        }
-        else
-            throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
-    }
-
-    /**
      * Deletes a particular model.
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      *
@@ -259,44 +197,6 @@ class CandidateController extends Controller
         ));
     }
 
-    /**
-     * Lists all deleted models.
-     */
-    public function actionTrash()
-    {
-        $model = new Candidate('search');
-        $search = new SortForm;
-
-        if (isset($_GET['Candidate']))
-            $model->attributes = $_GET['Candidate'];
-
-        if (isset($_GET['SortForm']))
-            $search->attributes = $_GET['SortForm'];
-
-        $search->resolveGETSort();
-
-        $criteria = new CDbCriteria(array(
-            'with' => array(
-                'department' => array(
-                    'with' => array(
-                        'faculty'
-                    ),
-                ),
-                'advisor',
-            )
-        ));
-
-        $sort = new CSort('Candidate');
-        $sort->attributes = $model->getSortAttributes();
-        $sort->defaultOrder = 't.fio';
-
-        $this->render('index', array(
-            'model' => $model->getDeletedRecords()->search(),
-            'criteria' => $criteria,
-            'sort' => $sort,
-            'searchModel' => $search,
-        ));
-    }
 
     /**
      * Returns the data model based on the primary key given in the GET variable.
@@ -306,7 +206,7 @@ class CandidateController extends Controller
      */
     public function loadModel($id)
     {
-        $model = Department::model()->findByPk($id);
+        $model = Candidate::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'Страница не существует.');
 

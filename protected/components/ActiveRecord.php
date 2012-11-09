@@ -118,21 +118,7 @@ class ActiveRecord extends CActiveRecord
     {
         return function ($data) use ($size)
         {
-            return Yii::app()->controller->widget("ext.bootstrap.widgets.BootButtonGroup", array(
-                'size' => $size,
-                'buttons' => array(
-                    array(
-                        'icon' => 'search',
-                        'items' => array(
-                            array(
-                                'label' => 'Ссылка',
-                                'url' => '#'
-                            ),
-                            '---',
-                        )
-                    ),
-                ),
-            ), true);
+            return '';
         };
     }
 }

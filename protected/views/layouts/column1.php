@@ -9,6 +9,7 @@ $this->widget('bootstrap.widgets.BootBreadcrumbs', array(
 ));
 ?>
 <?php
+if (count($this->menu))
 $this->widget('MyBootMenu', array(
     'type' => 'tabs',
     'items' => $this->menu,

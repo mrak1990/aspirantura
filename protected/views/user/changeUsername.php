@@ -5,6 +5,17 @@
  * @var $this CController
  */
 
+$this->breadcrumbs = array_merge(
+    $this->breadcrumbs,
+    array(
+        "{$model->username} ({$model->fio})" => array(
+            'view',
+            'id' => $model->id
+        ),
+        'Новое имя пользователя',
+    )
+);
+
 $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
     'id' => 'user-form',
     'type' => 'horizontal',
@@ -13,7 +24,7 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
 ?>
 
 <?php
-$this->renderPartial('_info', array(
+$this->renderPartial('_infoShort', array(
     'model' => $model,
     'title' => 'Изменение имени учётной записи',
 ));

@@ -29,10 +29,9 @@ $this->widget('ext.bootstrap.widgets.BootDetailView', array(
         'department' => array(
             'label' => 'Кафедра',
             'value' => CHtml::link($model->department->fullTitle, array(
-                    'department/view',
-                    'id' => $model->department_id
-                )
-            ),
+                'department/view',
+                'id' => $model->department_id
+            )),
             'type' => 'html',
         ),
         'birth',

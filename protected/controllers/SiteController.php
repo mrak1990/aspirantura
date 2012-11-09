@@ -5,7 +5,7 @@ class SiteController extends Controller
     /**
      * @var string title of current page
      */
-    public $pageTitle = 'Авторизация';
+    public $pageTitle = '';
 
     /**
      * Declares class-based actions.
@@ -76,6 +76,14 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        if (!Yii::app()->user->isGuest)
+            $this->redirect(Yii::app()->request->urlReferrer !== null
+                    ? Yii::app()->request->urlReferrer
+                    : Yii::app()->homeUrl
+            );
+
+        $this->pageTitle = Yii::app()->name . ' | ' . 'Вход';
+
         $model = new LoginForm;
 
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'login-form')
@@ -104,6 +112,8 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
+        $this->pageTitle = Yii::app()->name . ' | ' . 'Выход';
+
         Yii::app()->user->logout();
         $this->redirect(Yii::app()->homeUrl);
     }
@@ -113,6 +123,8 @@ class SiteController extends Controller
      */
     public function actionProfile()
     {
+        $this->pageTitle = Yii::app()->name . ' | ' . 'Профиль';
+
         if (Yii::app()->user->isGuest)
             $this->redirect(Yii::app()->homeUrl);
 //CVarDumper::dump(Yii::app()->user->id, 10, true);

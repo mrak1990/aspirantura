@@ -164,7 +164,7 @@ class Faculty extends ActiveRecord
                 'size' => $size,
                 'buttons' => array(
                     array(
-                        'icon' => 'search',
+                        'icon' => 'arrow-down',
                         'items' => array(
                             array(
                                 'label' => 'Кафедры',

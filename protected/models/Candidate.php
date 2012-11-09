@@ -43,16 +43,13 @@ class Candidate extends ActiveRecord
      */
     public function rules()
     {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
+            array('birth', 'default', 'value' => null),
             array('fio, department_id, speciality_id, staff_id', 'required'),
             array('department_id, speciality_id, staff_id', 'numerical', 'integerOnly' => true),
             array('fio', 'length', 'max' => 50),
             array('whence', 'length', 'max' => 150),
-            array('birth, is_postgrad, status', 'safe'),
-            // The following rule is used by search().
-            // Please remove those attributes that should not be searched.
+            array('birth, is_postgrad', 'safe'),
             array('id, facultyId, department_id, fio, birth, is_postgrad, whence, status, speciality_id', 'safe', 'on' => 'search'),
         );
     }
@@ -65,6 +62,7 @@ class Candidate extends ActiveRecord
         return array(
             'department' => array(self::BELONGS_TO, 'Department', 'department_id'),
             'advisor' => array(self::BELONGS_TO, 'Staff', 'staff_id'),
+            'speciality' => array(self::BELONGS_TO, 'Speciality', 'speciality_id'),
         );
     }
 
@@ -119,7 +117,10 @@ class Candidate extends ActiveRecord
         {
             $this->facultyId = array_diff($this->facultyId, array(''));
             if (!empty($this->facultyId))
+            {
+//                $criteria->mergeWith(array('with' => 'department'));
                 $criteria->addInCondition('department.faculty_id', $this->facultyId);
+            }
         }
 
         if (is_array($this->speciality_id))
@@ -135,9 +136,6 @@ class Candidate extends ActiveRecord
     public function behaviors()
     {
         return array(
-            'SoftDeleteBehavior' => array(
-                'class' => 'application.components.behaviors.TrashBinBehavior',
-            ),
             'SortingBehavior' => array(
                 'class' => 'application.components.behaviors.SortingBehavior',
             )

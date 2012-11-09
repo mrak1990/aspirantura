@@ -6,7 +6,7 @@
 
 $this->breadcrumbs = array_merge(
     $this->breadcrumbs,
-    array($model->title)
+    array($model->fio)
 );
 $this->menu = HelperHTML::getMenu(basename(__FILE__, '.php'), $model);
 
@@ -19,13 +19,26 @@ $this->widget('ext.bootstrap.widgets.BootDetailView', array(
     'data' => $model,
     'attributes' => array(
         'id',
-        'department_id',
         'fio',
+        'department' => array(
+            'label' => 'Кафедра',
+            'value' => CHtml::link($model->department->fullTitle, array(
+                'department/view',
+                'id' => $model->department_id
+            )),
+            'type' => 'html',
+        ),
         'birth',
         'is_postgrad',
-        'whence',
-        'status',
-        'speciality_id',
+        'speciality' => array(
+            'label' => 'Специальность',
+            'value' => CHtml::link($model->speciality->fullTitle, array(
+                'speciality/view',
+                'id' => $model->speciality_id
+            )),
+            'type' => 'html',
+
+        )
     ),
 ));
 

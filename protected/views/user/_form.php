@@ -17,6 +17,17 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
 <?php echo $form->errorSummary($model); ?>
 
 <?php
+echo $form->textFieldRow($model, 'username', array(
+    'class' => 'span5',
+    'maxlength' => 50,
+    'hint' => 'Введите имя учётной записи',
+    'disabled' => $model->isNewRecord
+        ? false
+        : true,
+));
+?>
+
+<?php
 if ($model->isNewRecord)
     echo $form->passwordFieldRow($model, 'password', array(
         'class' => 'span5',

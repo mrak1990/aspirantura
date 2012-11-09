@@ -202,7 +202,7 @@ class HelperHTML
                         'update',
                         'id' => $model->id
                     ),
-                    'icon' => 'edit',
+                    'icon' => 'pencil',
                     'itemOptions' => array(
                         'class' => 'pull-right',
                         'title' => 'Редактирование записи'
@@ -316,7 +316,7 @@ class HelperHTML
                         'update',
                         'id' => $model->id
                     ),
-                    'icon' => 'edit',
+                    'icon' => 'pencil',
                     'itemOptions' => array(
                         'class' => 'pull-right',
                         'title' => 'Редактирование записи'

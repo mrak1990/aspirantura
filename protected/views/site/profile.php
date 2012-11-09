@@ -8,54 +8,28 @@ $this->breadcrumbs = array_merge(
     $this->breadcrumbs,
     array("{$model->username} ({$model->fio})")
 );
-$this->menu = HelperHTML::getMenu(basename(__FILE__, '.php'), $model);
-
-//$this->renderPartial('_info', array(
-//    'model' => $model,
-//    'title' => 'Просмотр записи',
-//));
-
-//$this->widget('ext.bootstrap.widgets.BootDetailView', array(
-//        'data' => $model,
-//        'attributes' => array(
-//            'id',
-//            'username',
-//            'first_name',
-//            'middle_name',
-//            'last_name',
-//            'email',
-//        ),
-//    )
-//);
+$this->menu = HelperHTML::getMenu('', $model);
 ?>
+<h2 style="display: inline;">
+    <?php
+    echo 'Учётная запись&nbsp;';
+    if ($model->deleted)
+        $this->widget('ext.bootstrap.widgets.BootLabel', array(
+            'type' => 'important',
+            'label' => 'В корзине',
+            'htmlOptions' => array(
+                'title' => 'Этот запись в корзине, возможно её восстановление'
+            )
+        ));
+    ?>
+</h2>
 <?php
-echo $form->textFieldRow($model, 'first_name', array(
-    'class' => 'span5',
-    'maxlength' => 30,
-    'hint' => 'Введите имя',
-));
-?>
+echo CHtml::link('Сменить пароль', $this->createUrl('user/newPassword', array(
+    'id' => $model->id,
+)));
 
-<?php
-echo $form->textFieldRow($model, 'middle_name', array(
-    'class' => 'span5',
-    'maxlength' => 30,
-    'hint' => 'Введите отчество',
-));
-?>
-
-<?php
-echo $form->textFieldRow($model, 'last_name', array(
-    'class' => 'span5',
-    'maxlength' => 30,
-    'hint' => 'Введите фамилию',
-));
-?>
-
-<?php
-echo $form->textFieldRow($model, 'email', array(
-    'class' => 'span5',
-    'maxlength' => 30,
-    'hint' => 'Введите электронную почту',
+$this->renderPartial('application.views.user._form', array(
+    'model' => $model,
+    'title' => 'Просмотр записи',
 ));
 ?>

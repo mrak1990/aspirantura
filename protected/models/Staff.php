@@ -298,13 +298,13 @@ class Staff extends ActiveRecord
                 'size' => $size,
                 'buttons' => array(
                     array(
-                        'icon' => 'search',
+                        'icon' => 'arrow-down',
                         'items' => array(
                             array(
                                 "label" => "Аспиранты",
                                 "url" => array(
                                     'candidate/index',
-                                    'Candidate[facultyId][]' => $data->id
+                                    'Candidate[staff_id][]' => $data->id
                                 ),
                                 'linkOptions' => array(
                                     'title' => 'Аспиранты на факультете',

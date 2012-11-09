@@ -1,6 +1,6 @@
 <?php
 /**
- * @var Faculty $model
+ * @var Staff $model
  * @var Controller $this
  */
 

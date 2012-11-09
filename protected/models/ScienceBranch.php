@@ -95,4 +95,31 @@ class ScienceBranch extends ActiveRecord
             ),
         );
     }
+
+    static public function getSubModelMenuFunction($size = '')
+    {
+        return function ($data) use ($size)
+        {
+            return Yii::app()->controller->widget("ext.bootstrap.widgets.BootButtonGroup", array(
+                'size' => $size,
+                'buttons' => array(
+                    array(
+                        'icon' => 'arrow-down',
+                        'items' => array(
+                            array(
+                                'label' => 'Специальности',
+                                'url' => array(
+                                    'speciality/index',
+                                    'Speciality[science_branch_id][]' => $data->id
+                                ),
+                                'linkOptions' => array(
+                                    'title' => 'Специальности по отрасли науки',
+                                )
+                            ),
+                        )
+                    ),
+                ),
+            ), true);
+        };
+    }
 }

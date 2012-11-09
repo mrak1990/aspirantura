@@ -152,7 +152,7 @@ class User extends ActiveRecord
                 'size' => $size,
                 'buttons' => array(
                     array(
-                        'icon' => 'search',
+                        'icon' => 'wrench',
                         'items' => array(
                             array(
                                 'label' => 'Изменить логин',

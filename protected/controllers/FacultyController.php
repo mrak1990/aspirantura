@@ -11,6 +11,47 @@ class FacultyController extends Controller
         'Факультеты' => array('index')
     );
 
+    /**
+     * @return array action filters
+     */
+    public function filters()
+    {
+        return array(
+//            'accessControl', // perform access control for CRUD operations
+            'ajaxOnly + delete, toTrash, restore', // we only allow deletion via POST request
+        );
+    }
+
+    /**
+     * Specifies the access control rules.
+     * This method is used by the 'accessControl' filter.
+     * @return array access control rules
+     */
+    public function accessRules()
+    {
+        return array(
+            array(
+                'allow', // allow all users to perform 'index' and 'view' actions
+                'actions' => array('index', 'view'),
+                'users' => array('*'),
+            ),
+            array(
+                'allow', // allow authenticated user to perform 'create' and 'update' actions
+                'actions' => array('create', 'update'),
+                'users' => array('@'),
+            ),
+            array(
+                'allow', // allow admin user to perform 'admin' and 'delete' actions
+                'actions' => array('admin', 'delete'),
+                'users' => array('admin'),
+            ),
+            array(
+                'deny', // deny all users
+                'users' => array('*'),
+            ),
+        );
+    }
+
     public function actions()
     {
         return array(
@@ -124,27 +165,22 @@ class FacultyController extends Controller
      */
     public function actionToTrash($id)
     {
-        if (Yii::app()->request->isPostRequest)
+        if ($id === 'many')
         {
-            if ($id === 'many')
+            if (isset($_POST['ids']) && is_array($_POST['ids']))
             {
-                if (isset($_POST['ids']) && is_array($_POST['ids']))
-                {
-                    foreach ($_POST['ids'] as $id)
-                        $this->loadModel($id)->setDeleted()->save();
-                }
-                Yii::app()->end();
+                foreach ($_POST['ids'] as $id)
+                    $this->loadModel($id)->setDeleted()->save();
             }
-            else
-                $this->loadModel($id)->setDeleted()->save();
-
-            if (!isset($_GET['ajax']))
-                $this->redirect(Yii::app()->request->getUrlReferrer());
-            else
-                Yii::app()->end();
+            Yii::app()->end();
         }
         else
-            throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
+            $this->loadModel($id)->setDeleted()->save();
+
+        if (!isset($_GET['ajax']))
+            $this->redirect(Yii::app()->request->getUrlReferrer());
+        else
+            Yii::app()->end();
     }
 
     /**
@@ -155,27 +191,22 @@ class FacultyController extends Controller
      */
     public function actionRestore($id)
     {
-        if (Yii::app()->request->isPostRequest)
+        if ($id === 'many')
         {
-            if ($id === 'many')
+            if (isset($_POST['ids']) && is_array($_POST['ids']))
             {
-                if (isset($_POST['ids']) && is_array($_POST['ids']))
-                {
-                    foreach ($_POST['ids'] as $id)
-                        $this->loadModel($id)->setRestored()->save();
-                }
-                Yii::app()->end();
+                foreach ($_POST['ids'] as $id)
+                    $this->loadModel($id)->setRestored()->save();
             }
-            else
-                $this->loadModel($id)->setRestored()->save();
-
-            if (!isset($_GET['ajax']))
-                $this->redirect(Yii::app()->request->getUrlReferrer());
-            else
-                Yii::app()->end();
+            Yii::app()->end();
         }
         else
-            throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
+            $this->loadModel($id)->setRestored()->save();
+
+        if (!isset($_GET['ajax']))
+            $this->redirect(Yii::app()->request->getUrlReferrer());
+        else
+            Yii::app()->end();
     }
 
     /**
@@ -186,25 +217,20 @@ class FacultyController extends Controller
      */
     public function actionDelete($id)
     {
-        if (Yii::app()->request->isPostRequest)
+        if ($id === 'many')
         {
-            if ($id === 'many')
+            if (isset($_POST['ids']) && is_array($_POST['ids']))
             {
-                if (isset($_POST['ids']) && is_array($_POST['ids']))
-                {
-                    foreach ($_POST['ids'] as $id)
-                        $this->loadModel($id)->delete();
-                }
-                Yii::app()->end();
+                foreach ($_POST['ids'] as $id)
+                    $this->loadModel($id)->delete();
             }
-            else
-                $this->loadModel($id)->delete();
-
-            if (!isset($_GET['ajax']))
-                $this->redirect($this->createUrl('trash'));
+            Yii::app()->end();
         }
         else
-            throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
+            $this->loadModel($id)->delete();
+
+        if (!isset($_GET['ajax']))
+            $this->redirect($this->createUrl('trash'));
     }
 
     /**

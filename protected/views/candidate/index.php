@@ -15,31 +15,6 @@ $this->renderPartial('_search', array(
     'searchModel' => $searchModel,
 ));
 
-$valueFunction = function ($data)
-{
-    return Yii::app()->controller->widget("ext.bootstrap.widgets.BootButtonGroup", array(
-        "size" => "mini",
-        "buttons" => array(
-            array(
-                "items" => array(
-                    array(
-                        "label" => "ссылка",
-                        "url" => array(
-                            "#",
-                            "Department[faculty_id][]" => $data->id
-                        )
-                    ),
-                    "---",
-                    array(
-                        "label" => "что-то ещё",
-                        "url" => "#"
-                    ),
-                )
-            ),
-        ),
-    ), true);
-};
-
 $this->widget('MyBootGridView', array(
     'id' => 'candidate-grid',
     'type' => 'striped bordered condensed',
@@ -66,27 +41,29 @@ $this->widget('MyBootGridView', array(
         'department' => array(
             'header' => 'Кафедра',
             'name' => 'title',
-            'value' => 'CHtml::link("$data->department->fullTitle", array("department/view", "id"=>$data->department_id))',
+            'value' => 'CHtml::link($data->department->fullTitle, array("department/view", "id"=>$data->department_id))',
             'type' => 'html',
         ),
         'advisor' => array(
             'header' => 'Научный руководитель',
             'name' => 'advisor',
-            'value' => 'CHtml::link("$data->advisor->fio", array("staff/view", "id"=>$data->staff_id))',
+            'value' => 'CHtml::link($data->advisor->fio, array("staff/view", "id"=>$data->staff_id))',
             'type' => 'html',
         ),
         array(
             'class' => 'ext.bootstrap.widgets.BootButtonColumn',
-            'htmlOptions' => array('style' => 'width: 50px'),
-        ),
-        array(
-            'class' => 'CDataColumn',
-            'type' => 'raw',
-            'value' => $valueFunction,
             'htmlOptions' => array(
-                'style' => 'width: 20px'
+                'style' => 'width: 50px'
             ),
         ),
+//        array(
+//            'class' => 'CDataColumn',
+//            'type' => 'raw',
+//            'value' => Candidate::getSubModelMenuFunction('mini'),
+//            'htmlOptions' => array(
+//                'style' => 'width: 37px'
+//            ),
+//        ),
     ),
     'footer' => array(
         'prepend' => 'С отмеченными: ',

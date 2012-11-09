@@ -78,9 +78,12 @@
                     $this->widget('zii.widgets.CMenu', array(
                         'items' => array(
                             array(
+                                'label' => 'Профиль',
+                                'url' => array('site/profile'),
+                            ),
+                            array(
                                 'label' => 'Выйти',
                                 'url' => array('site/logout'),
-                                'visible' => !Yii::app()->user->isGuest
                             )
                         ),
                         'htmlOptions' => array(

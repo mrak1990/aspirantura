@@ -15,24 +15,6 @@ $this->renderPartial('_search', array(
     'searchModel' => $searchModel,
 ));
 
-$valueFunction = function ($data)
-{
-    return Yii::app()->controller->widget("ext.bootstrap.widgets.BootButtonGroup", array(
-        "size" => "mini",
-        "buttons" => array(
-            array(
-                "items" => array(
-                    "---",
-                    array(
-                        "label" => "что-то ещё",
-                        "url" => "#"
-                    ),
-                )
-            ),
-        ),
-    ), true);
-};
-
 $this->widget('MyBootGridView', array(
     'id' => 'science-branch-grid',
     'type' => 'striped bordered condensed',
@@ -63,9 +45,9 @@ $this->widget('MyBootGridView', array(
         array(
             'class' => 'CDataColumn',
             'type' => 'raw',
-            'value' => $valueFunction,
+            'value' => ScienceBranch::getSubModelMenuFunction('mini'),
             'htmlOptions' => array(
-                'style' => 'width: 20px'
+                'style' => 'width: 37px'
             ),
         ),
     ),

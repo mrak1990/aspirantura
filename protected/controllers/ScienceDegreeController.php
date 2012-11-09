@@ -225,7 +225,7 @@ class ScienceDegreeController extends Controller
      */
     public function loadModel($id)
     {
-        $model = scienceBranch::model()->findByPk($id);
+        $model = ScienceDegree::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
 
