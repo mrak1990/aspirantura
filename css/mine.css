@@ -100,8 +100,14 @@ form.labels-width .controls {
 }
 
 /* chosen for degree add */
-div.degrees-add div.chzn-container {
+div.multiple-inline-add div.chzn-container {
     vertical-align: middle;
-    margin-left: 10px;
+    margin: 5px 10px 5px;
+}
+
+div.multiple-inline-add-crop div.chzn-container {
+    vertical-align: middle;
+    margin-top: 5px;
     margin-right: 10px;
+    margin-bottom: 5px;
 }

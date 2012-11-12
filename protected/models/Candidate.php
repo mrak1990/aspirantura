@@ -22,7 +22,6 @@ class Candidate extends ActiveRecord
     public $facultyId;
     public $disserTitle;
     public $doctor;
-//        = array('false', 'true');
     public $done = '0';
 
     /**

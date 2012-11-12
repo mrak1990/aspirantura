@@ -5,7 +5,7 @@
 /* Project name:                                                          */
 /* Author:                                                                */
 /* Script type:           Database drop script                            */
-/* Created on:            2012-11-05 00:31                                */
+/* Created on:            2012-11-12 23:57                                */
 /* ---------------------------------------------------------------------- */
 
 
@@ -79,20 +79,6 @@ ALTER TABLE thesis_board_speciality DROP CONSTRAINT thesis_board_thesis_board_sp
 
 ALTER TABLE thesis_board_speciality DROP CONSTRAINT speciality_thesis_board_speciality;
 
-ALTER TABLE member_defence DROP CONSTRAINT member_member_defence;
-
-ALTER TABLE member_defence DROP CONSTRAINT defence_member_defence;
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "member_defence"                                            */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-/* Drop table */
-
-DROP TABLE member_defence;
-
 /* ---------------------------------------------------------------------- */
 /* Drop table "thesis_board_speciality"                                   */
 /* ---------------------------------------------------------------------- */
@@ -100,6 +86,8 @@ DROP TABLE member_defence;
 /* Drop constraints */
 
 ALTER TABLE thesis_board_speciality DROP CONSTRAINT PK_thesis_board_speciality;
+
+ALTER TABLE thesis_board_speciality DROP CONSTRAINT TUC_thesis_board_speciality_1;
 
 /* Drop table */
 
@@ -163,6 +151,8 @@ DROP TABLE thesis_board;
 
 ALTER TABLE defence DROP CONSTRAINT PK_defence;
 
+ALTER TABLE defence DROP CONSTRAINT TUC_defence_1;
+
 /* Drop table */
 
 DROP TABLE defence;
@@ -184,8 +174,6 @@ DROP TABLE science_degree;
 /* ---------------------------------------------------------------------- */
 
 /* Drop constraints */
-
-ALTER TABLE disser_speciality DROP CONSTRAINT PK_disser_speciality;
 
 /* Drop table */
 
@@ -403,10 +391,10 @@ DROP SEQUENCE scientific_rank_sequence;
 
 DROP SEQUENCE scientific_degree_sequence;
 
-DROP SEQUENCE staff_thesis_board_sequence;
-
 DROP SEQUENCE thesis_board_sequence;
 
 DROP SEQUENCE defence_sequence;
 
 DROP SEQUENCE member_sequence;
+
+DROP SEQUENCE thesis_board_speciality_sequence;

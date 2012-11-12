@@ -1,21 +1,21 @@
 <?php
 /**
- * @var ScienceDegree[] $degrees
+ * @var Member[] $members
  * @var Controller $this
  * @var string $hint
  */
 
-$jsPrefix = 'degrees';
-$selector = 'degreesInlineCreate';
+$jsPrefix = 'members';
+$selector = 'membersInlineCreate';
 $prefixedSelector = '.' . $selector;
 $chosenOptions = optionsData::getChosenOptions($jsPrefix, $prefixedSelector);
 
-$data = ScienceBranch::model()->findAll();
+$data = Staff::model()->findAll();
 $count = count($data);
 if ($count === 0)
     $data[] = array(
         'id' => '',
-        'full_title' => 'Записи отсутствуют'
+        'fio' => 'Записи отсутствуют'
     );
 
 $this->widget('ext.EChosen.EChosen', array(
@@ -25,33 +25,27 @@ $this->widget('ext.EChosen.EChosen', array(
 
 $this->widget('application.widget.inlineDropdownCreate.chosenInlineCreate', array(
     'jsPrefix' => $jsPrefix,
-    'url' => 'scienceBranch/create',
-    'dialogTitle' => 'Добавить учёную степень',
+    'url' => 'staff/create',
+    'dialogTitle' => 'Добавить сотрудника',
 ));
 ?>
 
 <?php
-$emptyDegree = new ScienceDegree();
+$emptyMember = new Member();
 ?>
-<div class="control-group multiple-inline-add">
+<div class="control-group multiple-inline-add-crop">
     <?php
-    echo CHtml::activeLabel($emptyDegree, 'science_branch_id', array(
+    echo CHtml::activeLabel($emptyMember, 'staff_id', array(
         'class' => 'control-label'
     ));
     ?>
     <?php
     $i = 0;
-    foreach ($degrees as $degree)
+    foreach ($members as $member)
     {
         echo '<div class="controls">';
-        echo $form->radioButtonList($degree, "[$i]doctor", array(
-            '0' => 'кандидат',
-            '1' => 'доктор',
-        ), array(
-            'inline' => true,
-        ));
 
-        echo CHtml::activeDropDownList($degree, "[$i]science_branch_id", CHtml::listData($data, 'id', 'full_title'), array(
+        echo CHtml::activeDropDownList($member, "[$i]staff_id", CHtml::listData($data, 'id', 'fio'), array(
             'class' => "span3 {$selector}",
         ));
 
@@ -60,7 +54,7 @@ $emptyDegree = new ScienceDegree();
             'size' => 'mini',
             'type' => 'danger',
             'htmlOptions' => array(
-                'class' => 'degreesDeleteButton',
+                'class' => 'membersDeleteButton',
             )
         ));
 
@@ -78,17 +72,11 @@ $emptyDegree = new ScienceDegree();
         ?>
     </div>
     <script type="text/html" id="<?php echo $jsPrefix; ?>Template" style="display: none;"
-            data-count="<?php echo count($degrees); ?>">
+            data-count="<?php echo count($members); ?>">
         <?php
         echo '<div class="controls">';
-        echo $form->radioButtonList($emptyDegree, '[{{i}}]doctor', array(
-            '0' => 'кандидат',
-            '1' => 'доктор',
-        ), array(
-            'inline' => true,
-        ));
 
-        echo CHtml::activeDropDownList($emptyDegree, '[{{i}}]science_branch_id', CHtml::listData($data, 'id', 'full_title'), array(
+        echo CHtml::activeDropDownList($emptyMember, '[{{i}}]staff_id', CHtml::listData($data, 'id', 'fio'), array(
             'class' => "span3 {$selector}",
         ));
 
@@ -97,7 +85,7 @@ $emptyDegree = new ScienceDegree();
             'size' => 'mini',
             'type' => 'danger',
             'htmlOptions' => array(
-                'class' => 'degreesDeleteButton',
+                'class' => 'membersDeleteButton',
             )
         ));
 

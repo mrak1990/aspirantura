@@ -5,7 +5,7 @@
 /* Project name:                                                          */
 /* Author:                                                                */
 /* Script type:           Database creation script                        */
-/* Created on:            2012-11-05 00:31                                */
+/* Created on:            2012-11-12 23:57                                */
 /* ---------------------------------------------------------------------- */
 
 
@@ -43,21 +43,21 @@ CREATE SEQUENCE scientific_rank_sequence INCREMENT 1 START 1;
 
 CREATE SEQUENCE scientific_degree_sequence INCREMENT 1 START 1;
 
-CREATE SEQUENCE staff_thesis_board_sequence INCREMENT 1 START 1;
-
 CREATE SEQUENCE thesis_board_sequence INCREMENT 1 START 1;
 
 CREATE SEQUENCE defence_sequence INCREMENT 1 START 1;
 
 CREATE SEQUENCE member_sequence INCREMENT 1 START 1;
 
+CREATE SEQUENCE thesis_board_speciality_sequence INCREMENT 1 START 1;
+
 /* ---------------------------------------------------------------------- */
 /* Domains                                                                */
 /* ---------------------------------------------------------------------- */
 
-CREATE TYPE candidate_status AS ENUM('study', 'done', 'left');
+CREATE DOMAIN candidate_status AS ENUM('study', 'done', 'left');
 
-CREATE TYPE member_status AS ENUM('work', 'not_work');
+CREATE DOMAIN member_status AS ENUM('work', 'not_work');
 
 /* ---------------------------------------------------------------------- */
 /* Tables                                                                 */
@@ -141,6 +141,8 @@ CREATE TABLE candidate (
     status candidate_status DEFAULT 'study'  NOT NULL,
     speciality_id INTEGER  NOT NULL,
     staff_id INTEGER  NOT NULL,
+    enter DATE  NOT NULL,
+    done DATE,
     CONSTRAINT PK_candidate PRIMARY KEY (id)
 );
 
@@ -193,9 +195,9 @@ COMMENT ON TABLE advisor IS 'Научные руководители - сотрудник (FK) - аспирант (F
 /* ---------------------------------------------------------------------- */
 
 CREATE TABLE disser_speciality (
+    id INTEGER  NOT NULL,
     disser_id INTEGER  NOT NULL,
-    speciality_id INTEGER  NOT NULL,
-    CONSTRAINT PK_disser_speciality PRIMARY KEY (disser_id, speciality_id)
+    speciality_id INTEGER  NOT NULL
 );
 
 COMMENT ON TABLE disser_speciality IS 'Сопоставление диссертаций и специальностей - диссертация (FK) - специальность (FK)';
@@ -264,12 +266,12 @@ COMMENT ON COLUMN science_degree.doctor IS 'Сотрудник является доктором (не канд
 
 CREATE TABLE defence (
     id INTEGER DEFAULT nextval('defence_sequence')  NOT NULL,
-    thesis_id INTEGER  NOT NULL,
+    disser_id INTEGER  NOT NULL,
     thesis_board_id INTEGER  NOT NULL,
     date DATE,
-    successful BOOLEAN DEFAULT TRUE  NOT NULL,
-    comment CHARACTER VARYING(500),
-    CONSTRAINT PK_defence PRIMARY KEY (id)
+    success BOOLEAN DEFAULT TRUE  NOT NULL,
+    CONSTRAINT PK_defence PRIMARY KEY (id),
+    CONSTRAINT TUC_defence_1 UNIQUE (disser_id, thesis_board_id, date)
 );
 
 /* ---------------------------------------------------------------------- */
@@ -280,19 +282,20 @@ CREATE TABLE thesis_board (
     id INTEGER DEFAULT nextval('thesis_board_sequence')  NOT NULL,
     code CHARACTER VARYING(20)  NOT NULL,
     staff_id INTEGER  NOT NULL,
-    staff2_id INTEGER  NOT NULL,
-    staff3_id INTEGER  NOT NULL,
-    deleted BOOLEAN DEFAULT false  NOT NULL,
+    staff2_id INTEGER,
+    staff3_id INTEGER,
     CONSTRAINT PK_thesis_board PRIMARY KEY (id)
 );
 
-COMMENT ON COLUMN thesis_board.code IS 'Шифр диссертационного совета';
+COMMENT ON COLUMN thesis_board.id IS 'первичный ключ';
 
-COMMENT ON COLUMN thesis_board.staff_id IS 'Председатель диссертационного совета';
+COMMENT ON COLUMN thesis_board.code IS 'шифр диссертационного совета';
 
-COMMENT ON COLUMN thesis_board.staff2_id IS 'Заместитель председателя диссертационного совета';
+COMMENT ON COLUMN thesis_board.staff_id IS 'председатель диссертационного совета';
 
-COMMENT ON COLUMN thesis_board.staff3_id IS 'Учёный секретарь диссертационного совета';
+COMMENT ON COLUMN thesis_board.staff2_id IS 'заместитель председателя диссертационного совета';
+
+COMMENT ON COLUMN thesis_board.staff3_id IS 'учёный секретарь диссертационного совета';
 
 /* ---------------------------------------------------------------------- */
 /* Add table "member"                                                     */
@@ -300,10 +303,8 @@ COMMENT ON COLUMN thesis_board.staff3_id IS 'Учёный секретарь диссертационного с
 
 CREATE TABLE member (
     id INTEGER DEFAULT nextval('member_sequence')  NOT NULL,
-    staff_id INTEGER,
+    staff_id INTEGER  NOT NULL,
     thesis_board_id INTEGER  NOT NULL,
-    whence CHARACTER VARYING(150),
-    status member_status DEFAULT 'work'  NOT NULL,
     CONSTRAINT PK_member PRIMARY KEY (id),
     CONSTRAINT TUC_member_1 UNIQUE (staff_id, thesis_board_id)
 );
@@ -326,7 +327,7 @@ CREATE TABLE cite (
 /* Add table "user"                                                       */
 /* ---------------------------------------------------------------------- */
 
-CREATE TABLE "user" (
+CREATE TABLE user (
     id INTEGER DEFAULT nextval('user_sequence')  NOT NULL,
     username CHARACTER VARYING(30)  NOT NULL,
     password_hash CHARACTER(60)  NOT NULL,
@@ -369,26 +370,17 @@ CREATE TABLE exam (
 /* ---------------------------------------------------------------------- */
 
 CREATE TABLE thesis_board_speciality (
+    id INTEGER DEFAULT nextval('thesis_board_speciality_sequence')  NOT NULL,
     thesis_board_id INTEGER  NOT NULL,
     speciality_id INTEGER  NOT NULL,
-    postgrad_only BOOLEAN DEFAULT false  NOT NULL,
-    CONSTRAINT PK_thesis_board_speciality PRIMARY KEY (thesis_board_id, speciality_id)
+    doctor BOOLEAN DEFAULT false  NOT NULL,
+    CONSTRAINT PK_thesis_board_speciality PRIMARY KEY (id),
+    CONSTRAINT TUC_thesis_board_speciality_1 UNIQUE (thesis_board_id, speciality_id)
 );
 
 COMMENT ON TABLE thesis_board_speciality IS 'Диссертационный совет создается для рассмотрения диссертаций на соискание ученой степени кандидата наук, на соискание ученой степени доктора наук не более чем по трем специальностям научных работников.';
 
-COMMENT ON COLUMN thesis_board_speciality.postgrad_only IS 'Диссертационному совету предоставлено право принимать к защите только диссертации на соискание ученой степени кандидата наук.';
-
-/* ---------------------------------------------------------------------- */
-/* Add table "member_defence"                                             */
-/* ---------------------------------------------------------------------- */
-
-CREATE TABLE member_defence (
-    defence_id INTEGER  NOT NULL,
-    member_id INTEGER  NOT NULL,
-    vote_for BOOLEAN DEFAULT true  NOT NULL,
-    PRIMARY KEY (defence_id, member_id)
-);
+COMMENT ON COLUMN thesis_board_speciality.doctor IS 'Диссертационному совету предоставлено право принимать к защите только диссертации на соискание ученой степени кандидата наук.';
 
 /* ---------------------------------------------------------------------- */
 /* Foreign key constraints                                                */
@@ -458,7 +450,7 @@ ALTER TABLE science_degree ADD CONSTRAINT science_branch_science_degree
     FOREIGN KEY (science_branch_id) REFERENCES science_branch (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE defence ADD CONSTRAINT disser_defence 
-    FOREIGN KEY (thesis_id) REFERENCES disser (id) ON DELETE RESTRICT ON UPDATE CASCADE;
+    FOREIGN KEY (disser_id) REFERENCES disser (id) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 ALTER TABLE defence ADD CONSTRAINT thesis_board_defence 
     FOREIGN KEY (thesis_board_id) REFERENCES thesis_board (id) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -492,9 +484,3 @@ ALTER TABLE thesis_board_speciality ADD CONSTRAINT thesis_board_thesis_board_spe
 
 ALTER TABLE thesis_board_speciality ADD CONSTRAINT speciality_thesis_board_speciality 
     FOREIGN KEY (speciality_id) REFERENCES speciality (id) ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE member_defence ADD CONSTRAINT member_member_defence 
-    FOREIGN KEY (member_id) REFERENCES member (id) ON DELETE RESTRICT ON UPDATE CASCADE;
-
-ALTER TABLE member_defence ADD CONSTRAINT defence_member_defence 
-    FOREIGN KEY (defence_id) REFERENCES defence (id) ON DELETE RESTRICT ON UPDATE CASCADE;
