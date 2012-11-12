@@ -15,12 +15,7 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
     ),
 ));
 
-$this->breadcrumbs = array_merge($this->breadcrumbs, array(
-    'Авторизация',
-));
 ?>
-
-<h2>Авторизация</h2>
 
 <div class="form-note"><em>Поля, помеченные <span class="required">*</span>, обязательны для заполнения.</em></div>
 
@@ -28,7 +23,6 @@ $this->breadcrumbs = array_merge($this->breadcrumbs, array(
 echo $form->textFieldRow($model, 'username', array(
     'class' => 'span3',
     'maxlength' => 30,
-//    'hint' => 'Введите имя учётной записи',
 ));
 ?>
 
@@ -36,7 +30,6 @@ echo $form->textFieldRow($model, 'username', array(
 echo $form->passwordFieldRow($model, 'password', array(
     'class' => 'span3',
     'maxlength' => 50,
-//    'hint' => 'Введите пароль от учётной записи',
 ));
 ?>
 

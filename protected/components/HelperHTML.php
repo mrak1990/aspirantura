@@ -16,11 +16,13 @@ class HelperHTML
      *
      * @return string
      */
-    public static function spoiler($data, $count, $route, $name = 'id')
+    public static function spoiler($data, $count, $route, $name = null)
     {
         $list_tmp = array_map(function ($item) use ($name, $route)
         {
-            return CHtml::link($item['label'], array($route, $name => $item['id']));
+            return $name === null
+                ? CHtml::link($item, array($route, 'name' => $item))
+                : CHtml::link($item['label'], array($route, $name => $item['id']));
         }, $data);
         if (count($list_tmp) > $count)
         {
@@ -184,7 +186,7 @@ class HelperHTML
                             'url' => '#',
                             'visible' => $model::DELETABLE
                                 ? $model->deleted
-                                : false,
+                                : true,
                             'icon' => 'remove',
                             'linkOptions' => array(
                                 'submit' => array(
@@ -298,7 +300,7 @@ class HelperHTML
                             'url' => '#',
                             'visible' => $model::DELETABLE
                                 ? $model->deleted
-                                : false,
+                                : true,
                             'icon' => 'remove',
                             'linkOptions' => array(
                                 'submit' => array(

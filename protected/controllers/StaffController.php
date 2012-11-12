@@ -253,6 +253,7 @@ class StaffController extends Controller
 
         $search->resolveGETSort();
 
+        $model->resetScope(true);
         $criteria = new CDbCriteria(array(
             'with' => array(
                 'department' => array(

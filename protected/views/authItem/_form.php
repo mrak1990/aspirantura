@@ -19,27 +19,44 @@ $allAuthItems = AuthItem::getAll($model->name);
 
 <div class="form-note"><em>Поля, помеченные <span class="required">*</span>, обязательны для заполнения.</em></div>
 
-<?php
-echo $form->errorSummary($model);
+<?php echo $form->errorSummary($model); ?>
 
+<?php
 echo $form->textFieldRow($model, 'name', array(
     'class' => 'span5',
     'maxlength' => 64,
-    'hint' => 'ЗАПОЛНИТЬ',
+    'hint' => 'Название элемента авторизации',
 ));
+?>
+
+<?php
 echo $form->dropDownListRow($model, 'type', AuthItem::$types, array(
     'class' => 'span5',
-    'hint' => 'ЗАПОЛНИТЬ',
+    'hint' => 'Тип элемента авторизации, используется при задании иерархии между элементами авторизации',
     'disabled' => $model->isNewRecord
         ? false
         : true,
 ));
+?>
+
+<?php
 echo $form->textAreaRow($model, 'description', array(
     'rows' => 3,
     'cols' => 50,
     'class' => 'span7',
-    'hint' => 'ЗАПОЛНИТЬ',
+    'hint' => 'Описание элемента авторизации',
 ));
+?>
+
+<?php
+echo $form->textAreaRow($model, 'bizrule', array(
+    'class' => 'span5',
+    'maxlength' => 200,
+    'hint' => 'Бизнес-правило — php−код, исполняемый при проверке прав доступа',
+));
+?>
+
+<?php
 echo $form->dropDownListRow($model, 'users', User::getAll('user'), array(
     'multiple' => 'multiple',
     'class' => 'multiselect',

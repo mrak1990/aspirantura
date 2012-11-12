@@ -6,7 +6,7 @@
 // CWebApplication properties can be configured here.
 return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
-    'name' => 'My Web Application',
+    'name' => 'База данных аспирантуры и докторантуры',
     'language' => 'ru',
     'preload' => array(
         'log',
@@ -35,6 +35,14 @@ return array(
         'user' => array(
             'allowAutoLogin' => true,
         ),
+        'format' => array(
+//            'class' => 'CFormatter',
+            'dateFormat' => 'd.m.Y'
+        ),
+//        'format'=>array(
+//            'datetimeFormat'=>'d/m/Y H:i:s',
+//            'dateFormat'=>'d/m/Y',
+//        ),
         'db' => array(
             'connectionString' => 'pgsql:host=127.0.0.1;port=5433;dbname=aspirantura',
             'emulatePrepare' => false,
@@ -49,6 +57,7 @@ return array(
             'class' => 'MyDbAuthManager',
             'connectionID' => 'db',
             'userTable' => 'user',
+//            'defaultRoles' => array('Гость'),
         ),
         'errorHandler' => array(
             'errorAction' => 'site/error',

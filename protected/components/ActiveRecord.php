@@ -121,6 +121,15 @@ class ActiveRecord extends CActiveRecord
             return '';
         };
     }
+
+    public function defaultScope()
+    {
+//        CVarDumper::dump($this->getTableAlias(false, false), 10, true);
+
+        return static::DELETABLE && $this->getTableAlias(false, false) === 't'
+            ? array('condition' => '"t"."deleted"=\'false\'')
+            : array();
+    }
 }
 
 ?>

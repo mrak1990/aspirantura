@@ -49,7 +49,6 @@ $form = $this->beginWidget('ext.bootstrap.widgets.BootActiveForm', array(
         <?php
         echo $form->dropdownListRow($model, 'faculty_id', CHtml::listData(Faculty::model()->findAll(), 'id', 'fullTitle'), array(
             'class' => 'span4',
-            'maxlength' => 50,
             'multiple' => true,
             'empty' => 'Все',
             'hint' => 'Выберите нужные факультеты из списка (для множественно выбора используйте клавишу <span class="key_button">Ctrl</span> и левую кнопку мышку)',

@@ -1,20 +1,27 @@
 <?php
-$this->breadcrumbs = array_merge($breadcrumbsInit, array(
-    $model->name => array('view', 'name' => $model->name),
-    'Правка',
-));
+/**
+ * @var AuthItem $model
+ * @var Controller $this
+ */
 
-$this->menu = array(
-    array('label' => 'Все записи', 'icon' => 'list', 'url' => array('index')),
-    array('label' => 'Добавить запись', 'icon' => 'plus', 'url' => array('create')),
-    array('label' => 'Просмотреть эту запись', 'icon' => 'eye-open', 'url' => array(
-        'view',
-        'name' => $model->name
-    )),
-    array('label' => 'Администрирование', 'icon' => 'cog', 'url' => array('admin')),
+$this->breadcrumbs = array_merge(
+    $this->breadcrumbs,
+    array(
+        $model->name => array(
+            'view',
+            'name' => $model->name
+        ),
+        'Редактирование',
+    )
 );
+
+$this->menu = HelperHTML::getMenu(basename(__FILE__, '.php'), $model, 'name');
+
+echo $this->renderPartial('_info', array(
+        'model' => $model,
+        'title' => 'Редактирование записи',
+    )
+);
+
+echo $this->renderPartial('_form', array('model' => $model));
 ?>
-
-<h2>Правка</h2>
-
-<?php echo $this->renderPartial('_form', array('model' => $model)); ?>

@@ -75,6 +75,10 @@
                         <b class="caret"></b>
                     </a>
                     <?php
+                    $userId = Yii::app()->user->id;
+                    $userControlPerm = Yii::app()->authManager->checkAccess('userControl', $userId);
+                    $authItemControlPerm = Yii::app()->authManager->checkAccess('authItemControl', $userId);
+
                     $this->widget('zii.widgets.CMenu', array(
                         'items' => array(
                             array(
@@ -84,6 +88,22 @@
                             array(
                                 'label' => 'Выйти',
                                 'url' => array('site/logout'),
+                            ),
+                            array(
+                                'visible' => $userControlPerm || $authItemControlPerm,
+                                'itemOptions' => array(
+                                    'class' => 'divider'
+                                )
+                            ),
+                            array(
+                                'label' => 'Пользователи',
+                                'url' => array('user/index'),
+                                'visible' => $userControlPerm,
+                            ),
+                            array(
+                                'label' => 'Права доступа',
+                                'url' => array('authItem/index'),
+                                'visible' => $authItemControlPerm,
                             )
                         ),
                         'htmlOptions' => array(

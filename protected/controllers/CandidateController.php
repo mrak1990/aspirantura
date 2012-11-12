@@ -10,6 +10,8 @@ class CandidateController extends Controller
         'Аспиранты' => array('index')
     );
 
+    private $_statQuery = array();
+
     /**
      * @return array action filters
      */
@@ -18,23 +20,23 @@ class CandidateController extends Controller
         return array();
     }
 
-    public function actions()
-    {
-        return array(
-            'search' => array(
-                'class' => 'application.components.actions.SearchAction',
-                'model' => Candidate::model(),
-                'labelField' => 'title',
-                'searchField' => 'title',
-            ),
-            'optionList' => array(
-                'class' => 'application.components.actions.ListAction',
-                'model' => Candidate::model(),
-                'labelField' => 'title',
-                'parentIdField' => 'foreign_key_id',
-            ),
-        );
-    }
+//    public function actions()
+//    {
+//        return array(
+//            'search' => array(
+//                'class' => 'application.components.actions.SearchAction',
+//                'model' => Candidate::model(),
+//                'labelField' => 'title',
+//                'searchField' => 'title',
+//            ),
+//            'optionList' => array(
+//                'class' => 'application.components.actions.ListAction',
+//                'model' => Candidate::model(),
+//                'labelField' => 'title',
+//                'parentIdField' => 'foreign_key_id',
+//            ),
+//        );
+//    }
 
     /**
      * Displays a particular model.
@@ -55,48 +57,31 @@ class CandidateController extends Controller
     public function actionCreate()
     {
         $model = new Candidate;
+        $disser = new Disser;
 
-        if (isset($_POST['Candidate']))
+        if (isset($_POST['Candidate']) && isset($_POST['Disser']) && is_array($_POST['Disser']))
         {
             $model->attributes = $_POST['Candidate'];
-            if ($model->save())
+            $disser->attributes = $_POST['Disser'];
+
+            $valid1 = $model->validate();
+            $valid2 = $disser->validate();
+            if ($valid1 && $valid2)
             {
-                if (Yii::app()->request->isAjaxRequest)
-                {
-                    echo CJSON::encode(array(
-                        'status' => 'success',
-                        'div' => "Запись успешно добавлена",
-                        'data' => array(
-                            'value' => $model->id,
-                            'title' => $model->title,
-                        )
-                    ));
-                    Yii::app()->end();
-                }
-                else
-                    $this->redirect(array(
-                        'view',
-                        'id' => $model->id
-                    ));
+                $model->save(false);
+                $model->updateDisser($_POST['Disser']);
+
+                $this->redirect(array(
+                    'view',
+                    'id' => $model->id
+                ));
             }
         }
 
-        if (Yii::app()->request->isAjaxRequest)
-        {
-            if (isset($_POST['title']))
-                $model->title = mb_convert_case($_POST['title'], MB_CASE_TITLE, 'UTF-8');
-            echo CJSON::encode(array(
-                'status' => 'failure',
-                'div' => $this->renderPartial('_form', array(
-                    'model' => $model
-                ), true)
-            ));
-            Yii::app()->end();
-        }
-        else
-            $this->render('create', array(
-                'model' => $model,
-            ));
+        $this->render('create', array(
+            'model' => $model,
+            'disser' => $disser,
+        ));
     }
 
     /**
@@ -108,16 +93,30 @@ class CandidateController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->loadModel($id);
+        $disser = $model->disser;
 
-        if (isset($_POST['Candidate']))
+        if (isset($_POST['Candidate']) && isset($_POST['Disser']) && is_array($_POST['Disser']))
         {
             $model->attributes = $_POST['Candidate'];
-            if ($model->save())
-                $this->redirect(array('view', 'id' => $model->id));
+            $disser->attributes = $_POST['Disser'];
+
+            $valid1 = $model->validate();
+            $valid2 = $disser->validate();
+            if ($valid1 && $valid2)
+            {
+                $model->save(false);
+                $model->updateDisser($_POST['Disser']);
+
+                $this->redirect(array(
+                    'view',
+                    'id' => $model->id
+                ));
+            }
         }
 
         $this->render('update', array(
             'model' => $model,
+            'disser' => $model->disser,
         ));
     }
 
@@ -138,7 +137,7 @@ class CandidateController extends Controller
                     foreach ($_POST['ids'] as $id)
                     {
                         $model = $this->loadModel($id);
-//                        $model->deleteScienceDegrees();
+                        $model->deleteDisser();
                         $model->delete();
                     }
                 }
@@ -147,7 +146,7 @@ class CandidateController extends Controller
             else
             {
                 $model = $this->loadModel($id);
-//                $model->deleteScienceDegrees();
+                $model->deleteDisser();
                 $model->delete();
             }
 
@@ -174,16 +173,8 @@ class CandidateController extends Controller
 
         $search->resolveGETSort();
 
-        $criteria = new CDbCriteria(array(
-            'with' => array(
-                'department' => array(
-                    'with' => array(
-                        'faculty'
-                    ),
-                ),
-                'advisor',
-            )
-        ));
+        $scopes = $model->scopes();
+        $criteria = new CDbCriteria($scopes['default']);
 
         $sort = new CSort('Candidate');
         $sort->attributes = $model->getSortAttributes();
@@ -197,6 +188,59 @@ class CandidateController extends Controller
         ));
     }
 
+    public function actionStat()
+    {
+        $formModel = new CandidateStatForm;
+
+        if (isset($_GET['CandidateStatForm']))
+        {
+            $formModel->attributes = $_GET['CandidateStatForm'];
+            if ($formModel->validate())
+            {
+                $model = new Candidate;
+
+                if ($formModel->done === '1')
+                    $tmpModel = $model->done();
+                elseif ($formModel->done === '0')
+                    $tmpModel = $model->undone();
+                else
+                    $tmpModel = $model;
+
+                if ($formModel->doctor === '1')
+                    $tmpModel = $tmpModel->doctor();
+                elseif ($formModel->doctor === '0')
+                    $tmpModel = $tmpModel->notDoctor();
+                else
+                    $tmpModel = $tmpModel;
+
+                if ($formModel->inTime === '1')
+                    $tmpModel = $tmpModel->inTime();
+                elseif ($formModel->inTime === '0')
+                    $tmpModel = $tmpModel->notInTime();
+                else
+                    $tmpModel = $tmpModel;
+
+                $this->render('stat/stat', array(
+                    'model' => $formModel,
+                    'count' => $tmpModel->count(),
+                ));
+                Yii::app()->end();
+//                $count['кандидатов в доктора наук, закончивших вовремя'] = Candidate::model()->done()->inTime()->doctor()->count();
+//                $count['кандидатов наук, закончивших вовремя'] = Candidate::model()->done()->inTime()->notDoctor()->count();
+//                $count['закончил невовремя'] = Candidate::model()->done()->notInTime()->count();
+//                $count['не успел вовремя защититься'] = Candidate::model()->undone()->inTime()->count();
+//                $count['ещё не защитился'] = Candidate::model()->undone()->notInTime()->count();
+            }
+        }
+
+        $this->render('stat/stat', array(
+            'model' => $formModel,
+            'count' => null,
+        ));
+//        $count = array();
+//
+//        $this->renderText(CVarDumper::dumpAsString($count, 10, true));
+    }
 
     /**
      * Returns the data model based on the primary key given in the GET variable.

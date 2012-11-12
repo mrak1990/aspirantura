@@ -122,7 +122,7 @@ class UserController extends Controller
 
         $search->resolveGETSort();
 
-        $criteria = new CDbCriteria(array(//            'with' => array('dean')
+        $criteria = new CDbCriteria(array( //            'with' => array('dean')
         ));
 
         $sort = new CSort('User');
@@ -130,7 +130,7 @@ class UserController extends Controller
         $sort->defaultOrder = 't.username';
 
         $this->render('index', array(
-            'model' => $model->getRestoredRecords()->search(),
+            'model' => $model->search(),
             'criteria' => $criteria,
             'sort' => $sort,
             'searchModel' => $search,

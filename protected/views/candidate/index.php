@@ -38,6 +38,13 @@ $this->widget('MyBootGridView', array(
             'value' => 'CHtml::link($data->fio, array("view", "id"=>$data->id))',
             'type' => 'html',
         ),
+        'doctorLong',
+        'enter',
+        'done_date' => array(
+            'name' => 'done_date',
+            'value' => '$data->done_date ? $data->done_date : "Не окончил"',
+            'type' => 'html',
+        ),
         'department' => array(
             'header' => 'Кафедра',
             'name' => 'title',
@@ -50,20 +57,17 @@ $this->widget('MyBootGridView', array(
             'value' => 'CHtml::link($data->advisor->fio, array("staff/view", "id"=>$data->staff_id))',
             'type' => 'html',
         ),
+        'disser' => array(
+            'header' => 'Диссертационная работа',
+            'name' => 'disser',
+            'value' => '$data->disser->shortTitle',
+        ),
         array(
             'class' => 'ext.bootstrap.widgets.BootButtonColumn',
             'htmlOptions' => array(
                 'style' => 'width: 50px'
             ),
         ),
-//        array(
-//            'class' => 'CDataColumn',
-//            'type' => 'raw',
-//            'value' => Candidate::getSubModelMenuFunction('mini'),
-//            'htmlOptions' => array(
-//                'style' => 'width: 37px'
-//            ),
-//        ),
     ),
     'footer' => array(
         'prepend' => 'С отмеченными: ',

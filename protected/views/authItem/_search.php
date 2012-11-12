@@ -1,42 +1,95 @@
-<?php $form = $this->beginWidget('ext.bootstrap.widgets.BootActiveForm', array(
-    'action' => Yii::app()->createUrl($this->route),
-    'method' => 'get',
-)); ?>
+<?php
+/**
+ * @var AuthItem $model
+ * @var MyBootActiveForm $form
+ * @var SortForm $searchModel
+ * @var CController $this
+ */
 
-<?php echo $form->textFieldRow($model, 'name', array(
-    'class' => 'span5',
-    'maxlength' => 64,
-    'hint' => 'ЗАПОЛНИТЬ',
-)); ?>
+Yii::app()->clientScript->registerScript('search', "
+$('.search-button').click(function(){
+	$('#search-form').toggle();
+	return false;
+});
+");
+?>
 
-<?php echo $form->textFieldRow($model, 'type', array(
-    'class' => 'span5',
-    'hint' => 'ЗАПОЛНИТЬ',
-)); ?>
+<!-- Search form BEGIN -->
+<?php echo CHtml::link('Параметры поиска', '#', array('class' => 'search-button btn')); ?>
+<?php
+$form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
+    'id' => 'search-form',
+    'type' => 'horizontal',
+    'action' => $this->createUrl(''),
+    'method' => 'GET',
+    'htmlOptions' => array(
+        'class' => 'non-required-labels',
+        'style' => "display:none"
+    )
+));
+?>
 
-<?php echo $form->textAreaRow($model, 'description', array(
-    'rows' => 6,
-    'cols' => 50,
-    'class' => 'span7',
-    'hint' => 'ЗАПОЛНИТЬ',
-)); ?>
+<div class="row">
+    <div class="span6">
+        <div class="page-header">
+            <h3>Параметры фильтрации</h3>
+        </div>
+        <div style="margin-top: -5px; padding-bottom: 15px;">
+            <small><em>Введите данные для фильтрации записей. Поиск регистронезависимый, достаточно частичного
+                совпадения.</em></small>
+        </div>
 
-<?php echo $form->textAreaRow($model, 'bizrule', array(
-    'rows' => 6,
-    'cols' => 50,
-    'class' => 'span7',
-    'hint' => 'ЗАПОЛНИТЬ',
-)); ?>
+        <?php
+        echo $form->textFieldRow($model, 'name', array(
+            'class' => 'span4',
+            'maxlength' => 64,
+            'hint' => 'Введите название элемента авторизации',
+        ));
+        ?>
 
-<?php echo $form->textAreaRow($model, 'data', array(
-    'rows' => 6,
-    'cols' => 50,
-    'class' => 'span7',
-    'hint' => 'ЗАПОЛНИТЬ',
-)); ?>
+        <?php
+        echo $form->dropDownListRow($model, 'type', AuthItem::$types, array(
+            'class' => 'span4',
+            'multiple' => true,
+            'size' => 4,
+            'empty' => 'Все',
+            'hint' => 'Выберите типы элементов авторизации',
+        ));
+        ?>
 
-<div class="actions">
-    <?php echo CHtml::submitButton('Search', array('class' => 'btn primary')); ?>
+        <?php
+        echo $form->textFieldRow($model, 'description', array(
+            'class' => 'span4',
+            'maxlength' => 64,
+            'hint' => 'Введите часть описания элемента авторизации',
+        ));
+        ?>
+
+    </div>
+    <div class="span6 last">
+        <div class="page-header"><h3>Параметры сортировки</h3></div>
+        <?php
+        echo $form->dropDownListRow($searchModel, 'sort', $model->getSortOptions(array(), array( //                'institute_id',
+//                'secretariat',
+//                'deleted',
+            )
+        ), array(
+            'class' => 'span4',
+        ));
+        echo $form->radioButtonListInlineRow($searchModel, 'direction', array(
+            'asc' => 'по возрастанию',
+            'desc' => 'по убыванию'
+        ));
+        ?>
+    </div>
+</div>
+<div class="form-actions">
+    <?php
+    echo CHtml::submitButton('Найти', array(
+        'class' => 'btn primary'
+    ));
+    ?>
 </div>
 
 <?php $this->endWidget(); ?>
+<!-- Search form END -->

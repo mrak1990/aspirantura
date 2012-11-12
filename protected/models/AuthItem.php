@@ -7,6 +7,7 @@
  * @property string $name
  * @property integer $type
  * @property string $description
+ * @property string $bizrule
  * @property string $childrenRoles
  * @property string $childrenTasks
  * @property string $childrenOperations
@@ -89,17 +90,14 @@ class AuthItem extends ActiveRecord
      */
     public function rules()
     {
-// NOTE: you should only define rules for those attributes that
-// will receive user inputs.
         return array(
-//            array('description, roles, tasks, operations', 'safe'),
+            array('description', 'default', 'value' => null),
             array('children, parents, users', 'safe'),
-            array('name, type, description', 'default', 'value' => null),
-            array('type', 'in', 'range' => array('0', '1', '2'), 'allowEmpty' => false),
-            array('name', 'required'),
+            array('name, type', 'required'),
             array('name', 'length', 'max' => 64),
-            // The following rule is used by search().
-// Please remove those attributes that should not be searched.
+            array('type', 'in', 'range' => array('0', '1', '2')),
+            array('bizrule', 'type', 'type' => 'string'),
+            array('bizrule', 'length', 'max' => 200),
             array('name, type, description', 'safe', 'on' => 'search'),
         );
     }
@@ -126,6 +124,7 @@ class AuthItem extends ActiveRecord
             'name' => 'Название',
             'type' => 'Тип',
             'description' => 'Описание',
+            'bizrule' => 'Бизнес-правило',
             'children[operations]' => 'Операции',
             'children[tasks]' => 'Задачи',
             'children[roles]' => 'Роли',
@@ -145,12 +144,25 @@ class AuthItem extends ActiveRecord
         $criteria = $this->getDbCriteria();
 
         $criteria->compare('name', $this->name, true);
-        $criteria->compare('type', $this->type);
+        if (is_array($this->type))
+        {
+            $this->type = array_diff($this->type, array(''));
+            if (!empty($this->type))
+                $criteria->addInCondition('type', $this->type);
+        }
+//        $criteria->addInCondition('type', $this->type);
         $criteria->compare('description', $this->description, true);
-        $criteria->compare('bizrule', $this->bizrule, true);
-        $criteria->compare('data', $this->data, true);
 
         return $this;
+    }
+
+    public function behaviors()
+    {
+        return array(
+            'SortingBehavior' => array(
+                'class' => 'application.components.behaviors.SortingBehavior',
+            )
+        );
     }
 
     public function mergeChild()

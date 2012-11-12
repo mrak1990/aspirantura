@@ -46,8 +46,8 @@ class User extends ActiveRecord
         return array(
             array('email, middle_name', 'default', 'value' => null),
             array('email, first_name, last_name', 'required'),
-            array('username', 'required', 'on'=>'changeUsername'),
-            array('username', 'length', 'min' => 4, 'max' => 20, 'on'=>'changeUsername'),
+            array('username', 'required', 'on' => 'insert, changeUsername'),
+            array('username', 'length', 'min' => 4, 'max' => 20, 'on' => 'insert, changeUsername'),
             array('password', 'required', 'message' => 'Необходимо ввести пароль.', 'on' => 'insert, newPassword'),
             array('password', 'length', 'min' => 5, 'on' => 'insert, newPassword'),
             array('password2', 'compare', 'compareAttribute' => 'password', 'message' => 'Введённые пароли не совпадают.', 'on' => 'insert'),

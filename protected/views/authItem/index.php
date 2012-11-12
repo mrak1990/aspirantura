@@ -10,13 +10,13 @@
 $this->breadcrumbs = array_keys($this->breadcrumbs);
 $this->menu = HelperHTML::getMenu(basename(__FILE__, '.php'), new Candidate());
 
-//$this->renderPartial('_search', array(
-//    'model' => $model,
-//    'searchModel' => $searchModel,
-//));
+$this->renderPartial('_search', array(
+    'model' => $model,
+    'searchModel' => $searchModel,
+));
 
 $this->widget('MyBootGridView', array(
-    'id' => 'candidate-grid',
+    'id' => 'auth-item-grid',
     'type' => 'striped bordered condensed',
     'dataProvider' => new CActiveDataProvider($model, array(
         'criteria' => $criteria,
@@ -41,11 +41,11 @@ $this->widget('MyBootGridView', array(
         'description:text:Описание',
         array(
             'class' => 'ext.bootstrap.widgets.BootButtonColumn',
+            'viewButtonUrl' => 'Yii::app()->controller->createUrl("view",array("name"=>$data->primaryKey))',
+            'updateButtonUrl' => 'Yii::app()->controller->createUrl("update",array("name"=>$data->primaryKey))',
+            'deleteButtonUrl' => 'Yii::app()->controller->createUrl("delete",array("name"=>$data->primaryKey))',
             'htmlOptions' => array(
                 'style' => 'width: 50px',
-                                'viewButtonUrl' => '$this->createUrl("view",array("name"=>$data->primaryKey))',
-                'updateButtonUrl' => '$this->createUrl("update",array("name"=>$data->primaryKey))',
-                'deleteButtonUrl' => '$this->createUrl("delete",array("name"=>$data->primaryKey))',
             ),
         ),
 //        array(

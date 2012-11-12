@@ -22,6 +22,7 @@ echo $this->renderPartial('_info', array(
 ));
 
 echo $this->renderPartial('_form', array(
-    'model' => $model
+    'model' => $model,
+    'disser' => $disser,
 ));
 ?>

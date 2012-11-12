@@ -32,8 +32,6 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        // renders the view file 'protected/views/site/index.php'
-        // using the default layout 'protected/views/layouts/main.php'
         $this->render('index');
     }
 
@@ -52,35 +50,12 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays the contact page
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm;
-        if (isset($_POST['ContactForm']))
-        {
-            $model->attributes = $_POST['ContactForm'];
-            if ($model->validate())
-            {
-                $headers = "From: {$model->email}\r\nReply-To: {$model->email}";
-                mail(Yii::app()->params['adminEmail'], $model->subject, $model->body, $headers);
-                Yii::app()->user->setFlash('contact', 'Thank you for contacting us. We will respond to you as soon as possible.');
-                $this->refresh();
-            }
-        }
-        $this->render('contact', array('model' => $model));
-    }
-
-    /**
      * Displays the login page
      */
     public function actionLogin()
     {
         if (!Yii::app()->user->isGuest)
-            $this->redirect(Yii::app()->request->urlReferrer !== null
-                    ? Yii::app()->request->urlReferrer
-                    : Yii::app()->homeUrl
-            );
+            $this->redirect(Yii::app()->homeUrl);
 
         $this->pageTitle = Yii::app()->name . ' | ' . 'Вход';
 
@@ -96,13 +71,10 @@ class SiteController extends Controller
         {
             $model->attributes = $_POST['LoginForm'];
             if ($model->validate() && $model->login())
-                $this->redirect(Yii::app()->request->urlReferrer !== null
-                        ? Yii::app()->request->urlReferrer
-                        : Yii::app()->homeUrl
-                );
+                $this->redirect(Yii::app()->user->returnUrl);
         }
 
-        $this->render('login', array(
+        $this->render('login/login', array(
             'model' => $model
         ));
     }
@@ -127,8 +99,7 @@ class SiteController extends Controller
 
         if (Yii::app()->user->isGuest)
             $this->redirect(Yii::app()->homeUrl);
-//CVarDumper::dump(Yii::app()->user->id, 10, true);
-//        Yii::app()->end();
+
         $model = User::model()->findByPk(Yii::app()->user->id);
 
         $this->render('profile', array(

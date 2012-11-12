@@ -14,7 +14,7 @@
  * @property boolean $deleted
  *
  * The followings are the available model relations:
- * @property Member[] $members
+ * @property Candidate[] $candidates
  * @property ThesisBoard[] $thesisBoards
  * @property ThesisBoard[] $thesisBoards1
  * @property ThesisBoard[] $thesisBoards2
@@ -77,6 +77,8 @@ class Staff extends ActiveRecord
     {
         return array(
             'department' => array(self::BELONGS_TO, 'Department', 'department_id'),
+            'candidates1' => array(self::HAS_MANY, 'Candidate', 'staff_id', 'scopes' => 'undone'),
+            'candidates2' => array(self::HAS_MANY, 'Candidate', 'staff_id', 'scopes' => 'done'),
 //            'faculty' => array(self::HAS_ONE, 'Faculty', 'faculty_id', 'through' => 'department'),
 //            'members' => array(self::HAS_MANY, 'Member', 'staff_id'),
 //            'thesisBoards' => array(self::HAS_MANY, 'ThesisBoard', 'staff_id'),

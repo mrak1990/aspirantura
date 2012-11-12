@@ -42,6 +42,22 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
         </div>
 
         <?php
+        echo $form->radioButtonListInlineRow($model, 'doctor', array(
+            '0' => 'кандидаты',
+            '1' => 'доктора',
+            '' => 'все'
+        ));
+        ?>
+
+        <?php
+        echo $form->radioButtonListInlineRow($model, 'done', array(
+            '0' => 'нет',
+            '1' => 'да',
+            '' => 'все'
+        ));
+        ?>
+
+        <?php
         echo $form->textFieldRow($model, 'fio', array(
             'class' => 'span4',
             'maxlength' => 50,
@@ -66,6 +82,14 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
             'multiple' => true,
             'empty' => 'Все',
             'hint' => 'Выберите нужные кафедры из списка (для множественно выбора используйте клавишу <span class="key_button">Ctrl</span> и левую кнопку мышку)',
+        ));
+        ?>
+
+        <?php
+        echo $form->textFieldRow($model, 'disserTitle', array(
+            'class' => 'span4',
+            'maxlength' => 200,
+            'hint' => 'Введите часть названия диссертации',
         ));
         ?>
 

@@ -65,8 +65,6 @@ class AuthItemController extends Controller
     public function actionCreate()
     {
         $model = new AuthItem;
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
 
         if (isset($_POST['AuthItem']))
         {
@@ -75,22 +73,17 @@ class AuthItemController extends Controller
             if ($model->validate())
             {
                 $auth = Yii::app()->authManager;
-                $model->authItem = $auth->createAuthItem($model->name, $model->type, $model->description);
+                $model->authItem = $auth->createAuthItem($model->name, $model->type, $model->description, $model->bizrule);
 
                 if ($model->authItem !== null)
                 {
-//                    foreach ($model->mergeChild() as $item)
-//                        $model->authItem->addChild($item);
-//
-//                    foreach ($model->mergeParents() as $item)
-//                        $model->authItem->addChild($item);
-//
-//                    foreach ($model->users as $item)
-//                        $model->authItem->assign($item);
                     $model->updateChildrenAndParents();
                     $model->updateUsers();
 
-                    $this->redirect(array('view', 'name' => $model->name));
+                    $this->redirect(array(
+                        'view',
+                        'name' => $model->name
+                    ));
                 }
             }
         }
@@ -111,11 +104,7 @@ class AuthItemController extends Controller
     {
         $model = $this->loadModel($name);
 
-        // logging an INFO message (arrays will work and looks awesome in FirePHP)
-        Yii::log(array('username' => 'Shiki', 'profiles' => array('twidl', 'twitter', 'facebook')), CLogger::LEVEL_INFO);
-
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
+//        Yii::log(array('username' => 'Shiki', 'profiles' => array('twidl', 'twitter', 'facebook')), CLogger::LEVEL_INFO);
 
         if (isset($_POST['AuthItem']))
         {
@@ -129,23 +118,25 @@ class AuthItemController extends Controller
                 {
                     $model->authItem->setName($model->name);
                     $model->authItem->setDescription($model->description);
+                    $model->authItem->setBizRule($model->bizrule);
 
                     $model->updateChildrenAndParents();
                     $model->updateUsers();
 
-                    $this->redirect(array('view', 'name' => $model->name));
+                    $this->redirect(array(
+                        'view',
+                        'name' => $model->name
+                    ));
                 }
             }
             else
                 $this->render('update', array(
                     'model' => $model,
-                    'breadcrumbsInit' => $this->breadcrumbs,
                 ));
         }
 
         $this->render('update', array(
             'model' => $model,
-            'breadcrumbsInit' => $this->breadcrumbs,
         ));
     }
 
@@ -159,15 +150,11 @@ class AuthItemController extends Controller
     {
         if (Yii::app()->request->isPostRequest)
         {
-            // we only allow deletion via POST request
             $auth = Yii::app()->authManager;
             $auth->removeAuthItem($name);
 
-            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
-                $this->redirect(isset($_POST['returnUrl'])
-                    ? $_POST['returnUrl']
-                    : array('admin'));
+                $this->redirect($this->createUrl('index'));
         }
         else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
@@ -189,8 +176,7 @@ class AuthItemController extends Controller
 
         $search->resolveGETSort();
 
-        $criteria = new CDbCriteria(array(
-            'with' => array()
+        $criteria = new CDbCriteria(array( //            'with' => array()
         ));
 
         $sort = new CSort('AuthItem');
@@ -202,22 +188,6 @@ class AuthItemController extends Controller
             'criteria' => $criteria,
             'sort' => $sort,
             'searchModel' => $search,
-        ));
-    }
-
-    /**
-     * Manages all models.
-     */
-    public function actionAdmin()
-    {
-        $model = new AuthItem('search');
-        $model->unsetAttributes(); // clear any default values
-        if (isset($_GET['AuthItem']))
-            $model->attributes = $_GET['AuthItem'];
-
-        $this->render('admin', array(
-            'model' => $model,
-            'breadcrumbsInit' => $this->breadcrumbs,
         ));
     }
 

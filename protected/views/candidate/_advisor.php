@@ -27,7 +27,7 @@ $this->widget('application.widget.inlineDropdownCreate.chosenInlineCreate', arra
 ));
 
 $data = array();
-$data[] = isset($model->advisor)
+$data[] = !$model->isNewRecord
     ? $model->advisor
     : isset($model->staff_id)
         ? Staff::model()->findByPk($model->staff_id)

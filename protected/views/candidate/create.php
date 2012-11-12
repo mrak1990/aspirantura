@@ -1,6 +1,7 @@
 <?php
 /**
  * @var Candidate $model
+ * @var Disser $disser
  * @var Controller $this
  */
 
@@ -15,7 +16,7 @@ $this->menu = HelperHTML::getMenu(basename(__FILE__, '.php'), $model);
 
 <?php
 echo $this->renderPartial('_form', array(
-        'model' => $model,
-    )
-);
+    'model' => $model,
+    'disser' => $disser,
+));
 ?>

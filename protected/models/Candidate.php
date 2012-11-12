@@ -8,15 +8,22 @@
  * @property integer $department_id
  * @property string $fio
  * @property string $birth
- * @property boolean $is_postgrad
- * @property string $whence
- * @property string $status
+ * @property boolean $doctor
+ * @property string $enter
+ * @property string $done
  * @property integer $speciality_id
+ *
+ * The followings are the available model relations:
+ * @property Disser $disser
  */
 class Candidate extends ActiveRecord
 {
     const DELETABLE = false;
     public $facultyId;
+    public $disserTitle;
+    public $doctor;
+//        = array('false', 'true');
+    public $done = '0';
 
     /**
      * Returns the static model of the specified AR class.
@@ -44,13 +51,13 @@ class Candidate extends ActiveRecord
     public function rules()
     {
         return array(
-            array('birth', 'default', 'value' => null),
-            array('fio, department_id, speciality_id, staff_id', 'required'),
+            array('birth, done_date, done, doctor', 'default', 'value' => null),
+            array('fio, department_id, speciality_id, staff_id, enter', 'required'),
             array('department_id, speciality_id, staff_id', 'numerical', 'integerOnly' => true),
             array('fio', 'length', 'max' => 50),
-            array('whence', 'length', 'max' => 150),
-            array('birth, is_postgrad', 'safe'),
-            array('id, facultyId, department_id, fio, birth, is_postgrad, whence, status, speciality_id', 'safe', 'on' => 'search'),
+            array('doctor, done', 'boolean'),
+            array('birth, enter, done_date', 'date', 'format' => 'dd.MM.yyyy'),
+            array('id, doctor, facultyId, department_id, fio, birth, disserTitle, is_postgrad, speciality_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -62,6 +69,7 @@ class Candidate extends ActiveRecord
         return array(
             'department' => array(self::BELONGS_TO, 'Department', 'department_id'),
             'advisor' => array(self::BELONGS_TO, 'Staff', 'staff_id'),
+            'disser' => array(self::HAS_ONE, 'Disser', 'candidate_id'),
             'speciality' => array(self::BELONGS_TO, 'Speciality', 'speciality_id'),
         );
     }
@@ -76,9 +84,14 @@ class Candidate extends ActiveRecord
             'department_id' => 'Кафедра',
             'facultyId' => 'Факультет',
             'fio' => 'ФИО',
+            'enter' => 'Дата зачисления',
+            'done_date' => 'Дата отчисления',
+            'done' => 'Окончил',
             'staff_id' => 'Научный руководитель',
             'birth' => 'Дата рождения',
-            'is_postgrad' => 'Доктор',
+            'disserTitle' => 'Тема диссертации',
+            'doctor' => 'Степень',
+            'doctorLong' => 'Степень',
             'whence' => 'Откуда',
             'status' => 'Статус',
             'speciality_id' => 'Специальность',
@@ -91,16 +104,18 @@ class Candidate extends ActiveRecord
      */
     public function search()
     {
-        // Warning: Please modify the following code to remove attributes that
-        // should not be searched.
-
         $criteria = $this->getDbCriteria();
 
         $criteria->compare('t.id', $this->id);
         $criteria->compare('t.fio', $this->fio, true);
-        $criteria->compare('t.birth', $this->birth, true);
-        $criteria->compare('t.is_postgrad', $this->is_postgrad);
-        $criteria->compare('t.whence', $this->whence, true);
+
+        if (isset($this->doctor))
+            $criteria->compare('t.doctor', $this->doctor === '1'
+                    ? true
+                    : false
+            );
+
+        $criteria->compare('disser.title', $this->disserTitle, true);
         $criteria->compare('t.staff_id', $this->staff_id);
 
         if (is_array($this->department_id))
@@ -118,7 +133,6 @@ class Candidate extends ActiveRecord
             $this->facultyId = array_diff($this->facultyId, array(''));
             if (!empty($this->facultyId))
             {
-//                $criteria->mergeWith(array('with' => 'department'));
                 $criteria->addInCondition('department.faculty_id', $this->facultyId);
             }
         }
@@ -140,6 +154,40 @@ class Candidate extends ActiveRecord
                 'class' => 'application.components.behaviors.SortingBehavior',
             )
         );
+    }
+
+    /**
+     * Update disser
+     *
+     * @param array $disser from $_POST
+     */
+    public function updateDisser(array $disserPOST)
+    {
+        if ($this->disser === null)
+        {
+            $disser = new Disser;
+            $disser->candidate_id = $this->id;
+            $disser->attributes = $disserPOST;
+            $disser->save();
+        }
+        else
+        {
+            $disser = $this->disser;
+            $disser->attributes = $disserPOST;
+            $disser->save();
+        }
+    }
+
+    /**
+     * Delete disser
+     *
+     * @param array $disser from $_POST
+     */
+    public function deleteDisser()
+    {
+        $disser = $this->disser;
+        if ($disser !== null)
+            $disser->delete();
     }
 
     /**
@@ -166,5 +214,91 @@ class Candidate extends ActiveRecord
         return array(
             'staff_id' => 'advisor',
         );
+    }
+
+    public function getDoctorLong()
+    {
+        return $this->doctor
+            ? 'Доктор'
+            : 'Кандидат';
+    }
+
+    public function beforeSave()
+    {
+        $this->doctor = $this->doctor === '1'
+            ? true
+            : false;
+
+        return parent::beforeSave();
+    }
+
+    public function afterFind()
+    {
+        $this->doctor = $this->doctor === true
+            ? '1'
+            : '0';
+    }
+
+//    public function getCount($doctor)
+//    {
+//        return Yii::app()->db->createCommand()
+//            ->select('COUNT(*) as count')
+//            ->where("doctor = {$doctor}")
+//            ->from($this->tableName())
+//            ->queryScalar();
+//    }
+
+    public function scopes()
+    {
+        return array(
+            'default' => array(
+                'with' => array(
+                    'department' => array(
+                        'with' => array(
+                            'faculty'
+                        ),
+                    ),
+                    'advisor',
+                    'disser',
+                ),
+                'scopes' => $this->done === '1'
+                    ? 'done'
+                    : 'undone',
+            ),
+            'done' => array(
+                'condition' => 'done_date IS NOT NULL',
+            ),
+            'undone' => array(
+                'condition' => 'done_date IS NULL',
+            ),
+            'inTime' => array(
+                'condition' => "coalesce(done_date, current_date) <= enter + interval '3 year'",
+            ),
+            'notInTime' => array(
+                'condition' => "coalesce(done_date, current_date) > enter + interval '3 year'",
+            ),
+            'doctor' => array(
+                'condition' => 'doctor = true',
+            ),
+            'notDoctor' => array(
+                'condition' => 'doctor = false',
+            ),
+        );
+    }
+
+    public function getDoneScope()
+    {
+        $done = $this->done;
+        if (is_array($done))
+        {
+            if (in_array('0', $done) && in_array('1', $done))
+                return null;
+            elseif (in_array('0', $done))
+                return 'undone';
+            else
+                return 'done';
+        }
+        else
+            return null;
     }
 }

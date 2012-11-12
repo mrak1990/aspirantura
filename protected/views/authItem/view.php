@@ -1,6 +1,6 @@
 <?php
 /**
- * @var Candidate $model
+ * @var AuthItem $model
  * @var Controller $this
  */
 
@@ -8,7 +8,6 @@ $this->breadcrumbs = array_merge(
     $this->breadcrumbs,
     array($model->name)
 );
-//CVarDumper::dump($model->users, 10 ,true);
 
 $this->menu = HelperHTML::getMenu(basename(__FILE__, '.php'), $model, 'name');
 
@@ -17,57 +16,54 @@ $this->renderPartial('_info', array(
     'title' => 'Просмотр записи',
 ));
 
-
-Yii::import('application.components.HelperHTML');
-$helperRun = function ($data)
-{
-    return HelperHTML::spoiler($data, Yii::app()->params['auth']['spoilerMax'], 'authItem/view', 'name');
-};
+$spoilerMax = Yii::app()->params['auth']['spoilerMax'];
+$authItemChildren = $model->children;
+$authItemParents = $model->parents;
 
 $children = array(
     array(
         'label' => 'Операции',
-        'value' => $helperRun($model->children['operations']),
+        'value' => HelperHTML::spoiler($authItemChildren['operations'], $spoilerMax, 'authItem/view'),
         'type' => 'html',
     ),
 );
 if ($model->type >= 1)
     $children[] = array(
         'label' => 'Задачи',
-        'value' => $helperRun($model->children['tasks']),
+        'value' => HelperHTML::spoiler($authItemChildren['tasks'], $spoilerMax, 'authItem/view'),
         'type' => 'html',
     );
 if ($model->type === 2)
     $children[] = array(
         'label' => 'Роли',
-        'value' => $helperRun($model->children['roles']),
+        'value' => HelperHTML::spoiler($authItemChildren['roles'], $spoilerMax, 'authItem/view'),
         'type' => 'html',
     );
 
 $parents = array(
     array(
         'label' => 'Роли',
-        'value' => $helperRun($model->parents['roles']),
+        'value' => HelperHTML::spoiler($authItemParents['roles'], $spoilerMax, 'authItem/view'),
         'type' => 'html',
     ),
 );
 if ($model->type <= 1)
     $parents[] = array(
         'label' => 'Задачи',
-        'value' => $helperRun($model->parents['tasks']),
+        'value' => HelperHTML::spoiler($authItemParents['tasks'], $spoilerMax, 'authItem/view'),
         'type' => 'html',
     );
 if ($model->type === 0)
     $parents[] = array(
         'label' => 'Операции',
-        'value' => $helperRun($model->parents['operations']),
+        'value' => HelperHTML::spoiler($authItemParents['operations'], $spoilerMax, 'authItem/view'),
         'type' => 'html',
     );
 
 $users = array(
     array(
         'label' => 'Пользователи',
-        'value' => HelperHTML::spoiler($model->users, Yii::app()->params['auth']['spoilerMax'], 'user/view'),
+        'value' => HelperHTML::spoiler($model->users, $spoilerMax, 'user/view', 'id'),
         'type' => 'html',
     ),
 );
@@ -84,6 +80,7 @@ $this->widget('ext.bootstrap.widgets.BootDetailView', array(
             'type' => 'text',
         ),
         'description',
+        'bizrule',
     ),
 ));
 ?>

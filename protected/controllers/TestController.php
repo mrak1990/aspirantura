@@ -13,36 +13,35 @@
 class TestController extends Controller
 {
 
-    public function action1()
+    public function actionIndex()
     {
-//        $result = Yii::app()->db->createCommand()
-//                ->select('title')
-//                ->from('department')
-//                ->queryColumn();
+        $model = new Candidate;
+        $modelCriteria = $model->getDbCriteria();
+        $modelCriteria->scopes = array('undone');
+        $criteria = new CDbCriteria(array(
+            'scopes' => array('done')
+        ));
+        $sort = new CSort('Candidate');
+//        $modelCriteria->mergeWith($criteria);
+        $provider = new CActiveDataProvider($model, array(
+            'criteria' => $criteria,
+            'sort' => $sort,
+        ));
 
-        $cs = Yii::app()->clientScript;
-        $cs->registerScript('test1', "
-            $('#example1').ajaxChosen(
-                {
-                    method: 'GET',
-                    url: '/ajax-chosen/data.php',
-                    dataType: 'json'
-                },
-                function (data) {
-                    var terms = {};
+        $provider->getData();
 
-                    $.each(data, function (i, val) {
-                        terms[i] = val;
-                    });
+        CVarDumper::dump($provider->getCriteria(), 10, true);
+//        CVarDumper::dump($provider->getData(), 10, true);
 
-                    return terms;
-                }
-            );            
-        ", CClientScript::POS_READY);
-
-        echo '1111';
-//        CVarDumper::dump($result, 10, true);
-//        Yii::app()->end();
+//        $this->widget('MyBootGridView', array(
+//            'type' => 'striped bordered condensed',
+//            'dataProvider' => new CActiveDataProvider($model, array(
+//                'criteria' => $criteria,
+//
+//            )),
+//            'columns' => array(//                'id',
+//            )
+//        ));
     }
 }
 

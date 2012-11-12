@@ -50,6 +50,10 @@ $this->widget('MyBootGridView', array(
             'value' => 'CHtml::link($data->department->faculty->fullTitle, array("faculty/view", "id"=>$data->department->faculty->id))',
             'type' => 'html',
         ),
+        'candidates' => array(
+            'header' => 'Аспирантов',
+            'value' => 'count($data->candidates1)',
+        ),
         array(
             'class' => 'ext.bootstrap.widgets.BootButtonColumn',
             'htmlOptions' => array('style' => 'width: 50px'),

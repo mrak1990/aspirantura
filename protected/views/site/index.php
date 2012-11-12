@@ -1,16 +1,90 @@
-<?php $this->pageTitle = Yii::app()->name; ?>
+<?php
+/**
+ * @var Controller $this
+ */
 
-<h1>Welcome to <i><?php echo CHtml::encode(Yii::app()->name); ?></i></h1>
+$this->pageTitle = Yii::app()->name;
+?>
 
-<p>Congratulations! You have successfully created your Yii application.</p>
 
-<p>You may change the content of this page by modifying the following two files:</p>
-<ul>
-    <li>View file: <tt><?php echo __FILE__; ?></tt></li>
-    <li>Layout file: <tt><?php echo $this->getLayoutFile('main'); ?></tt></li>
-</ul>
+<?php
+if (Yii::app()->user->isGuest)
+{
+    echo 'Для доступа к частям базы нужно иметь учётную запись, обладающую необходимыми правами доступа. Пожалуйста войдите под своей учётной записью.';
+    $this->renderPartial('login/_form', array(
+        'model' => new LoginForm
+    ));
+}
+else
+{
+    ?>
+<div class="hero-unit" style="padding: 20px;">
+    <h2><?php echo Yii::app()->name; ?></h2>
+</div>
+<?php
+    echo '<div style="padding: 8px 0;" class="well">';
+    $this->widget('bootstrap.widgets.BootMenu', array(
+        'type' => 'pills',
+        'stacked' => true,
+        'items' => array(
+            array(
+                'label' => 'Факультеты',
+                'url' => array('faculty/index')
+            ),
+            array(
+                'label' => 'Кафедры',
+                'url' => array('department/index')
+            ),
+            array(
+                'label' => 'Сотрудники',
+                'url' => array('staff/index')
+            ),
+            array(
+                'label' => 'Аспиранты',
+                'url' => array('candidate/index')
+            ),
+            array(
+                'label' => 'Отрасли науки',
+                'url' => array('scienceBranch/index')
+            ),
+            array(
+                'label' => 'Специальности',
+                'url' => array('speciality/index')
+            ),
+        ),
+        'htmlOptions' => array(
+            'style' => 'margin-bottom: 0'
+        )
+    ));
+    echo '</div>';
+}
 
-<p>For more details on how to further develop this application, please read
-    the <a href="http://www.yiiframework.com/doc/">documentation</a>.
-    Feel free to ask in the <a href="http://www.yiiframework.com/forum/">forum</a>,
-    should you have any questions.</p>
+$userId = Yii::app()->user->id;
+$userControlPerm = Yii::app()->authManager->checkAccess('userControl', $userId);
+$authItemControlPerm = Yii::app()->authManager->checkAccess('authItemControl', $userId);
+
+if ($userControlPerm || $authItemControlPerm)
+{
+    echo '<div style="padding: 8px 0;" class="well">';
+    $this->widget('bootstrap.widgets.BootMenu', array(
+        'type' => 'list',
+        'items' => array(
+            array('label' => 'Администрирование'),
+            array(
+                'label' => 'Пользователи',
+                'icon' => 'user',
+                'url' => array('user/index'),
+                'visible' => $userControlPerm,
+            ),
+            array(
+                'label' => 'Права доступа',
+                'icon' => 'hand-right',
+                'url' => array('authItem/index'),
+                'visible' => $authItemControlPerm,
+            )
+        ),
+    ));
+    echo '</div>';
+}
+?>
+

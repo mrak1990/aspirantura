@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs = array_merge($breadcrumbsInit, array(
-    'Create',
+    'Добавление',
 ));
 
 $this->menu = array(
