@@ -44,6 +44,10 @@ else
                 'url' => array('candidate/index')
             ),
             array(
+                'label' => 'Диссертационные советы',
+                'url' => array('thesisBoard/index')
+            ),
+            array(
                 'label' => 'Отрасли науки',
                 'url' => array('scienceBranch/index')
             ),

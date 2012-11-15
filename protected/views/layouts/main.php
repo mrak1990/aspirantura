@@ -38,8 +38,17 @@
                                 'url' => array('staff/index')
                             ),
                             array(
+                                'itemOptions' => array(
+                                    'class' => 'divider'
+                                )
+                            ),
+                            array(
                                 'label' => 'Аспиранты',
                                 'url' => array('candidate/index')
+                            ),
+                            array(
+                                'label' => 'Диссертационные советы',
+                                'url' => array('thesisBoard/index')
                             ),
                             array(
                                 'itemOptions' => array(

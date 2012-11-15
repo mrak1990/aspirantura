@@ -151,4 +151,31 @@ class Speciality extends ActiveRecord
     {
         return "$this->code ({$this->title})";
     }
+
+    static public function getSubModelMenuFunction($size = '')
+    {
+        return function ($data) use ($size)
+        {
+            return Yii::app()->controller->widget("ext.bootstrap.widgets.BootButtonGroup", array(
+                'size' => $size,
+                'buttons' => array(
+                    array(
+                        'icon' => 'arrow-down',
+                        'items' => array(
+                            array(
+                                'label' => 'Соискатели',
+                                'url' => array(
+                                    'candidate/index',
+                                    'Candidate[speciality_id][]' => $data->id
+                                ),
+                                'linkOptions' => array(
+                                    'title' => 'Соискатели по специальности',
+                                )
+                            ),
+                        )
+                    ),
+                ),
+            ), true);
+        };
+    }
 }

@@ -21,7 +21,8 @@ $this->widget('MyBootGridView', array(
     'dataProvider' => new CActiveDataProvider($model, array(
         'criteria' => $criteria,
         'sort' => $sort,
-        'pagination' => array( //            'pageSize' => 5,
+        'pagination' => array(
+            'pageSize' => 15,
         ),
     )),
     'enableSorting' => false,
@@ -60,7 +61,7 @@ $this->widget('MyBootGridView', array(
     'footer' => array(
         'prepend' => 'С отмеченными: ',
         'class' => 'action-footer',
-        'items' => $model->getFooterItems(),
+        'items' => $model->getFooterItems('auth-item-grid', 'name'),
     ),
 ));
 

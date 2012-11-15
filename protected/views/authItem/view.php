@@ -23,47 +23,47 @@ $authItemParents = $model->parents;
 $children = array(
     array(
         'label' => 'Операции',
-        'value' => HelperHTML::spoiler($authItemChildren['operations'], $spoilerMax, 'authItem/view'),
+        'value' => HelperHTML::spoiler($authItemChildren['operations'], 20, 'authItem/view'),
         'type' => 'html',
     ),
 );
 if ($model->type >= 1)
     $children[] = array(
         'label' => 'Задачи',
-        'value' => HelperHTML::spoiler($authItemChildren['tasks'], $spoilerMax, 'authItem/view'),
+        'value' => HelperHTML::spoiler($authItemChildren['tasks'], 20, 'authItem/view'),
         'type' => 'html',
     );
 if ($model->type === 2)
     $children[] = array(
         'label' => 'Роли',
-        'value' => HelperHTML::spoiler($authItemChildren['roles'], $spoilerMax, 'authItem/view'),
+        'value' => HelperHTML::spoiler($authItemChildren['roles'], 20, 'authItem/view'),
         'type' => 'html',
     );
 
 $parents = array(
     array(
         'label' => 'Роли',
-        'value' => HelperHTML::spoiler($authItemParents['roles'], $spoilerMax, 'authItem/view'),
+        'value' => HelperHTML::spoiler($authItemParents['roles'], 20, 'authItem/view'),
         'type' => 'html',
     ),
 );
 if ($model->type <= 1)
     $parents[] = array(
         'label' => 'Задачи',
-        'value' => HelperHTML::spoiler($authItemParents['tasks'], $spoilerMax, 'authItem/view'),
+        'value' => HelperHTML::spoiler($authItemParents['tasks'], 20, 'authItem/view'),
         'type' => 'html',
     );
 if ($model->type === 0)
     $parents[] = array(
         'label' => 'Операции',
-        'value' => HelperHTML::spoiler($authItemParents['operations'], $spoilerMax, 'authItem/view'),
+        'value' => HelperHTML::spoiler($authItemParents['operations'], 20, 'authItem/view'),
         'type' => 'html',
     );
 
 $users = array(
     array(
         'label' => 'Пользователи',
-        'value' => HelperHTML::spoiler($model->users, $spoilerMax, 'user/view', 'id'),
+        'value' => HelperHTML::spoiler($model->users, 20, 'user/view', 'id'),
         'type' => 'html',
     ),
 );

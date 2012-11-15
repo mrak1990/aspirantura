@@ -151,7 +151,17 @@ class AuthItemController extends Controller
         if (Yii::app()->request->isPostRequest)
         {
             $auth = Yii::app()->authManager;
-            $auth->removeAuthItem($name);
+            if ($name === 'many')
+            {
+                if (isset($_POST['ids']) && is_array($_POST['ids']))
+                {
+                    foreach ($_POST['ids'] as $id)
+                        $auth->removeAuthItem($id);
+                }
+                Yii::app()->end();
+            }
+            else
+                $auth->removeAuthItem($name);
 
             if (!isset($_GET['ajax']))
                 $this->redirect($this->createUrl('index'));

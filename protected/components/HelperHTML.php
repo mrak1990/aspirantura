@@ -24,13 +24,14 @@ class HelperHTML
                 ? CHtml::link($item, array($route, 'name' => $item))
                 : CHtml::link($item['label'], array($route, $name => $item['id']));
         }, $data);
+
         if (count($list_tmp) > $count)
         {
             $activeList = array_slice($list_tmp, 0, $count);
             $hiddenList = array_slice($list_tmp, $count);
 
             return implode(', ', $activeList)
-                . ', <a class="expander" href="#">(+' . count($list_tmp) - $count . ')</a>'
+                . ', <a class="expander" href="#">(+' . (count($list_tmp) - $count) . ')</a>'
                 . '<span class="spoiler collapsed">' . implode(', ', $hiddenList) . ' <a class="collapser" href="#">(свернуть)</a></span>';
         }
         else

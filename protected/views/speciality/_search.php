@@ -43,7 +43,7 @@ $form = $this->beginWidget('ext.myBootstrap.MyBootActiveForm', array(
         echo $form->textFieldRow($model, 'code', array(
             'class' => 'span4',
             'maxlength' => 8,
-            'hint' => 'Введите название факультета',
+            'hint' => 'Введите шифр специальности',
         ));
         ?>
 

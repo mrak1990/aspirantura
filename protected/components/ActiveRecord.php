@@ -36,7 +36,7 @@ class ActiveRecord extends CActiveRecord
      * Get items for footer in table
      * @return array
      */
-    public function getFooterItems($id = null)
+    public function getFooterItems($id = null, $GETParam = 'id')
     {
         if ($id === null)
             $id = mb_strtolower(get_class($this), 'UTF-8') . '-grid';
@@ -46,7 +46,7 @@ class ActiveRecord extends CActiveRecord
 
             return array(
                 array(
-                    'value' => CHtml::ajaxLink('В корзину', array('toTrash', 'id' => 'many'), array(
+                    'value' => CHtml::ajaxLink('В корзину', array('toTrash', $GETParam => 'many'), array(
                             'type' => 'POST',
                             'data' => new CJavaScriptExpression("{ids : $.fn.yiiGridView.getChecked('{$id}', 'checkboxes')}"),
                             'success' => new CJavaScriptExpression("$.fn.yiiGridView.update('{$id}')"),
@@ -56,7 +56,7 @@ class ActiveRecord extends CActiveRecord
                     'visible' => $actionId === 'index',
                 ),
                 array(
-                    'value' => CHtml::ajaxLink('Восстановить', array('restore', 'id' => 'many'), array(
+                    'value' => CHtml::ajaxLink('Восстановить', array('restore', $GETParam => 'many'), array(
                             'type' => 'POST',
                             'data' => new CJavaScriptExpression("{ids : $.fn.yiiGridView.getChecked('{$id}', 'checkboxes')}"),
                             'success' => new CJavaScriptExpression("$.fn.yiiGridView.update('{$id}')"),
@@ -66,7 +66,7 @@ class ActiveRecord extends CActiveRecord
                     'visible' => $actionId === 'trash',
                 ),
                 array(
-                    'value' => CHtml::ajaxLink('Удалить', array('delete', 'id' => 'many'), array(
+                    'value' => CHtml::ajaxLink('Удалить', array('delete', $GETParam => 'many'), array(
                             'type' => 'POST',
                             'data' => new CJavaScriptExpression("{ids : $.fn.yiiGridView.getChecked('{$id}', 'checkboxes')}"),
                             'success' => new CJavaScriptExpression("$.fn.yiiGridView.update('{$id}')"),
@@ -83,7 +83,7 @@ class ActiveRecord extends CActiveRecord
         {
             return array(
                 array(
-                    'value' => CHtml::ajaxLink('Удалить', array('delete', 'id' => 'many'), array(
+                    'value' => CHtml::ajaxLink('Удалить', array('delete', $GETParam => 'many'), array(
                             'type' => 'POST',
                             'data' => new CJavaScriptExpression("{ids : $.fn.yiiGridView.getChecked('{$id}', 'checkboxes')}"),
                             'success' => new CJavaScriptExpression("$.fn.yiiGridView.update('{$id}')"),

@@ -8,27 +8,34 @@ return array(
     // application components
     'import' => array(
         'application.models.*',
-        'application.components.*',
-        'components' => array(
-            'db' => array(
-                'connectionString' => 'pgsql:host=127.0.0.1;port=5433;dbname=aspirantura',
-                'emulatePrepare' => false,
-                'username' => 'aspirantura',
-                'password' => 'aspirantura',
-                'charset' => 'utf8',
+        'application.components.*'
+    ),
+    'components' => array(
+        'db' => array(
+            'connectionString' => 'pgsql:host=127.0.0.1;port=5433;dbname=aspirantura',
+            'emulatePrepare' => false,
+            'username' => 'aspirantura',
+            'password' => 'aspirantura',
+            'charset' => 'utf8',
 //            'enableProfiling' => true,
 //            'enableParamLogging' => true,
 //            'nullConversion' => PDO::NULL_EMPTY_STRING,
-            ),
-            // uncomment the following to use a MySQL database
-            /*
-            'db'=>array(
-                'connectionString' => 'mysql:host=localhost;dbname=testdrive',
-                'emulatePrepare' => true,
-                'username' => 'root',
-                'password' => '',
-                'charset' => 'utf8',
-            ),
-            */
         ),
-    );
+        'authManager' => array(
+            'class' => 'MyDbAuthManager',
+            'connectionID' => 'db',
+            'userTable' => 'user',
+            'defaultRoles' => array('Гость'),
+        ),
+        // uncomment the following to use a MySQL database
+        /*
+        'db'=>array(
+            'connectionString' => 'mysql:host=localhost;dbname=testdrive',
+            'emulatePrepare' => true,
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8',
+        ),
+        */
+    ),
+);
