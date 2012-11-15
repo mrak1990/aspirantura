@@ -11,14 +11,6 @@ class DepartmentController extends Controller
         'Кафедры' => array('index')
     );
 
-    /**
-     * @return array action filters
-     */
-    public function filters()
-    {
-        return array();
-    }
-
     public function actions()
     {
         return array(

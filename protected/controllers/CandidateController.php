@@ -10,34 +10,6 @@ class CandidateController extends Controller
         'Аспиранты' => array('index')
     );
 
-    private $_statQuery = array();
-
-    /**
-     * @return array action filters
-     */
-    public function filters()
-    {
-        return array();
-    }
-
-//    public function actions()
-//    {
-//        return array(
-//            'search' => array(
-//                'class' => 'application.components.actions.SearchAction',
-//                'model' => Candidate::model(),
-//                'labelField' => 'title',
-//                'searchField' => 'title',
-//            ),
-//            'optionList' => array(
-//                'class' => 'application.components.actions.ListAction',
-//                'model' => Candidate::model(),
-//                'labelField' => 'title',
-//                'parentIdField' => 'foreign_key_id',
-//            ),
-//        );
-//    }
-
     /**
      * Displays a particular model.
      *

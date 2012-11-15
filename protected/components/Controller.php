@@ -29,10 +29,33 @@ class Controller extends CController
     /**
      * @var string title of current page
      */
-    public $pageTitle = '';
+    public $pageTitle;
 
     public function init()
     {
-        $this->pageTitle = Yii::app()->name . ' | ' . $this->pageTitle;
+        if ($this->pageTitle === null || $this->pageTitle === '')
+            $this->pageTitle = Yii::app()->name;
+        else
+            $this->pageTitle = Yii::app()->name . ' | ' . $this->pageTitle;
+    }
+
+    /**
+     * @return array action filters
+     */
+    public function filters()
+    {
+        return array('checkAccess');
+    }
+
+    public function filterCheckAccess($filterChain)
+    {
+        $user = Yii::app()->user;
+        $itemName = $this->id
+            . mb_convert_case($this->action->id, MB_CASE_TITLE);
+
+        if (Yii::app()->authManager->checkAccess($itemName, $user->id))
+            $filterChain->run();
+        else
+            $user->loginRequired();
     }
 }

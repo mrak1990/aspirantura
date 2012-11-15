@@ -11,14 +11,6 @@ class StaffController extends Controller
         'Сотрудники' => array('index')
     );
 
-    /**
-     * @return array action filters
-     */
-    public function filters()
-    {
-        return array();
-    }
-
     public function actions()
     {
         return array(

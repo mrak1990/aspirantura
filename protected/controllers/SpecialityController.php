@@ -10,14 +10,6 @@ class SpecialityController extends Controller
         'Специальности' => array('index')
     );
 
-    /**
-     * @return array action filters
-     */
-    public function filters()
-    {
-        return array();
-    }
-
     public function actions()
     {
         return array(

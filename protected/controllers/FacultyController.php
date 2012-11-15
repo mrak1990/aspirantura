@@ -11,67 +11,6 @@ class FacultyController extends Controller
         'Факультеты' => array('index')
     );
 
-    /**
-     * @return array action filters
-     */
-    public function filters()
-    {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-//            'ajaxOnly + delete, toTrash, restore', // we only allow deletion via POST request
-        );
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array(
-                'allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('index'),
-                'roles' => array(
-                    'facultyIndex'
-                ),
-            ),
-            array(
-                'allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('view'),
-                'roles' => array(
-                    'facultyView'
-                ),
-            ),
-            array(
-                'allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('create'),
-                'roles' => array(
-                    'facultyCreate'
-                ),
-            ),
-            array(
-                'allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('update'),
-                'roles' => array(
-                    'facultyUpdate'
-                ),
-            ),
-            array(
-                'allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('delete'),
-                'roles' => array(
-                    'facultyDelete'
-                ),
-            ),
-//            array(
-//                'deny', // deny all users
-//                'users' => array('*'),
-//            ),
-        );
-    }
-
     public function actions()
     {
         return array(

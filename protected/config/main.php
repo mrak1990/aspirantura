@@ -73,9 +73,9 @@ return array(
 //                    'logFile' => 'test1.log',
 //                    'categories' => 'cat1',
 //                ),
-//                array(
-//                    'class' => 'CWebLogRoute',
-//                ),
+                array(
+                    'class' => 'CWebLogRoute',
+                ),
 //                array(
 //                    'class' => 'CProfileLogRoute',
 //                    'levels' => 'profile',

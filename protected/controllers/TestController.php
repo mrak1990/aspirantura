@@ -13,6 +13,11 @@
 class TestController extends Controller
 {
 
+    public function filters()
+    {
+        return array();
+    }
+
     public function actionIndex()
     {
         $model = new Candidate;
