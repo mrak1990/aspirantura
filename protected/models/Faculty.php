@@ -17,7 +17,7 @@
  * @property Staff[] $staffs
  * @property Staff $staff
  */
-class Faculty extends ActiveRecord
+class Faculty extends DeletableActiveRecord
 {
 
     const DELETABLE = true;

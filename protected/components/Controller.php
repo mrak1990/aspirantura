@@ -51,11 +51,16 @@ class Controller extends CController
     {
         $user = Yii::app()->user;
         $itemName = $this->id
-            . mb_convert_case($this->action->id, MB_CASE_TITLE);
+            . HelperHTML::capitalize($this->action->id, 'UTF-8');
 
         if (Yii::app()->authManager->checkAccess($itemName, $user->id))
             $filterChain->run();
         else
-            $user->loginRequired();
+        {
+            CVarDumper::dump($user->id, 10, true);
+            CVarDumper::dump($this->action->id, 10, true);
+            Yii::app()->end();
+//            $user->loginRequired();
+        }
     }
 }

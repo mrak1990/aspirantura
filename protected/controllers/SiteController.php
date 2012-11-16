@@ -7,6 +7,11 @@ class SiteController extends Controller
      */
     public $pageTitle = '';
 
+    public function filters()
+    {
+        return array();
+    }
+
     /**
      * Declares class-based actions.
      */

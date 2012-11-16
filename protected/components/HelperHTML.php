@@ -8,6 +8,13 @@
 class HelperHTML
 {
 
+    public static function capitalize($str, $encoding = null)
+    {
+        $str = mb_strtoupper($str{0}, $encoding) . mb_substr($str, 1, mb_strlen($str, $encoding)-1, $encoding);
+
+        return $str;
+    }
+
     /**
      * @param $data
      * @param $count

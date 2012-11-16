@@ -122,24 +122,18 @@ class FacultyController extends Controller
      *
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionToTrash($id)
+    public function actionToTrash(array $id)
     {
-        if ($id === 'many')
-        {
-            if (isset($_POST['ids']) && is_array($_POST['ids']))
-            {
-                foreach ($_POST['ids'] as $id)
-                    $this->loadModel($id)->setDeleted()->save();
-            }
-            Yii::app()->end();
-        }
-        else
-            $this->loadModel($id)->setDeleted()->save();
+        foreach ($id as $value)
+            $this->loadModel($value)->setDeleted()->save();
 
-        if (!isset($_GET['ajax']))
-            $this->redirect(Yii::app()->request->getUrlReferrer());
-        else
+        if (isset($_GET['ajax']) || Yii::app()->request->isAjaxRequest)
             Yii::app()->end();
+        else
+            $this->redirect(array(
+                'view',
+                'id' => array_pop($id)
+            ));
     }
 
     /**
@@ -148,24 +142,18 @@ class FacultyController extends Controller
      *
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionRestore($id)
+    public function actionRestore(array $id)
     {
-        if ($id === 'many')
-        {
-            if (isset($_POST['ids']) && is_array($_POST['ids']))
-            {
-                foreach ($_POST['ids'] as $id)
-                    $this->loadModel($id)->setRestored()->save();
-            }
-            Yii::app()->end();
-        }
-        else
-            $this->loadModel($id)->setRestored()->save();
+        foreach ($id as $value)
+            $this->loadModel($value)->setRestored()->save();
 
-        if (!isset($_GET['ajax']))
-            $this->redirect(Yii::app()->request->getUrlReferrer());
-        else
+        if (isset($_GET['ajax']) || Yii::app()->request->isAjaxRequest)
             Yii::app()->end();
+        else
+            $this->redirect(array(
+                'view',
+                'id' => array_pop($id)
+            ));
     }
 
     /**
@@ -174,21 +162,14 @@ class FacultyController extends Controller
      *
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionDelete($id)
+    public function actionDelete(array $id)
     {
-        if ($id === 'many')
-        {
-            if (isset($_POST['ids']) && is_array($_POST['ids']))
-            {
-                foreach ($_POST['ids'] as $id)
-                    $this->loadModel($id)->delete();
-            }
-            Yii::app()->end();
-        }
-        else
-            $this->loadModel($id)->delete();
+        foreach ($id as $value)
+            $this->loadModel($value)->delete();
 
-        if (!isset($_GET['ajax']))
+        if (isset($_GET['ajax']) || Yii::app()->request->isAjaxRequest)
+            Yii::app()->end();
+        else
             $this->redirect($this->createUrl('trash'));
     }
 

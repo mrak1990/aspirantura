@@ -9,11 +9,6 @@ class ActiveRecord extends CActiveRecord
 {
 
     /**
-     * boolean this model can be moved to trash
-     */
-    const DELETABLE = true;
-
-    /**
      * Base class for all ActiveRecord models
      * @return boolean
      */
@@ -39,62 +34,27 @@ class ActiveRecord extends CActiveRecord
     public function getFooterItems($id = null, $GETParam = 'id')
     {
         if ($id === null)
-            $id = mb_strtolower(get_class($this), 'UTF-8') . '-grid';
-        if (static::DELETABLE)
-        {
-            $actionId = Yii::app()->getController()->action->id;
+            $id = $this->class2id() . '-grid';
 
-            return array(
-                array(
-                    'value' => CHtml::ajaxLink('В корзину', array('toTrash', $GETParam => 'many'), array(
-                            'type' => 'POST',
-                            'data' => new CJavaScriptExpression("{ids : $.fn.yiiGridView.getChecked('{$id}', 'checkboxes')}"),
-                            'success' => new CJavaScriptExpression("$.fn.yiiGridView.update('{$id}')"),
-                            'error' => new CJavaScriptExpression('function(jqXHR, textStatus, errorThrown) {alert("Error: " + textStatus)}'),
-                        )
-                    ),
-                    'visible' => $actionId === 'index',
+        return array(
+            array(
+                'value' => CHtml::ajaxLink('Удалить', array('delete', $GETParam => 'many'), array(
+                        'type' => 'POST',
+                        'data' => new CJavaScriptExpression("{ids : $.fn.yiiGridView.getChecked('{$id}', 'checkboxes')}"),
+                        'success' => new CJavaScriptExpression("$.fn.yiiGridView.update('{$id}')"),
+                        'error' => new CJavaScriptExpression('function(jqXHR, textStatus, errorThrown) {alert("Error: " + textStatus)}'),
+                    ), array(
+                        'confirm' => 'Вы действительно хотите безвозвратно удалить отмеченные записи?',
+                    )
                 ),
-                array(
-                    'value' => CHtml::ajaxLink('Восстановить', array('restore', $GETParam => 'many'), array(
-                            'type' => 'POST',
-                            'data' => new CJavaScriptExpression("{ids : $.fn.yiiGridView.getChecked('{$id}', 'checkboxes')}"),
-                            'success' => new CJavaScriptExpression("$.fn.yiiGridView.update('{$id}')"),
-                            'error' => new CJavaScriptExpression('function(jqXHR, textStatus, errorThrown) {alert("Error: " + textStatus)}'),
-                        )
-                    ),
-                    'visible' => $actionId === 'trash',
-                ),
-                array(
-                    'value' => CHtml::ajaxLink('Удалить', array('delete', $GETParam => 'many'), array(
-                            'type' => 'POST',
-                            'data' => new CJavaScriptExpression("{ids : $.fn.yiiGridView.getChecked('{$id}', 'checkboxes')}"),
-                            'success' => new CJavaScriptExpression("$.fn.yiiGridView.update('{$id}')"),
-                            'error' => new CJavaScriptExpression('function(jqXHR, textStatus, errorThrown) {alert("Error: " + textStatus)}'),
-                        ), array(
-                            'confirm' => 'Вы действительно хотите везвозвратно удалить отмеченные записи?',
-                        )
-                    ),
-                    'visible' => $actionId === 'trash',
-                ),
-            );
-        }
-        else
-        {
-            return array(
-                array(
-                    'value' => CHtml::ajaxLink('Удалить', array('delete', $GETParam => 'many'), array(
-                            'type' => 'POST',
-                            'data' => new CJavaScriptExpression("{ids : $.fn.yiiGridView.getChecked('{$id}', 'checkboxes')}"),
-                            'success' => new CJavaScriptExpression("$.fn.yiiGridView.update('{$id}')"),
-                            'error' => new CJavaScriptExpression('function(jqXHR, textStatus, errorThrown) {alert("Error: " + textStatus)}'),
-                        ), array(
-                            'confirm' => 'Вы действительно хотите безвозвратно удалить отмеченные записи?',
-                        )
-                    ),
-                ),
-            );
-        }
+            ),
+        );
+    }
+
+    public function class2id()
+    {
+        $name = get_class($this);
+        return trim(strtolower(str_replace('_','-',preg_replace('/(?<![A-Z])[A-Z]/', '-\0', $name))),'-');
     }
 
     /**
@@ -120,15 +80,6 @@ class ActiveRecord extends CActiveRecord
         {
             return '';
         };
-    }
-
-    public function defaultScope()
-    {
-//        CVarDumper::dump($this->getTableAlias(false, false), 10, true);
-
-        return static::DELETABLE && $this->getTableAlias(false, false) === 't'
-            ? array('condition' => '"t"."deleted"=\'false\'')
-            : array();
     }
 }
 
