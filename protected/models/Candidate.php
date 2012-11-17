@@ -9,7 +9,7 @@
  * @property string $fio
  * @property string $birth
  * @property boolean $doctor
- * @property string $enter
+ * @property string $enter_date
  * @property string $done
  * @property integer $speciality_id
  *
@@ -51,11 +51,11 @@ class Candidate extends ActiveRecord
     {
         return array(
             array('birth, done_date, done, doctor', 'default', 'value' => null),
-            array('fio, department_id, speciality_id, staff_id, enter', 'required'),
+            array('fio, department_id, speciality_id, staff_id, enter_date', 'required'),
             array('department_id, speciality_id, staff_id', 'numerical', 'integerOnly' => true),
             array('fio', 'length', 'max' => 50),
             array('doctor, done', 'boolean'),
-            array('birth, enter, done_date', 'date', 'format' => 'dd.MM.yyyy'),
+            array('birth, enter_date, done_date', 'date', 'format' => 'dd.MM.yyyy'),
             array('id, doctor, facultyId, department_id, fio, birth, disserTitle, is_postgrad, speciality_id', 'safe', 'on' => 'search'),
         );
     }
@@ -83,7 +83,7 @@ class Candidate extends ActiveRecord
             'department_id' => 'Кафедра',
             'facultyId' => 'Факультет',
             'fio' => 'ФИО',
-            'enter' => 'Дата зачисления',
+            'enter_date' => 'Дата зачисления',
             'done_date' => 'Дата отчисления',
             'done' => 'Окончил',
             'staff_id' => 'Научный руководитель',
@@ -271,10 +271,10 @@ class Candidate extends ActiveRecord
                 'condition' => 'done_date IS NULL',
             ),
             'inTime' => array(
-                'condition' => "coalesce(done_date, current_date) <= enter + interval '3 year'",
+                'condition' => "coalesce(done_date, current_date) <= enter_date + interval '3 year'",
             ),
             'notInTime' => array(
-                'condition' => "coalesce(done_date, current_date) > enter + interval '3 year'",
+                'condition' => "coalesce(done_date, current_date) > enter_date + interval '3 year'",
             ),
             'doctor' => array(
                 'condition' => 'doctor = true',

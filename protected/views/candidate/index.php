@@ -39,7 +39,7 @@ $this->widget('MyBootGridView', array(
             'type' => 'html',
         ),
         'doctorLong',
-        'enter',
+        'enter_date',
         'done_date' => array(
             'name' => 'done_date',
             'value' => '$data->done_date ? $data->done_date : "Не окончил"',

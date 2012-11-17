@@ -1,371 +1,213 @@
 <?php
 class UserCommand extends CConsoleCommand
 {
+    /**
+     * @var CAuthManager
+     */
+    private $_authManager;
+
+    public $overwrite = false;
+
     public $defaultAuthItems = array(
         array(
             'name' => 'facultyControl',
             'type' => CAuthItem::TYPE_TASK,
             'subItems' => array(
-                array(
-                    'name' => 'facultyIndex',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'facultyView',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'facultyCreate',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'facultyUpdate',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'facultyDelete',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'facultyTrash',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'facultyToTrash',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'facultyRestore',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
+                'facultyIndex',
+                'facultyView',
+                'facultyCreate',
+                'facultyUpdate',
+                'facultyDelete',
+                'facultyTrash',
+                'facultyToTrash',
+                'facultyRestore',
             ),
         ),
         array(
             'name' => 'departmentControl',
             'type' => CAuthItem::TYPE_TASK,
             'subItems' => array(
-                array(
-                    'name' => 'departmentIndex',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'departmentView',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'departmentCreate',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'departmentUpdate',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'departmentDelete',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'departmentTrash',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'departmentToTrash',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'departmentRestore',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
+                'departmentIndex',
+                'departmentView',
+                'departmentCreate',
+                'departmentUpdate',
+                'departmentDelete',
+                'departmentTrash',
+                'departmentToTrash',
+                'departmentRestore',
             ),
         ),
         array(
             'name' => 'staffControl',
             'type' => CAuthItem::TYPE_TASK,
             'subItems' => array(
-                array(
-                    'name' => 'staffIndex',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'staffView',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'staffCreate',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'staffUpdate',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'staffDelete',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'staffTrash',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'staffToTrash',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'staffRestore',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
+                'staffIndex',
+                'staffView',
+                'staffCreate',
+                'staffUpdate',
+                'staffDelete',
+                'staffTrash',
+                'staffToTrash',
+                'staffRestore',
             ),
         ),
         array(
             'name' => 'candidateControl',
             'type' => CAuthItem::TYPE_TASK,
             'subItems' => array(
-                array(
-                    'name' => 'candidateIndex',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'candidateView',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'candidateCreate',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'candidateUpdate',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'candidateDelete',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'candidateTrash',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'candidateToTrash',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'candidateRestore',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
+                'candidateIndex',
+                'candidateView',
+                'candidateCreate',
+                'candidateUpdate',
+                'candidateDelete',
+                'candidateTrash',
+                'candidateToTrash',
+                'candidateRestore',
             ),
         ),
         array(
             'name' => 'scienceBranchControl',
             'type' => CAuthItem::TYPE_TASK,
             'subItems' => array(
-                array(
-                    'name' => 'scienceBranchIndex',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'scienceBranchView',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'scienceBranchCreate',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'scienceBranchUpdate',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'scienceBranchDelete',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'scienceBranchTrash',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'scienceBranchToTrash',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'scienceBranchRestore',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
+                'scienceBranchIndex',
+                'scienceBranchView',
+                'scienceBranchCreate',
+                'scienceBranchUpdate',
+                'scienceBranchDelete',
+                'scienceBranchTrash',
+                'scienceBranchToTrash',
+                'scienceBranchRestore',
             ),
         ),
         array(
             'name' => 'specialityControl',
             'type' => CAuthItem::TYPE_TASK,
             'subItems' => array(
-                array(
-                    'name' => 'specialityIndex',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'specialityView',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'specialityCreate',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'specialityUpdate',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'specialityDelete',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'specialityTrash',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'specialityToTrash',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'specialityRestore',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
+                'specialityIndex',
+                'specialityView',
+                'specialityCreate',
+                'specialityUpdate',
+                'specialityDelete',
+                'specialityTrash',
+                'specialityToTrash',
+                'specialityRestore',
             ),
         ),
         array(
             'name' => 'thesisBoardControl',
             'type' => CAuthItem::TYPE_TASK,
             'subItems' => array(
-                array(
-                    'name' => 'thesisBoardIndex',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'thesisBoardView',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'thesisBoardCreate',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'thesisBoardUpdate',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'thesisBoardDelete',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'thesisBoardTrash',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'thesisBoardToTrash',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'thesisBoardRestore',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
+                'thesisBoardIndex',
+                'thesisBoardView',
+                'thesisBoardCreate',
+                'thesisBoardUpdate',
+                'thesisBoardDelete',
+                'thesisBoardTrash',
+                'thesisBoardToTrash',
+                'thesisBoardRestore',
             ),
         ),
         array(
             'name' => 'userControl',
             'type' => CAuthItem::TYPE_TASK,
             'subItems' => array(
-                array(
-                    'name' => 'userIndex',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'userView',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'userCreate',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'userUpdate',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'userDelete',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'userTrash',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'userToTrash',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'userRestore',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
+                'userIndex',
+                'userView',
+                'userCreate',
+                'userUpdate',
+                'userDelete',
+                'userTrash',
+                'userToTrash',
+                'userRestore',
             ),
         ),
         array(
             'name' => 'authItemControl',
             'type' => CAuthItem::TYPE_TASK,
             'subItems' => array(
-                array(
-                    'name' => 'authItemIndex',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'authItemView',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'authItemCreate',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'authItemUpdate',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'authItemDelete',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'authItemTrash',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'authItemToTrash',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
-                array(
-                    'name' => 'authItemRestore',
-                    'type' => CAuthItem::TYPE_OPERATION
-                ),
+                'authItemIndex',
+                'authItemView',
+                'authItemCreate',
+                'authItemUpdate',
+                'authItemDelete',
+                'authItemTrash',
+                'authItemToTrash',
+                'authItemRestore',
             ),
         ),
     );
 
     public function actionInitialize()
     {
-        echo "Start default user initialization\n";
+        echo "Start default auth items initialization\n";
 
-        $auth = Yii::app()->authManager;
-
-        foreach ($this->defaultAuthItems as $data)
+        foreach ($this->defaultAuthItems as $authItem)
         {
-            if ($auth->getAuthItem($data['name']) === null)
-                $auth->createAuthItem($data['name'], $data['type']);
+            $this->createRecursive($authItem);
+        }
+        echo "End default items initialization\n";
+    }
 
-            foreach ($data['subItems'] as $subData)
+    public function init()
+    {
+        $this->_authManager = Yii::app()->authManager;
+    }
+
+    protected function createRecursive($authItem, $parentAuthItem = null)
+    {
+        if (is_array($authItem))
+        {
+            if (isset($authItem['name']))
             {
-                if ($auth->getAuthItem($subData['name']) === null)
-                    $auth->createAuthItem($subData['name'], $subData['type']);
-                if (!$auth->hasItemChild($data['name'], $subData['name']))
-                    $auth->addItemChild($data['name'], $subData['name']);
+                $type = isset($authItem['type'])
+                    ? $authItem['type']
+                    : CAuthItem::TYPE_OPERATION;
+                $addedFlag = false;
+
+                if ($this->_authManager->getAuthItem($authItem['name']) === null)
+                {
+                    $this->_authManager->createAuthItem($authItem['name'], $type);
+                    $addedFlag = true;
+
+                    if ($parentAuthItem !== null)
+                        $this->_authManager->addItemChild($parentAuthItem, $authItem['name']);
+                }
+                else
+                {
+                    if ($this->overwrite)
+                    {
+                        echo "'{$authItem['name']}' was overwritten\n";
+
+                        $this->_authManager->removeAuthItem($authItem['name']);
+                        $this->_authManager->createAuthItem($authItem['name'], $type);
+                        $addedFlag = true;
+
+                        if ($parentAuthItem !== null)
+                            $this->_authManager->addItemChild($parentAuthItem, $authItem['name']);
+                    }
+                }
+
+                if ($addedFlag === true && isset($authItem['subItems']) && is_array($authItem['subItems']))
+                {
+                    foreach ($authItem['subItems'] as $subAuthItem)
+                        $this->createRecursive($subAuthItem, $authItem['name']);
+                }
             }
         }
-        echo "End default user initialization\n";
+        else
+        {
+            if ($this->_authManager->getAuthItem($authItem) === null)
+                $this->_authManager->createAuthItem($authItem, CAuthItem::TYPE_OPERATION);
+            else
+            {
+                if ($this->overwrite)
+                {
+                    echo "'{$authItem}' was overwritten\n";
+                    $this->_authManager->removeAuthItem($authItem);
+                    $this->_authManager->createAuthItem($authItem, CAuthItem::TYPE_OPERATION);
+                }
+            }
+        }
     }
 }
 

@@ -21,7 +21,7 @@ $this->widget('ext.bootstrap.widgets.BootDetailView', array(
         'id',
         'fio',
         'doctorLong',
-        'enter',
+        'enter_date',
         'done_date' => array(
             'name' => 'done_date',
             'value' => $model->done_date
