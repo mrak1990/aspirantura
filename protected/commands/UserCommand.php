@@ -9,205 +9,234 @@ class UserCommand extends CConsoleCommand
     public $overwrite = false;
 
     public $defaultAuthItems = array(
-        array(
-            'name' => 'facultyControl',
-            'type' => CAuthItem::TYPE_TASK,
-            'subItems' => array(
-                'facultyIndex',
-                'facultyView',
-                'facultyCreate',
-                'facultyUpdate',
-                'facultyDelete',
-                'facultyTrash',
-                'facultyToTrash',
-                'facultyRestore',
-            ),
+        'Гость' => array(
+            'type' => CAuthItem::TYPE_ROLE,
+            'bizRule' => 'return Yii::app()->user->isGuest;'
         ),
-        array(
-            'name' => 'departmentControl',
-            'type' => CAuthItem::TYPE_TASK,
-            'subItems' => array(
-                'departmentIndex',
-                'departmentView',
-                'departmentCreate',
-                'departmentUpdate',
-                'departmentDelete',
-                'departmentTrash',
-                'departmentToTrash',
-                'departmentRestore',
-            ),
+        'Авторизированный' => array(
+            'type' => CAuthItem::TYPE_ROLE,
+            'bizRule' => 'return !Yii::app()->user->isGuest;'
         ),
-        array(
-            'name' => 'staffControl',
-            'type' => CAuthItem::TYPE_TASK,
+        'Администраторы' => array(
+            'type' => CAuthItem::TYPE_ROLE,
             'subItems' => array(
-                'staffIndex',
-                'staffView',
-                'staffCreate',
-                'staffUpdate',
-                'staffDelete',
-                'staffTrash',
-                'staffToTrash',
-                'staffRestore',
-            ),
-        ),
-        array(
-            'name' => 'candidateControl',
-            'type' => CAuthItem::TYPE_TASK,
-            'subItems' => array(
-                'candidateIndex',
-                'candidateView',
-                'candidateCreate',
-                'candidateUpdate',
-                'candidateDelete',
-                'candidateTrash',
-                'candidateToTrash',
-                'candidateRestore',
-            ),
-        ),
-        array(
-            'name' => 'scienceBranchControl',
-            'type' => CAuthItem::TYPE_TASK,
-            'subItems' => array(
-                'scienceBranchIndex',
-                'scienceBranchView',
-                'scienceBranchCreate',
-                'scienceBranchUpdate',
-                'scienceBranchDelete',
-                'scienceBranchTrash',
-                'scienceBranchToTrash',
-                'scienceBranchRestore',
-            ),
-        ),
-        array(
-            'name' => 'specialityControl',
-            'type' => CAuthItem::TYPE_TASK,
-            'subItems' => array(
-                'specialityIndex',
-                'specialityView',
-                'specialityCreate',
-                'specialityUpdate',
-                'specialityDelete',
-                'specialityTrash',
-                'specialityToTrash',
-                'specialityRestore',
-            ),
-        ),
-        array(
-            'name' => 'thesisBoardControl',
-            'type' => CAuthItem::TYPE_TASK,
-            'subItems' => array(
-                'thesisBoardIndex',
-                'thesisBoardView',
-                'thesisBoardCreate',
-                'thesisBoardUpdate',
-                'thesisBoardDelete',
-                'thesisBoardTrash',
-                'thesisBoardToTrash',
-                'thesisBoardRestore',
-            ),
-        ),
-        array(
-            'name' => 'userControl',
-            'type' => CAuthItem::TYPE_TASK,
-            'subItems' => array(
-                'userIndex',
-                'userView',
-                'userCreate',
-                'userUpdate',
-                'userDelete',
-                'userTrash',
-                'userToTrash',
-                'userRestore',
-            ),
-        ),
-        array(
-            'name' => 'authItemControl',
-            'type' => CAuthItem::TYPE_TASK,
-            'subItems' => array(
-                'authItemIndex',
-                'authItemView',
-                'authItemCreate',
-                'authItemUpdate',
-                'authItemDelete',
-                'authItemTrash',
-                'authItemToTrash',
-                'authItemRestore',
-            ),
+                'facultyControl' => array(
+                    'type' => CAuthItem::TYPE_TASK,
+                    'subItems' => array(
+                        'facultyIndex',
+                        'facultyView',
+                        'facultyCreate',
+                        'facultyUpdate',
+                        'facultyDelete',
+                        'facultyTrash',
+                        'facultyToTrash',
+                        'facultyRestore',
+                    ),
+                ),
+                'departmentControl' => array(
+                    'type' => CAuthItem::TYPE_TASK,
+                    'subItems' => array(
+                        'departmentIndex',
+                        'departmentView',
+                        'departmentCreate',
+                        'departmentUpdate',
+                        'departmentDelete',
+                        'departmentTrash',
+                        'departmentToTrash',
+                        'departmentRestore',
+                    ),
+                ),
+                'staffControl' => array(
+                    'type' => CAuthItem::TYPE_TASK,
+                    'subItems' => array(
+                        'staffIndex',
+                        'staffView',
+                        'staffCreate',
+                        'staffUpdate',
+                        'staffDelete',
+                        'staffTrash',
+                        'staffToTrash',
+                        'staffRestore',
+                    ),
+                ),
+                'candidateControl' => array(
+                    'type' => CAuthItem::TYPE_TASK,
+                    'subItems' => array(
+                        'candidateIndex',
+                        'candidateView',
+                        'candidateCreate',
+                        'candidateUpdate',
+                        'candidateDelete',
+                        'candidateTrash',
+                        'candidateToTrash',
+                        'candidateRestore',
+                    ),
+                ),
+                'scienceBranchControl' => array(
+                    'type' => CAuthItem::TYPE_TASK,
+                    'subItems' => array(
+                        'scienceBranchIndex',
+                        'scienceBranchView',
+                        'scienceBranchCreate',
+                        'scienceBranchUpdate',
+                        'scienceBranchDelete',
+                        'scienceBranchTrash',
+                        'scienceBranchToTrash',
+                        'scienceBranchRestore',
+                    ),
+                ),
+                'specialityControl' => array(
+                    'type' => CAuthItem::TYPE_TASK,
+                    'subItems' => array(
+                        'specialityIndex',
+                        'specialityView',
+                        'specialityCreate',
+                        'specialityUpdate',
+                        'specialityDelete',
+                        'specialityTrash',
+                        'specialityToTrash',
+                        'specialityRestore',
+                    ),
+                ),
+                'thesisBoardControl' => array(
+                    'type' => CAuthItem::TYPE_TASK,
+                    'subItems' => array(
+                        'thesisBoardIndex',
+                        'thesisBoardView',
+                        'thesisBoardCreate',
+                        'thesisBoardUpdate',
+                        'thesisBoardDelete',
+                        'thesisBoardTrash',
+                        'thesisBoardToTrash',
+                        'thesisBoardRestore',
+                    ),
+                ),
+                'userControl' => array(
+                    'type' => CAuthItem::TYPE_TASK,
+                    'subItems' => array(
+                        'userIndex',
+                        'userView',
+                        'userCreate',
+                        'userUpdate',
+                        'userDelete',
+                        'userTrash',
+                        'userToTrash',
+                        'userRestore',
+                    ),
+                ),
+                'authItemControl' => array(
+                    'type' => CAuthItem::TYPE_TASK,
+                    'subItems' => array(
+                        'authItemIndex',
+                        'authItemView',
+                        'authItemCreate',
+                        'authItemUpdate',
+                        'authItemDelete',
+                        'authItemTrash',
+                        'authItemToTrash',
+                        'authItemRestore',
+                    ),
+                ),
+            )
         ),
     );
-
-    public function actionInitialize()
-    {
-        echo "Start default auth items initialization\n";
-
-        foreach ($this->defaultAuthItems as $authItem)
-        {
-            $this->createRecursive($authItem);
-        }
-        echo "End default items initialization\n";
-    }
 
     public function init()
     {
         $this->_authManager = Yii::app()->authManager;
     }
 
-    protected function createRecursive($authItem, $parentAuthItem = null)
+    public function actionInitialize()
     {
-        if (is_array($authItem))
+        echo "Start default auth items initialization\n";
+        $this->createRecursive($this->defaultAuthItems);
+        echo "End default auth items initialization\n";
+    }
+
+    /**
+     * Creates an CAuthItems from configuration array and set child relation between them
+     *
+     * @param array $items array('item1', 'item2'=>array('subItems' => array(...)))
+     * @param string $parentName the name of parent CAuthItem
+     */
+    private function createRecursive(array $items, $parentName = null)
+    {
+        $itemsProcessed = $this->processItems($items);
+
+        foreach ($itemsProcessed as $name => $options)
         {
-            if (isset($authItem['name']))
+            $type = isset($options['type'])
+                ? $options['type']
+                : CAuthItem::TYPE_OPERATION;
+            $description = isset($options['description'])
+                ? $options['description']
+                : '';
+            $bizRule = isset($options['bizRule'])
+                ? $options['bizRule']
+                : null;
+
+            if ($this->createItem($name, $type, $description, $bizRule))
             {
-                $type = isset($authItem['type'])
-                    ? $authItem['type']
-                    : CAuthItem::TYPE_OPERATION;
-                $addedFlag = false;
+                if ($parentName !== null)
+                    $this->_authManager->addItemChild($parentName, $name);
 
-                if ($this->_authManager->getAuthItem($authItem['name']) === null)
-                {
-                    $this->_authManager->createAuthItem($authItem['name'], $type);
-                    $addedFlag = true;
-
-                    if ($parentAuthItem !== null)
-                        $this->_authManager->addItemChild($parentAuthItem, $authItem['name']);
-                }
-                else
-                {
-                    if ($this->overwrite)
-                    {
-                        echo "'{$authItem['name']}' was overwritten\n";
-
-                        $this->_authManager->removeAuthItem($authItem['name']);
-                        $this->_authManager->createAuthItem($authItem['name'], $type);
-                        $addedFlag = true;
-
-                        if ($parentAuthItem !== null)
-                            $this->_authManager->addItemChild($parentAuthItem, $authItem['name']);
-                    }
-                }
-
-                if ($addedFlag === true && isset($authItem['subItems']) && is_array($authItem['subItems']))
-                {
-                    foreach ($authItem['subItems'] as $subAuthItem)
-                        $this->createRecursive($subAuthItem, $authItem['name']);
-                }
+                if (isset($options['subItems']) && is_array($options['subItems']))
+                    $this->createRecursive($options['subItems'], $name);
             }
+        }
+    }
+
+    /**
+     * Creates an authorization item
+     *
+     * @param string $name the name of CAuthItem
+     * @param integer $type the type of CAuthItem
+     *
+     * @return bool
+     */
+    private function createItem($name, $type, $description = '', $bizRule = null)
+    {
+        if ($this->_authManager->getAuthItem($name) === null)
+        {
+            $this->_authManager->createAuthItem($name, $type, $description, $bizRule);
+
+            return true;
         }
         else
         {
-            if ($this->_authManager->getAuthItem($authItem) === null)
-                $this->_authManager->createAuthItem($authItem, CAuthItem::TYPE_OPERATION);
-            else
+            if ($this->overwrite)
             {
-                if ($this->overwrite)
-                {
-                    echo "'{$authItem}' was overwritten\n";
-                    $this->_authManager->removeAuthItem($authItem);
-                    $this->_authManager->createAuthItem($authItem, CAuthItem::TYPE_OPERATION);
-                }
+                echo "'{$name}' was overwritten\n";
+
+                $this->_authManager->removeAuthItem($name);
+                $this->_authManager->createAuthItem($name, $type, $description, $bizRule);
+
+                return true;
             }
         }
+
+        return false;
+    }
+
+    /**
+     * Process array of items
+     *
+     * @param array $items array('item1', 'item2'=>array(...))
+     *
+     * @return array array('item1' => array(), 'item2'=>array(...))
+     */
+    private function processItems(array $items)
+    {
+        $tmpArray = array();
+        foreach ($items as $key => $value)
+        {
+            if (is_array($value))
+                $tmpArray[$key] = $value;
+            else
+                $tmpArray[$value] = array();
+        }
+
+        return $tmpArray;
     }
 }
 
