@@ -13,8 +13,6 @@
  */
 class User extends ActiveRecord
 {
-    const DELETABLE = false;
-
     public $password;
     public $password2;
 

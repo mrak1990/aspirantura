@@ -29,6 +29,8 @@ class ListAction extends CAction
         if (isset($parent_id) && $parent_id !== '')
             $criteria->compare($this->parentIdField, $parent_id);
 
+//        CVarDumper::dump($criteria, 10, true);
+
         $data = $this->model->findAll($criteria);
         $data = CHtml::listData($data, $this->idField, $this->labelField);
 

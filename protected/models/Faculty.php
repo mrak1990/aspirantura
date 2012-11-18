@@ -19,9 +19,6 @@
  */
 class Faculty extends DeletableActiveRecord
 {
-
-    const DELETABLE = true;
-
     /**
      * @var FIO of dean for using at search form
      */
@@ -111,9 +108,6 @@ class Faculty extends DeletableActiveRecord
     public function behaviors()
     {
         return array(
-            'SoftDeleteBehavior' => array(
-                'class' => 'application.components.behaviors.TrashBinBehavior',
-            ),
             'SortingBehavior' => array(
                 'class' => 'application.components.behaviors.SortingBehavior',
             )

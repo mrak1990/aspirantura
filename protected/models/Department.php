@@ -17,9 +17,8 @@
  * @property Faculty $faculty
  * @property Staff $staff
  */
-class Department extends ActiveRecord
+class Department extends DeletableActiveRecord
 {
-
     public $headFio;
 
     /**
@@ -111,9 +110,9 @@ class Department extends ActiveRecord
     public function behaviors()
     {
         return array(
-            'SoftDeleteBehavior' => array(
-                'class' => 'application.components.behaviors.TrashBinBehavior',
-            ),
+//            'SoftDeleteBehavior' => array(
+//                'class' => 'application.components.behaviors.TrashBinBehavior',
+//            ),
             'SortingBehavior' => array(
                 'class' => 'application.components.behaviors.SortingBehavior',
             )

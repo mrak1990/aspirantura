@@ -52,7 +52,7 @@ echo $form->radioButtonListInlineRow($model, 'doctor', array(
 ?>
 
 <?php
-echo $form->customRow($model, 'enter_date)',
+echo $form->customRow($model, 'enter_date',
     $this->widget('zii.widgets.jui.CJuiDatePicker', array(
         'model' => $model,
         'attribute' => 'enter_date',

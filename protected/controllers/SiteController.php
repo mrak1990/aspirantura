@@ -105,6 +105,9 @@ class SiteController extends Controller
         if (Yii::app()->user->isGuest)
             $this->redirect(Yii::app()->homeUrl);
 
+//        CVarDumper::dump(Yii::app()->user->id, 10, true);
+//        Yii::app()->end();
+
         $model = User::model()->findByPk(Yii::app()->user->id);
 
         $this->render('profile', array(

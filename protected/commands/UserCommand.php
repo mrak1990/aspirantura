@@ -6,7 +6,8 @@ class UserCommand extends CConsoleCommand
      */
     private $_authManager;
 
-    public $overwrite = false;
+    public $overwriteAuthItems = false;
+    public $overwriteAdminUser = false;
 
     public $defaultAuthItems = array(
         'Гость' => array(
@@ -44,6 +45,7 @@ class UserCommand extends CConsoleCommand
                         'departmentTrash',
                         'departmentToTrash',
                         'departmentRestore',
+                        'departmentOptionList',
                     ),
                 ),
                 'staffControl' => array(
@@ -57,6 +59,7 @@ class UserCommand extends CConsoleCommand
                         'staffTrash',
                         'staffToTrash',
                         'staffRestore',
+                        'staffSearch'
                     ),
                 ),
                 'candidateControl' => array(
@@ -151,6 +154,14 @@ class UserCommand extends CConsoleCommand
         echo "Start default auth items initialization\n";
         $this->createRecursive($this->defaultAuthItems);
         echo "End default auth items initialization\n";
+        if (($id = $this->createAdminUser()) !== false)
+        {
+            echo "Admin user id: {$id}\n";
+            $this->assignAdminUser($id);
+            echo "Admin user was assigned to admins\n";
+        }
+        else
+            echo "Admin user wasn't assigned to admins\n";
     }
 
     /**
@@ -159,7 +170,8 @@ class UserCommand extends CConsoleCommand
      * @param array $items array('item1', 'item2'=>array('subItems' => array(...)))
      * @param string $parentName the name of parent CAuthItem
      */
-    private function createRecursive(array $items, $parentName = null)
+    private
+    function createRecursive(array $items, $parentName = null)
     {
         $itemsProcessed = $this->processItems($items);
 
@@ -194,7 +206,8 @@ class UserCommand extends CConsoleCommand
      *
      * @return bool
      */
-    private function createItem($name, $type, $description = '', $bizRule = null)
+    private
+    function createItem($name, $type, $description = '', $bizRule = null)
     {
         if ($this->_authManager->getAuthItem($name) === null)
         {
@@ -204,7 +217,7 @@ class UserCommand extends CConsoleCommand
         }
         else
         {
-            if ($this->overwrite)
+            if ($this->overwriteAuthItems)
             {
                 echo "'{$name}' was overwritten\n";
 
@@ -225,7 +238,8 @@ class UserCommand extends CConsoleCommand
      *
      * @return array array('item1' => array(), 'item2'=>array(...))
      */
-    private function processItems(array $items)
+    private
+    function processItems(array $items)
     {
         $tmpArray = array();
         foreach ($items as $key => $value)
@@ -237,6 +251,52 @@ class UserCommand extends CConsoleCommand
         }
 
         return $tmpArray;
+    }
+
+    private
+    function createAdminUser()
+    {
+        $model = User::model()->findByAttributes(array('username' => 'admin'));
+        if ($model !== null)
+        {
+            if ($this->overwriteAdminUser && $model->delete())
+                echo "Old admin user was deleted\n";
+            else
+            {
+                echo "Admin user wasn't overwritten\n";
+
+                return $model->id;
+            }
+        }
+
+        $model = new User();
+
+        $model->attributes = array(
+            'username' => 'admin',
+            'password' => 'admin',
+            'password2' => 'admin',
+            'first_name' => 'Администратор',
+            'last_name' => 'Администраторов',
+            'email' => 'admin@qwerty.ru'
+        );
+        if ($model->save())
+        {
+            echo "Admin user was created\n";
+
+            return $model->id;
+        }
+        else
+        {
+            echo "Admin user wasn't created\n";
+
+            return false;
+        }
+    }
+
+    private
+    function assignAdminUser($id)
+    {
+        return $this->_authManager->assign('Администраторы', $id);
     }
 }
 

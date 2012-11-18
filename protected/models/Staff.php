@@ -29,9 +29,8 @@
  * @property Faculty[] $faculties
  * @property Faculty[] $faculties1
  */
-class Staff extends ActiveRecord
+class Staff extends DeletableActiveRecord
 {
-
     public $facultyId;
 
     /**
@@ -148,9 +147,9 @@ class Staff extends ActiveRecord
     public function behaviors()
     {
         return array(
-            'SoftDeleteBehavior' => array(
-                'class' => 'application.components.behaviors.TrashBinBehavior',
-            ),
+//            'SoftDeleteBehavior' => array(
+//                'class' => 'application.components.behaviors.TrashBinBehavior',
+//            ),
             'SortingBehavior' => array(
                 'class' => 'application.components.behaviors.SortingBehavior',
             ),
@@ -163,11 +162,11 @@ class Staff extends ActiveRecord
     public function getSortAttributes()
     {
         return array(
-            'departmentTitle' => array(
+            'department' => array(
                 'asc' => 'department.title',
                 'desc' => 'department.title DESC',
             ),
-            'facultyTitle' => array(
+            'faculty' => array(
                 'asc' => 'faculty.title',
                 'desc' => 'faculty.title DESC',
             ),

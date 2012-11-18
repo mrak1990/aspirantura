@@ -7,6 +7,18 @@
 
 class DeletableActiveRecord extends ActiveRecord
 {
+    public $deletedFlagField = 'deleted';
+    public $deletedFlag = true;
+    public $restoredFlag = false;
+
+    protected function bool2str($value)
+    {
+        return is_bool($value)
+            ? ($value
+                ? 'true'
+                : 'false')
+            : $value;
+    }
 
     /**
      * Get items for footer in table
@@ -57,9 +69,36 @@ class DeletableActiveRecord extends ActiveRecord
 
     public function defaultScope()
     {
-        return $this->getTableAlias(false, false) === 't'
+//        return $this->getTableAlias(false, false) === 't'
+        return $this->getTableAlias(false, false) === 't' && $this->scenario === ''
             ? array('condition' => '"t"."deleted"=\'false\'')
             : array();
+    }
+
+    public function scopes()
+    {
+        return array(
+            'restored' => array(
+                'condition' => "\"{$this->getTableAlias()}\".\"{$this->deletedFlagField}\"='{$this->bool2str($this->restoredFlag)}'",
+            ),
+            'deleted' => array(
+                'condition' => "\"{$this->getTableAlias()}\".\"{$this->deletedFlagField}\"='{$this->bool2str($this->deletedFlag)}'",
+            )
+        );
+    }
+
+    public function setDeleted()
+    {
+        $this->{$this->deletedFlagField} = $this->deletedFlag;
+
+        return $this;
+    }
+
+    public function setRestored()
+    {
+        $this->{$this->deletedFlagField} = $this->restoredFlag;
+
+        return $this;
     }
 }
 

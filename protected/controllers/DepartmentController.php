@@ -14,12 +14,12 @@ class DepartmentController extends Controller
     public function actions()
     {
         return array(
-            'search' => array(
-                'class' => 'application.components.actions.SearchAction',
-                'model' => Department::model(),
-                'labelField' => 'title',
-                'searchField' => 'title',
-            ),
+//            'search' => array(
+//                'class' => 'application.components.actions.SearchAction',
+//                'model' => Department::model(),
+//                'labelField' => 'title',
+//                'searchField' => 'title',
+//            ),
             'optionList' => array(
                 'class' => 'application.components.actions.ListAction',
                 'model' => Department::model(),
@@ -124,29 +124,18 @@ class DepartmentController extends Controller
      *
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionToTrash($id)
+    public function actionToTrash(array $id)
     {
-        if (Yii::app()->request->isPostRequest)
-        {
-            if ($id === 'many')
-            {
-                if (isset($_POST['ids']) && is_array($_POST['ids']))
-                {
-                    foreach ($_POST['ids'] as $id)
-                        $this->loadModel($id)->setDeleted()->save();
-                }
-                Yii::app()->end();
-            }
-            else
-                $this->loadModel($id)->setDeleted()->save();
+        foreach ($id as $value)
+            $this->loadModel($value)->setDeleted()->save();
 
-            if (!isset($_GET['ajax']))
-                $this->redirect(Yii::app()->request->getUrlReferrer());
-            else
-                Yii::app()->end();
-        }
+        if (isset($_GET['ajax']) || Yii::app()->request->isAjaxRequest)
+            Yii::app()->end();
         else
-            throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
+            $this->redirect(array(
+                'view',
+                'id' => array_pop($id)
+            ));
     }
 
     /**
@@ -155,29 +144,18 @@ class DepartmentController extends Controller
      *
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionRestore($id)
+    public function actionRestore(array $id)
     {
-        if (Yii::app()->request->isPostRequest)
-        {
-            if ($id === 'many')
-            {
-                if (isset($_POST['ids']) && is_array($_POST['ids']))
-                {
-                    foreach ($_POST['ids'] as $id)
-                        $this->loadModel($id)->setRestored()->save();
-                }
-                Yii::app()->end();
-            }
-            else
-                $this->loadModel($id)->setRestored()->save();
+        foreach ($id as $value)
+            $this->loadModel($value)->setRestored()->save();
 
-            if (!isset($_GET['ajax']))
-                $this->redirect(Yii::app()->request->getUrlReferrer());
-            else
-                Yii::app()->end();
-        }
+        if (isset($_GET['ajax']) || Yii::app()->request->isAjaxRequest)
+            Yii::app()->end();
         else
-            throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
+            $this->redirect(array(
+                'view',
+                'id' => array_pop($id)
+            ));
     }
 
     /**
@@ -186,27 +164,15 @@ class DepartmentController extends Controller
      *
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionDelete($id)
+    public function actionDelete(array $id)
     {
-        if (Yii::app()->request->isPostRequest)
-        {
-            if ($id === 'many')
-            {
-                if (isset($_POST['ids']) && is_array($_POST['ids']))
-                {
-                    foreach ($_POST['ids'] as $id)
-                        $this->loadModel($id)->delete();
-                }
-                Yii::app()->end();
-            }
-            else
-                $this->loadModel($id)->delete();
+        foreach ($id as $value)
+            $this->loadModel($value)->delete();
 
-            if (!isset($_GET['ajax']))
-                $this->redirect($this->createUrl('trash'));
-        }
+        if (isset($_GET['ajax']) || Yii::app()->request->isAjaxRequest)
+            Yii::app()->end();
         else
-            throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
+            $this->redirect($this->createUrl('trash'));
     }
 
     /**
@@ -233,21 +199,11 @@ class DepartmentController extends Controller
         ));
 
         $sort = new CSort('Department');
-        $sort->attributes = array(
-            'head' => array(
-                'asc' => 'head.fio',
-                'desc' => 'head.fio DESC',
-            ),
-            'faculty' => array(
-                'asc' => 'faculty.title',
-                'desc' => 'faculty.title DESC',
-            ),
-            '*',
-        );
+        $sort->attributes = $model->getSortAttributes();
         $sort->defaultOrder = 't.title';
 
         $this->render('index', array(
-            'model' => $model->getRestoredRecords()->search(),
+            'model' => $model->restored()->search(),
             'criteria' => $criteria,
             'sort' => $sort,
             'searchModel' => $search,
@@ -271,21 +227,18 @@ class DepartmentController extends Controller
         $search->resolveGETSort();
 
         $criteria = new CDbCriteria(array(
-            'with' => array('head')
+            'with' => array(
+                'faculty',
+                'head'
+            )
         ));
 
         $sort = new CSort('Department');
-        $sort->attributes = array(
-            'head' => array(
-                'asc' => 'head.fio',
-                'desc' => 'head.fio DESC',
-            ),
-            '*',
-        );
+        $sort->attributes = $model->getSortAttributes();
         $sort->defaultOrder = 't.title';
 
         $this->render('index', array(
-            'model' => $model->getRestoredRecords()->search(),
+            'model' => $model->deleted()->search(),
             'criteria' => $criteria,
             'sort' => $sort,
             'searchModel' => $search,
@@ -300,7 +253,7 @@ class DepartmentController extends Controller
      */
     public function loadModel($id)
     {
-        $model = Department::model()->findByPk($id);
+        $model = Department::model()->resetScope()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'Страница не существует.');
 

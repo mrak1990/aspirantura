@@ -58,7 +58,8 @@ class Controller extends CController
         else
         {
             CVarDumper::dump($user->id, 10, true);
-            CVarDumper::dump($this->action->id, 10, true);
+            CVarDumper::dump($itemName, 10, true);
+            CVarDumper::dump(Yii::app()->authManager->checkAccess($itemName, $user->id), 10, true);
             Yii::app()->end();
 //            $user->loginRequired();
         }

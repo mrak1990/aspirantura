@@ -10,7 +10,7 @@ class HelperHTML
 
     public static function capitalize($str, $encoding = null)
     {
-        $str = mb_strtoupper($str{0}, $encoding) . mb_substr($str, 1, mb_strlen($str, $encoding)-1, $encoding);
+        $str = mb_strtoupper($str{0}, $encoding) . mb_substr($str, 1, mb_strlen($str, $encoding) - 1, $encoding);
 
         return $str;
     }
@@ -47,36 +47,43 @@ class HelperHTML
 
     public static function getMenu($view = 'index', $model = null, $idField = 'id')
     {
-        if ($view === 'index')
+        $deletable = is_subclass_of($model, 'DeletableActiveRecord');
+
+        $menu = array(
+            array(
+                'label' => 'Поиск',
+                'url' => array('index'),
+                'icon' => 'search',
+                'itemOptions' => array(
+                    'title' => 'Поиск и фильтрация записей'
+                )
+            ),
+            array(
+                'label' => 'Добавить',
+                'url' => array('create'),
+                'icon' => 'plus',
+                'itemOptions' => array(
+                    'title' => 'Добавление новой записи'
+                )
+            ),
+            array(
+                'label' => 'Корзина',
+                'url' => array('trash'),
+                'visible' => isset($model)
+                    ? $deletable
+                    : true,
+                'icon' => 'trash',
+                'itemOptions' => array(
+                    'title' => 'Просмотр записей в корзине'
+                )
+            ),
+        );
+
+        if ($view === 'create')
+            return $menu;
+        elseif ($view === 'index')
         {
-            return array(
-                array(
-                    'label' => 'Поиск',
-                    'url' => array('index'),
-                    'icon' => 'search',
-                    'itemOptions' => array(
-                        'title' => 'Поиск и фильтрация записей'
-                    )
-                ),
-                array(
-                    'label' => 'Добавить',
-                    'url' => array('create'),
-                    'icon' => 'plus',
-                    'itemOptions' => array(
-                        'title' => 'Добавление новой записи'
-                    )
-                ),
-                array(
-                    'label' => 'Корзина',
-                    'url' => array('trash'),
-                    'visible' => isset($model)
-                        ? $model::DELETABLE
-                        : true,
-                    'icon' => 'trash',
-                    'itemOptions' => array(
-                        'title' => 'Просмотр записей в корзине'
-                    )
-                ),
+            return array_merge($menu, array(
                 array(
                     'label' => 'Параметры',
                     'icon' => 'cog',
@@ -86,66 +93,11 @@ class HelperHTML
                     ),
                     'items' => array(),
                 )
-            );
+            ));
         }
-        elseif ($view === 'create')
+        elseif ($view === 'update' || $view === 'view')
         {
-            return array(
-                array(
-                    'label' => 'Поиск',
-                    'url' => array('index'),
-                    'icon' => 'search',
-                    'itemOptions' => array(
-                        'title' => 'Поиск и фильтрация записей'
-                    )
-                ),
-                array(
-                    'label' => 'Добавить',
-                    'url' => array('create'),
-                    'icon' => 'plus',
-                    'itemOptions' => array(
-                        'title' => 'Добавление новой записи'
-                    )
-                ),
-                array(
-                    'label' => 'Корзина',
-                    'url' => array('trash'),
-                    'visible' => $model::DELETABLE,
-                    'icon' => 'trash',
-                    'itemOptions' => array(
-                        'title' => 'Просмотр записей в корзине'
-                    )
-                ),
-            );
-        }
-        elseif ($view === 'update')
-        {
-            return array(
-                array
-                ('label' => 'Поиск',
-                    'url' => array('index'),
-                    'icon' => 'search',
-                    'itemOptions' => array(
-                        'title' => 'Поиск и фильтрация записей'
-                    )
-                ),
-                array(
-                    'label' => 'Добавить',
-                    'url' => array('create'),
-                    'icon' => 'plus',
-                    'itemOptions' => array(
-                        'title' => 'Добавление новой записи'
-                    )
-                ),
-                array(
-                    'label' => 'Корзина',
-                    'url' => array('trash'),
-                    'visible' => $model::DELETABLE,
-                    'icon' => 'trash',
-                    'itemOptions' => array(
-                        'title' => 'Просмотр записей в корзине'
-                    )
-                ),
+            return array_merge($menu, array(
                 array(
                     'label' => 'Действия',
                     'icon' => 'cog',
@@ -155,9 +107,17 @@ class HelperHTML
                     ),
                     'items' => array(
                         array(
+                            'url' => '',
+                            'template' => CHtml::ajaxLink('<i class="icon-trash"></i> В корзину', array('toTrash'), array(
+                                    'data' => new CJavaScriptExpression("{id : '{$model->id}'}"),
+                                    'success' => new CJavaScriptExpression('function(data) {window.document.write(data)}'),
+                                )
+                            ),
+                        ),
+                        array(
                             'label' => 'В корзину',
                             'url' => '#',
-                            'visible' => $model::DELETABLE
+                            'visible' => $deletable
                                 ? !$model->deleted
                                 : false,
                             'icon' => 'trash',
@@ -174,7 +134,7 @@ class HelperHTML
                         array(
                             'label' => 'Восстановить',
                             'url' => '#',
-                            'visible' => $model::DELETABLE
+                            'visible' => $deletable
                                 ? $model->deleted
                                 : false,
                             'icon' => 'ok-circle',
@@ -192,7 +152,7 @@ class HelperHTML
                         array(
                             'label' => 'Удалить',
                             'url' => '#',
-                            'visible' => $model::DELETABLE
+                            'visible' => $deletable
                                 ? $model->deleted
                                 : true,
                             'icon' => 'remove',
@@ -231,120 +191,7 @@ class HelperHTML
                         'title' => 'Простотр записи'
                     )
                 ),
-            );
-        }
-        elseif ($view === 'view')
-        {
-            return array(
-                array(
-                    'label' => 'Поиск',
-                    'url' => array('index'),
-                    'icon' => 'search',
-                    'itemOptions' => array(
-                        'title' => 'Поиск и фильтрация записей'
-                    )
-                ),
-                array(
-                    'label' => 'Добавить',
-                    'url' => array('create'),
-                    'icon' => 'plus',
-                    'itemOptions' => array(
-                        'title' => 'Добавление новой записи'
-                    ),
-                ),
-                array(
-                    'label' => 'Корзина',
-                    'url' => array('trash'),
-                    'visible' => $model::DELETABLE,
-                    'icon' => 'trash',
-                    'itemOptions' => array(
-                        'title' => 'Просмотр записей в корзине'
-                    )
-                ),
-                array(
-                    'label' => 'Действия',
-                    'icon' => 'cog',
-                    'itemOptions' => array(
-                        'class' => 'pull-right',
-                        'title' => 'Действия над записью'
-                    ),
-                    'items' => array(
-                        array(
-                            'label' => 'В корзину',
-                            'url' => '#',
-                            'visible' => $model::DELETABLE
-                                ? !$model->deleted
-                                : false,
-                            'icon' => 'trash',
-                            'linkOptions' => array(
-                                'submit' => array(
-                                    'toTrash',
-                                    $idField => $model->{$idField}
-                                ),
-                                'params' => array(
-                                    'ajax' => true,
-                                )
-                            ),
-                        ),
-                        array(
-                            'label' => 'Восстановить',
-                            'url' => '#',
-                            'visible' => $model::DELETABLE
-                                ? $model->deleted
-                                : false,
-                            'icon' => 'ok-circle',
-                            'linkOptions' => array(
-                                'submit' => array(
-                                    'restore',
-                                    $idField => $model->{$idField}
-                                ),
-                                'params' => array(
-                                    'ajax' => true,
-                                )
-                            ),
-                        ),
-                        array(
-                            'label' => 'Удалить',
-                            'url' => '#',
-                            'visible' => $model::DELETABLE
-                                ? $model->deleted
-                                : true,
-                            'icon' => 'remove',
-                            'linkOptions' => array(
-                                'submit' => array(
-                                    'delete',
-                                    $idField => $model->{$idField}
-                                ),
-                                'confirm' => 'Вы действительно хотите безвозвратно удалить эту запись?',
-                            ),
-                        ),
-                    ),
-                ),
-                array(
-                    'label' => 'Редактирование',
-                    'url' => array(
-                        'update',
-                        $idField => $model->{$idField}
-                    ),
-                    'icon' => 'pencil',
-                    'itemOptions' => array(
-                        'class' => 'pull-right',
-                        'title' => 'Редактирование записи'
-                    )
-                ),
-                array(
-                    'label' => 'Просмотр',
-                    'url' => array(
-                        'view',
-                        $idField => $model->{$idField}
-                    ),
-                    'icon' => 'th-list',
-                    'itemOptions' => array(
-                        'class' => 'pull-right',
-                        'title' => 'Простотр записи'
-                    )
-                ),
-            );
+            ));
         }
         else
             return array();

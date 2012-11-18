@@ -105,9 +105,6 @@ class StaffController extends Controller
     {
         $model = $this->loadModel($id);
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
         if (isset($_POST['Staff']))
         {
             $model->attributes = $_POST['Staff'];
@@ -136,29 +133,18 @@ class StaffController extends Controller
      *
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionToTrash($id)
+    public function actionToTrash(array $id)
     {
-        if (Yii::app()->request->isPostRequest)
-        {
-            if ($id === 'many')
-            {
-                if (isset($_POST['ids']) && is_array($_POST['ids']))
-                {
-                    foreach ($_POST['ids'] as $id)
-                        $this->loadModel($id)->setDeleted()->save();
-                }
-                Yii::app()->end();
-            }
-            else
-                $this->loadModel($id)->setDeleted()->save();
+        foreach ($id as $value)
+            $this->loadModel($value)->setDeleted()->save();
 
-            if (!isset($_GET['ajax']))
-                $this->redirect(Yii::app()->request->getUrlReferrer());
-            else
-                Yii::app()->end();
-        }
+        if (isset($_GET['ajax']) || Yii::app()->request->isAjaxRequest)
+            Yii::app()->end();
         else
-            throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
+            $this->redirect(array(
+                'view',
+                'id' => array_pop($id)
+            ));
     }
 
     /**
@@ -167,29 +153,18 @@ class StaffController extends Controller
      *
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionRestore($id)
+    public function actionRestore(array $id)
     {
-        if (Yii::app()->request->isPostRequest)
-        {
-            if ($id === 'many')
-            {
-                if (isset($_POST['ids']) && is_array($_POST['ids']))
-                {
-                    foreach ($_POST['ids'] as $id)
-                        $this->loadModel($id)->setRestored()->save();
-                }
-                Yii::app()->end();
-            }
-            else
-                $this->loadModel($id)->setRestored()->save();
+        foreach ($id as $value)
+            $this->loadModel($value)->setRestored()->save();
 
-            if (!isset($_GET['ajax']))
-                $this->redirect(Yii::app()->request->getUrlReferrer());
-            else
-                Yii::app()->end();
-        }
+        if (isset($_GET['ajax']) || Yii::app()->request->isAjaxRequest)
+            Yii::app()->end();
         else
-            throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
+            $this->redirect(array(
+                'view',
+                'id' => array_pop($id)
+            ));
     }
 
     /**
@@ -198,35 +173,19 @@ class StaffController extends Controller
      *
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionDelete($id)
+    public function actionDelete(array $id)
     {
-        if (Yii::app()->request->isPostRequest)
+        foreach ($id as $value)
         {
-            if ($id === 'many')
-            {
-                if (isset($_POST['ids']) && is_array($_POST['ids']))
-                {
-                    foreach ($_POST['ids'] as $id)
-                    {
-                        $model = $this->loadModel($id);
-                        $model->deleteScienceDegrees();
-                        $model->delete();
-                    }
-                }
-                Yii::app()->end();
-            }
-            else
-            {
-                $model = $this->loadModel($id);
-                $model->deleteScienceDegrees();
-                $model->delete();
-            }
-
-            if (!isset($_GET['ajax']))
-                $this->redirect($this->createUrl('trash'));
+            $model = $this->loadModel($value);
+            $model->deleteScienceDegrees();
+            $model->delete();
         }
+
+        if (isset($_GET['ajax']) || Yii::app()->request->isAjaxRequest)
+            Yii::app()->end();
         else
-            throw new CHttpException(400, 'Неверный запрос. Пожалуйста, не повторяйте этот запрос.');
+            $this->redirect($this->createUrl('trash'));
     }
 
     /**
@@ -261,7 +220,7 @@ class StaffController extends Controller
         $sort->defaultOrder = 't.fio';
 
         $this->render('index', array(
-            'model' => $model->getRestoredRecords()->search(),
+            'model' => $model->restored()->search(),
             'criteria' => $criteria,
             'sort' => $sort,
             'searchModel' => $search,
@@ -299,7 +258,7 @@ class StaffController extends Controller
         $sort->defaultOrder = 't.fio';
 
         $this->render('index', array(
-            'model' => $model->getDeletedRecords()->search(),
+            'model' => $model->deleted()->search(),
             'criteria' => $criteria,
             'sort' => $sort,
             'searchModel' => $search,
@@ -314,7 +273,7 @@ class StaffController extends Controller
      */
     public function loadModel($id)
     {
-        $model = Staff::model()->findByPk($id);
+        $model = Staff::model()->resetScope()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'Страница не существует.');
 

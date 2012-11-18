@@ -13,18 +13,17 @@ class FacultyController extends Controller
 
     public function actions()
     {
-        return array(
-            'search' => array(
-                'class' => 'application.components.actions.SearchAction',
-                'model' => Faculty::model(),
-                'labelField' => 'title',
-                'searchField' => 'title',
-            ),
-            'optionList' => array(
-                'class' => 'application.components.actions.ListAction',
-                'model' => Faculty::model(),
-                'labelField' => 'title',
-            ),
+        return array(//            'search' => array(
+//                'class' => 'application.components.actions.SearchAction',
+//                'model' => Faculty::model(),
+//                'labelField' => 'title',
+//                'searchField' => 'title',
+//            ),
+//            'optionList' => array(
+//                'class' => 'application.components.actions.ListAction',
+//                'model' => Faculty::model(),
+//                'labelField' => 'title',
+//            ),
         );
     }
 
@@ -179,8 +178,6 @@ class FacultyController extends Controller
     public function actionIndex()
     {
         $model = new Faculty('search');
-        $model->resetScope(true);
-
         $search = new SortForm;
 
         if (isset($_GET['Faculty']))
@@ -200,7 +197,7 @@ class FacultyController extends Controller
         $sort->defaultOrder = 't.title';
 
         $this->render('index', array(
-            'model' => $model->getRestoredRecords()->search(),
+            'model' => $model->restored()->search(),
             'criteria' => $criteria,
             'sort' => $sort,
             'searchModel' => $search,
@@ -213,8 +210,6 @@ class FacultyController extends Controller
     public function actionTrash()
     {
         $model = new Faculty('search');
-        $model->resetScope(true);
-
         $search = new SortForm;
 
         if (isset($_GET['Faculty']))
@@ -234,7 +229,7 @@ class FacultyController extends Controller
         $sort->defaultOrder = 't.title';
 
         $this->render('index', array(
-            'model' => $model->getDeletedRecords()->search(),
+            'model' => $model->deleted()->search(),
             'criteria' => $criteria,
             'sort' => $sort,
             'searchModel' => $search,

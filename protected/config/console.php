@@ -5,6 +5,7 @@
 return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
     'name' => 'My Console Application',
+    'language' => 'en',
     // application components
     'import' => array(
         'application.models.*',

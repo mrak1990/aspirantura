@@ -243,7 +243,7 @@ $sort->attributes = $model->getSortAttributes();
 $sort->defaultOrder = 't.title';
 
 $this->render('index', array(
-'model' => $model->getRestoredRecords()->search(),
+'model' => $model->restored()->search(),
 'criteria' => $criteria,
 'sort' => $sort,
 'searchModel' => $search,
@@ -276,7 +276,7 @@ $sort->attributes = $model->getSortAttributes();
 $sort->defaultOrder = 't.title';
 
 $this->render('index', array(
-'model' => $model->getDeletedRecords()->search(),
+'model' => $model->deleted()->search(),
 'criteria' => $criteria,
 'sort' => $sort,
 'searchModel' => $search,
