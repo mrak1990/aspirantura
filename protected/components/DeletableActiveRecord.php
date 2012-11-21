@@ -29,13 +29,14 @@ class DeletableActiveRecord extends ActiveRecord
         if ($id === null)
             $id = $this->class2id() . '-grid';
 
-        $actionId = Yii::app()->getController()->action->id;
+        $controller = Yii::app()->controller;
+        $actionId = $controller->action->id;
+        $idData = "$.param({'id': $.fn.yiiGridView.getChecked('{$id}', 'checkboxes')})";
 
         return array(
             array(
-                'value' => CHtml::ajaxLink('В корзину', array('toTrash'), array(
-//                        'type' => 'POST',
-                        'data' => new CJavaScriptExpression("{id : $.fn.yiiGridView.getChecked('{$id}', 'checkboxes')}"),
+                'value' => CHtml::ajaxLink('В корзину', new CJavaScriptExpression("'{$controller->createUrl('toTrash')}&' + $idData"), array(
+                        'type' => 'POST',
                         'success' => new CJavaScriptExpression("$.fn.yiiGridView.update('{$id}')"),
                         'error' => new CJavaScriptExpression('function(jqXHR, textStatus, errorThrown) {alert("Error: " + textStatus)}'),
                     )
@@ -45,7 +46,9 @@ class DeletableActiveRecord extends ActiveRecord
             array(
                 'value' => CHtml::ajaxLink('Восстановить', array('restore'), array(
 //                        'type' => 'POST',
-                        'data' => new CJavaScriptExpression("{id : $.fn.yiiGridView.getChecked('{$id}', 'checkboxes')}"),
+                        'data' => array(
+                            'id' => new CJavaScriptExpression("$.fn.yiiGridView.getChecked('{$id}', 'checkboxes')")
+                        ),
                         'success' => new CJavaScriptExpression("$.fn.yiiGridView.update('{$id}')"),
                         'error' => new CJavaScriptExpression('function(jqXHR, textStatus, errorThrown) {alert("Error: " + textStatus)}'),
                     )

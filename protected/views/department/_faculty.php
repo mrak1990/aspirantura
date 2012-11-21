@@ -31,5 +31,6 @@ echo $form->dropDownListRow($model, 'faculty_id', CHtml::listData($data, 'id', '
     'class' => 'span4',
     'maxlength' => 20,
     'hint' => $hint,
+//    'multiple' => true
 ));
 ?>

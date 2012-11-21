@@ -108,11 +108,25 @@ class HelperHTML
                     'items' => array(
                         array(
                             'url' => '',
-                            'template' => CHtml::ajaxLink('<i class="icon-trash"></i> В корзину', array('toTrash'), array(
+                            'template' => CHtml::ajaxLink('<i class="icon-trash"></i> 2В корзину', array('toTrash'), array(
                                     'data' => new CJavaScriptExpression("{id : '{$model->id}'}"),
-                                    'success' => new CJavaScriptExpression('function(data) {window.document.write(data)}'),
+                                    'success' => new CJavaScriptExpression('$("#label-deleted").show()'),
                                 )
                             ),
+                            'visible' => $deletable
+                                ? !$model->deleted
+                                : false,
+                        ),
+                        array(
+                            'url' => '',
+                            'template' => CHtml::ajaxLink('<i class="icon-trash"></i> 2Восстановить', array('restore'), array(
+                                    'data' => new CJavaScriptExpression("{id : '{$model->id}'}"),
+                                    'success' => new CJavaScriptExpression('$("#label-deleted").hide()'),
+                                )
+                            ),
+                            'visible' => $deletable
+                                ? $model->deleted
+                                : false,
                         ),
                         array(
                             'label' => 'В корзину',

@@ -33,7 +33,7 @@ class EChosen extends CWidget
     /**
      * @var boolean include un-minified plugin then debuging.
      */
-    public $debug = false;
+    public $debug = true;
 
     /**
      * @var array native Chosen plugin options.
