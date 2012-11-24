@@ -13,7 +13,7 @@ class FacultyController extends Controller
 
     public function actions()
     {
-        return array(//            'search' => array(
+        return array( //            'search' => array(
 //                'class' => 'application.components.actions.SearchAction',
 //                'model' => Faculty::model(),
 //                'labelField' => 'title',
@@ -126,8 +126,10 @@ class FacultyController extends Controller
         foreach ($id as $value)
             $this->loadModel($value)->setDeleted()->save();
 
-        if (isset($_GET['ajax']) || Yii::app()->request->isAjaxRequest)
-            Yii::app()->end();
+        if (Yii::app()->request->isAjaxRequest)
+            $this->renderPartial('_info', array(
+                'model' => $this->loadModel(array_pop($id)),
+            ), false, true);
         else
             $this->redirect(array(
                 'view',
@@ -146,8 +148,10 @@ class FacultyController extends Controller
         foreach ($id as $value)
             $this->loadModel($value)->setRestored()->save();
 
-        if (isset($_GET['ajax']) || Yii::app()->request->isAjaxRequest)
-            Yii::app()->end();
+        if (Yii::app()->request->isAjaxRequest)
+            $this->renderPartial('_info', array(
+                'model' => $this->loadModel(array_pop($id)),
+            ), false, true);
         else
             $this->redirect(array(
                 'view',

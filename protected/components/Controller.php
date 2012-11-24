@@ -44,7 +44,10 @@ class Controller extends CController
      */
     public function filters()
     {
-        return array('checkAccess');
+        return array(
+            'postOnly + delete',
+            'checkAccess'
+        );
     }
 
     public function filterCheckAccess($filterChain)

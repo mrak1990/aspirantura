@@ -10,14 +10,14 @@ $this->widget('bootstrap.widgets.BootBreadcrumbs', array(
 ?>
 <?php
 if (count($this->menu))
-$this->widget('MyBootMenu', array(
-    'type' => 'tabs',
-    'items' => $this->menu,
-));
+    $this->widget('MyBootMenu', array(
+        'type' => 'tabs',
+        'items' => $this->menu,
+    ));
 ?>
 <div class="row">
     <div class="span12">
-        <?php $this->widget('bootstrap.widgets.BootAlert'); ?>
+        <?php //$this->widget('bootstrap.widgets.BootAlert'); ?>
         <?php echo $content; ?>
     </div>
 </div>

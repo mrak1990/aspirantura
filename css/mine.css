@@ -111,3 +111,19 @@ div.multiple-inline-add-crop div.chzn-container {
     margin-right: 10px;
     margin-bottom: 5px;
 }
+
+/* Bootstrap toggle button*/
+span.labelLeft {
+    text-align: left !important;
+    padding-left: 7px !important;
+}
+
+span.labelRight {
+    text-align: right !important;
+    padding-right: 7px !important;
+}
+
+.toggle-button label {
+    margin-left: -8px !important;
+    margin-right: -8px !important;
+}

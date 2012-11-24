@@ -16,13 +16,18 @@ $this->breadcrumbs = array_merge(
 );
 
 $this->menu = HelperHTML::getMenu(basename(__FILE__, '.php'), $model);
+?>
 
-echo $this->renderPartial('_info', array(
+<h2 style="display: inline;">Редактирование записи</h2>
+<div id="info-div" style="display: inline;">
+    <?php
+    $this->renderPartial('_info', array(
         'model' => $model,
-        'title' => 'Редактирование записи',
-    )
-);
+    ));
+    ?>
+</div>
 
+<?php
 echo $this->renderPartial('_form', array(
     'model' => $model
 ));

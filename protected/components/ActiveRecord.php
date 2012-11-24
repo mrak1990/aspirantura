@@ -31,17 +31,19 @@ class ActiveRecord extends CActiveRecord
      * Get items for footer in table
      * @return array
      */
-    public function getFooterItems($id = null, $GETParam = 'id')
+    public function getFooterItems($tableId = null, $GETParam = 'id')
     {
-        if ($id === null)
-            $id = $this->class2id() . '-grid';
+        if ($tableId === null)
+            $tableId = $this->class2id() . '-grid';
+
+        $controller = Yii::app()->controller;
+        $idData = "$.param({'{$GETParam}': $.fn.yiiGridView.getChecked('{$tableId}', 'checkboxes')})";
 
         return array(
             array(
-                'value' => CHtml::ajaxLink('Удалить', array('delete', $GETParam => 'many'), array(
+                'value' => CHtml::ajaxLink('Удалить', new CJavaScriptExpression("'{$controller->createUrl('delete')}&' + $idData"), array(
                         'type' => 'POST',
-                        'data' => new CJavaScriptExpression("{ids : $.fn.yiiGridView.getChecked('{$id}', 'checkboxes')}"),
-                        'success' => new CJavaScriptExpression("$.fn.yiiGridView.update('{$id}')"),
+                        'success' => new CJavaScriptExpression("$.fn.yiiGridView.update('{$tableId}')"),
                         'error' => new CJavaScriptExpression('function(jqXHR, textStatus, errorThrown) {alert("Error: " + textStatus)}'),
                     ), array(
                         'confirm' => 'Вы действительно хотите безвозвратно удалить отмеченные записи?',
@@ -51,10 +53,14 @@ class ActiveRecord extends CActiveRecord
         );
     }
 
+    /**
+     * @return string the id of current exampleModel in form 'example-model'
+     */
     public function class2id()
     {
         $name = get_class($this);
-        return trim(strtolower(str_replace('_','-',preg_replace('/(?<![A-Z])[A-Z]/', '-\0', $name))),'-');
+
+        return trim(strtolower(str_replace('_', '-', preg_replace('/(?<![A-Z])[A-Z]/', '-\0', $name))), '-');
     }
 
     /**

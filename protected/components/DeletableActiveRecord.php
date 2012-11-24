@@ -22,52 +22,37 @@ class DeletableActiveRecord extends ActiveRecord
 
     /**
      * Get items for footer in table
-     * @return array
+     * @return array list of items for footer in MyBootGridView
      */
-    public function getFooterItems($id = null, $GETParam = 'id')
+    public function getFooterItems($tableId = null, $GETParam = 'id')
     {
-        if ($id === null)
-            $id = $this->class2id() . '-grid';
+        if ($tableId === null)
+            $tableId = $this->class2id() . '-grid';
 
         $controller = Yii::app()->controller;
         $actionId = $controller->action->id;
-        $idData = "$.param({'id': $.fn.yiiGridView.getChecked('{$id}', 'checkboxes')})";
+        $idData = "$.param({'{$GETParam}': $.fn.yiiGridView.getChecked('{$tableId}', 'checkboxes')})";
 
-        return array(
+        return CMap::mergeArray(array(
             array(
                 'value' => CHtml::ajaxLink('В корзину', new CJavaScriptExpression("'{$controller->createUrl('toTrash')}&' + $idData"), array(
                         'type' => 'POST',
-                        'success' => new CJavaScriptExpression("$.fn.yiiGridView.update('{$id}')"),
+                        'success' => new CJavaScriptExpression("$.fn.yiiGridView.update('{$tableId}')"),
                         'error' => new CJavaScriptExpression('function(jqXHR, textStatus, errorThrown) {alert("Error: " + textStatus)}'),
                     )
                 ),
                 'visible' => $actionId === 'index',
             ),
             array(
-                'value' => CHtml::ajaxLink('Восстановить', array('restore'), array(
-//                        'type' => 'POST',
-                        'data' => array(
-                            'id' => new CJavaScriptExpression("$.fn.yiiGridView.getChecked('{$id}', 'checkboxes')")
-                        ),
-                        'success' => new CJavaScriptExpression("$.fn.yiiGridView.update('{$id}')"),
+                'value' => CHtml::ajaxLink('Восстановить', new CJavaScriptExpression("'{$controller->createUrl('restore')}&' + $idData"), array(
+                        'type' => 'POST',
+                        'success' => new CJavaScriptExpression("$.fn.yiiGridView.update('{$tableId}')"),
                         'error' => new CJavaScriptExpression('function(jqXHR, textStatus, errorThrown) {alert("Error: " + textStatus)}'),
                     )
                 ),
                 'visible' => $actionId === 'trash',
             ),
-            array(
-                'value' => CHtml::ajaxLink('Удалить', array('delete', $GETParam => 'many'), array(
-//                        'type' => 'POST',
-                        'data' => new CJavaScriptExpression("{ids : $.fn.yiiGridView.getChecked('{$id}', 'checkboxes')}"),
-                        'success' => new CJavaScriptExpression("$.fn.yiiGridView.update('{$id}')"),
-                        'error' => new CJavaScriptExpression('function(jqXHR, textStatus, errorThrown) {alert("Error: " + textStatus)}'),
-                    ), array(
-                        'confirm' => 'Вы действительно хотите везвозвратно удалить отмеченные записи?',
-                    )
-                ),
-                'visible' => $actionId === 'trash',
-            ),
-        );
+        ), parent::getFooterItems($tableId, $GETParam));
     }
 
     public function defaultScope()

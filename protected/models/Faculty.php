@@ -196,4 +196,57 @@ class Faculty extends DeletableActiveRecord
             ), true);
         };
     }
+
+    static public function getActionMenuFunction($size = '', $GETParam = 'id')
+    {
+        return function ($data) use ($size, $GETParam)
+        {
+            $controller = Yii::app()->controller;
+
+            return Yii::app()->controller->widget("ext.bootstrap.widgets.BootButtonGroup", array(
+                'size' => $size,
+                'buttons' => array(
+                    array(
+                        'icon' => 'trash',
+                        'buttonType' => BootButton::BUTTON_AJAXLINK,
+                        'url' => array($data->deleted
+                            ? 'restore'
+                            : 'toTrash', $GETParam => $data->id),
+//                        'url' => new CJavaScriptExpression("'{$controller->createUrl('toTrash')}&' + $data->id"),
+                        'ajaxOptions' => array(
+                            'type' => 'POST',
+                            'update' => '#info-div',
+//                                    'error' => new CJavaScriptExpression('function(jqXHR, textStatus, errorThrown) {alert("Error: " + textStatus)}'),
+                        ),
+                        'htmlOptions' => array(
+                            'id' => $data->deleted
+                                ? 'restoreButton'
+                                : 'toTrashButton',
+                            'title' => $data->deleted
+                                ? 'Восстановить запись из корзины'
+                                : 'Поместить запись в корзину',
+//                            'live' => true,
+                        ),
+                        'active' => $data->deleted,
+                    ),
+//                    array(
+//                        'icon' => 'ok-sign',
+//                        'buttonType' => BootButton::BUTTON_AJAXLINK,
+//                        'url' => array('restore', $GETParam => $data->id),
+//                        'ajaxOptions' => array(
+//                            'type' => 'POST',
+//                            'update' => '#info-div',
+////                                    'error' => new CJavaScriptExpression('function(jqXHR, textStatus, errorThrown) {alert("Error: " + textStatus)}'),
+//                        ),
+//                        'htmlOptions' => array(
+//                            'id' => 'restoreButton',
+//                            'title' => 'Восстановить запись из корзины',
+////                            'live' => true,
+//                        ),
+//                        'active' => $data->deleted,
+//                    ),
+                ),
+            ), true);
+        };
+    }
 }

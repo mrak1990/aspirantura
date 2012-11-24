@@ -100,34 +100,36 @@ class HelperHTML
             return array_merge($menu, array(
                 array(
                     'label' => 'Действия',
-                    'icon' => 'cog',
+                    'icon' => 'eye-open',
                     'itemOptions' => array(
                         'class' => 'pull-right',
                         'title' => 'Действия над записью'
                     ),
                     'items' => array(
-                        array(
-                            'url' => '',
-                            'template' => CHtml::ajaxLink('<i class="icon-trash"></i> 2В корзину', array('toTrash'), array(
-                                    'data' => new CJavaScriptExpression("{id : '{$model->id}'}"),
-                                    'success' => new CJavaScriptExpression('$("#label-deleted").show()'),
-                                )
-                            ),
-                            'visible' => $deletable
-                                ? !$model->deleted
-                                : false,
-                        ),
-                        array(
-                            'url' => '',
-                            'template' => CHtml::ajaxLink('<i class="icon-trash"></i> 2Восстановить', array('restore'), array(
-                                    'data' => new CJavaScriptExpression("{id : '{$model->id}'}"),
-                                    'success' => new CJavaScriptExpression('$("#label-deleted").hide()'),
-                                )
-                            ),
-                            'visible' => $deletable
-                                ? $model->deleted
-                                : false,
-                        ),
+//                        array(
+//                            'url' => '',
+//                            'template' => CHtml::ajaxLink('<i class="icon-trash"></i> В корзину — .ajax()', array('toTrash'), array(
+//                                    'data' => new CJavaScriptExpression("{id : '{$model->id}'}"),
+////                                    'success' => new CJavaScriptExpression('$("#label-deleted").show()'),
+//                                    'update' => '#content-div',
+//                                )
+//                            ),
+//                            'visible' => $deletable
+//                                ? !$model->deleted
+//                                : false,
+//                        ),
+//                        array(
+//                            'url' => '',
+//                            'template' => CHtml::ajaxLink('<i class="icon-trash"></i> Восстановить — .ajax()', array('restore'), array(
+//                                    'data' => new CJavaScriptExpression("{id : '{$model->id}'}"),
+////                                    'success' => new CJavaScriptExpression('$("#label-deleted").hide()'),
+//                                    'update' => '#content-div',
+//                                )
+//                            ),
+//                            'visible' => $deletable
+//                                ? $model->deleted
+//                                : false,
+//                        ),
                         array(
                             'label' => 'В корзину',
                             'url' => '#',
